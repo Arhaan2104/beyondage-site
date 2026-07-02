@@ -159,22 +159,25 @@ html.lenis, html.lenis body { height: auto; }
 }
 
 /* =============================================================================
-   Hero — editorial left, playable founder film right (Neko-style split)
+   Site frame — one continuous deep-emerald bezel around the whole page, on all
+   four edges and running across every section (the hero's recessed-window look,
+   extended site-wide as a fixed passe-partout). Sits above content, ignores
+   pointer events, and carries a fine dark inner lip.
    ========================================================================== */
-/* The hero lives inside a recessed rounded "window" — a slim deep-emerald bezel
-   around it, rounded corners, and an inner-shadow tunnel with a fine glass lip,
-   so the whole panel reads as embedded into the screen. */
+body::after {
+  content: ""; position: fixed; inset: 0; z-index: 45; pointer-events: none;
+  border: clamp(8.4px, 0.98vw, 13px) solid #06392a;
+  box-shadow: inset 0 0 0 1px rgba(2, 20, 14, 0.55);
+}
+
+/* =============================================================================
+   Hero — editorial left, playable founder film right (Neko-style split).
+   Flush inside the site frame (the frame provides the recessed-window edge).
+   ========================================================================== */
 .hero {
-  --hero-gutter: clamp(8.4px, 0.98vw, 13px); /* frame ~6-7% thinner across min/pref/max */
-  --hero-bezel: #06392a; /* deep-emerald frame the whole hero is recessed into */
   position: relative; overflow: hidden; color: var(--ink);
   display: flex; align-items: center;
-  min-height: calc(100svh - 2 * var(--hero-gutter));
-  margin: var(--hero-gutter);
-  border-radius: 0; /* sharp corners */
-  box-shadow:
-    0 0 0 var(--hero-gutter) var(--hero-bezel),
-    0 0 0 calc(var(--hero-gutter) + 1px) rgba(2, 20, 14, 0.55);
+  min-height: 100svh;
 }
 /* the recess: crisp inner edge, a bright top glass lip, and soft edge-darkening
    that pulls the content back into the frame (the "tunnel") */

@@ -22,22 +22,24 @@ import { useEffect, useRef, useState } from "react";
 
 /* ---- model (pure) — age domain, the two risk paths, plot geometry ---- */
 const A0 = 35, A1 = 75, CATCH = 40, THRESH = 0.8;
-const PL = 62, PR = 782, PT = 46, PB = 286;
+const PL = 50, PR = 770, PT = 46, PB = 286;
 const VBW = 820, VBH = 348;
-const REVEAL_W = PR - PL;
 
 const clamp = (n: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, n));
 const tOf = (a: number) => (a - A0) / (A1 - A0);
 /** Silent progression, untreated: rises slowly then accelerates. */
 const silent = (a: number) => 0.05 + 0.92 * Math.pow(tOf(a), 2);
-/** BeyondAge: tracks the silent path until the catch, then bends down and holds low. */
+/** BeyondAge: tracks the silent path until the catch, then holds to a calm, low
+ *  plateau — kept clearly off the baseline so it reads as its own path, not the axis. */
 const beyond = (a: number) => {
   if (a <= CATCH) return silent(a);
   const sc = silent(CATCH);
-  return sc + (0.1 - sc) * (1 - Math.exp(-(a - CATCH) * 0.13));
+  return sc + (0.17 - sc) * (1 - Math.exp(-(a - CATCH) * 0.1));
 };
 const X = (a: number) => PL + tOf(a) * (PR - PL);
 const Y = (v: number) => PB - v * (PB - PT);
+const dia = (cx: number, cy: number, r: number) =>
+  `M${cx} ${cy - r} L${cx + r} ${cy} L${cx} ${cy + r} L${cx - r} ${cy} Z`;
 /** Age where the silent path crosses the symptom threshold — the late diagnosis. */
 const DIAG = A0 + Math.sqrt((THRESH - 0.05) / 0.92) * (A1 - A0);
 
@@ -218,62 +220,57 @@ export default function WhyBeyondAge() {
           >
             <defs>
               <linearGradient id="whyConv" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stopColor="#e0956e" stopOpacity="0.22" />
-                <stop offset="1" stopColor="#e0956e" stopOpacity="0" />
+                <stop offset="0" stopColor="#c9724f" stopOpacity="0.16" />
+                <stop offset="0.55" stopColor="#c9724f" stopOpacity="0.045" />
+                <stop offset="1" stopColor="#c9724f" stopOpacity="0" />
               </linearGradient>
               <linearGradient id="whyBey" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stopColor="#d9b86c" stopOpacity="0.24" />
-                <stop offset="1" stopColor="#d9b86c" stopOpacity="0" />
+                <stop offset="0" stopColor="#0a8a63" stopOpacity="0.16" />
+                <stop offset="0.6" stopColor="#0a8a63" stopOpacity="0.04" />
+                <stop offset="1" stopColor="#0a8a63" stopOpacity="0" />
+              </linearGradient>
+              <linearGradient id="whyPlay" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stopColor="#064d39" stopOpacity="0" />
+                <stop offset="0.16" stopColor="#064d39" stopOpacity="0.42" />
+                <stop offset="0.84" stopColor="#064d39" stopOpacity="0.42" />
+                <stop offset="1" stopColor="#064d39" stopOpacity="0" />
               </linearGradient>
               <clipPath id="whyReveal">
                 <rect className="why-reveal-rect" x={PL} y="0" height={VBH} />
               </clipPath>
             </defs>
 
-            {/* grid */}
+            {/* whisper-fine vertical guides at each decade */}
             {TICKS.map((t) => (
               <line key={`v${t}`} className="why-g" x1={X(t)} y1={PT} x2={X(t)} y2={PB} />
-            ))}
-            {[0.25, 0.5, 0.75].map((v) => (
-              <line key={`h${v}`} className="why-g why-g--em" x1={PL} y1={Y(v)} x2={PR} y2={Y(v)} />
             ))}
             <line className="why-base" x1={PL} y1={PB} x2={PR} y2={PB} />
 
             {/* scan-revealed content */}
             <g clipPath="url(#whyReveal)">
-              {/* asymptomatic zone (below the symptom threshold) */}
-              <rect
-                className="why-zone"
-                x={PL}
-                y={Y(THRESH)}
-                width={REVEAL_W}
-                height={PB - Y(THRESH)}
-              />
+              {/* symptom threshold — a fine dotted line; everything under it is silent */}
               <line className="why-thr" x1={PL} y1={Y(THRESH)} x2={PR} y2={Y(THRESH)} />
-              <text className="why-thrlab" x={PR} y={Y(THRESH) - 7} textAnchor="end">
+              <text className="why-thrlab" x={PL + 2} y={Y(THRESH) - 9}>
                 SYMPTOMS APPEAR
               </text>
 
-              {/* areas + curves */}
-              <path className="why-beyarea" d={BEY_AREA} />
+              {/* soft area washes, then the two solid paths */}
               <path className="why-convarea" d={CONV_AREA} />
+              <path className="why-beyarea" d={BEY_AREA} />
               <path className="why-bey" d={BEY_PATH} />
               <path className="why-conv" d={CONV_PATH} />
 
-              {/* caught-early marker */}
-              <line className="why-catch" x1={X(CATCH)} y1={PT} x2={X(CATCH)} y2={PB} />
-              <circle className="why-catchdot" cx={X(CATCH)} cy={Y(silent(CATCH))} r={4} />
-              <text className="why-catchlab" x={X(CATCH) + 9} y={PT + 12}>
-                CAUGHT · 40
+              {/* late diagnosis — where the silent path crosses into symptoms */}
+              <path className="why-diag" d={dia(X(DIAG), Y(THRESH), 4.5)} />
+              <text className="why-diaglab" x={X(DIAG) - 10} y={Y(THRESH) - 9} textAnchor="end">
+                DIAGNOSIS
               </text>
 
-              {/* late diagnosis marker */}
-              <path
-                className="why-diag"
-                d={`M${X(DIAG)} ${Y(THRESH) - 6} L${X(DIAG) + 6} ${Y(THRESH)} L${X(DIAG)} ${Y(THRESH) + 6} L${X(DIAG) - 6} ${Y(THRESH)} Z`}
-              />
-              <text className="why-diaglab" x={X(DIAG)} y={Y(THRESH) + 20} textAnchor="middle">
-                DIAGNOSIS
+              {/* caught-early — a slim leader up from the point the paths part */}
+              <line className="why-catch" x1={X(CATCH)} y1={Y(silent(CATCH))} x2={X(CATCH)} y2={Y(0.46)} />
+              <circle className="why-catchdot" cx={X(CATCH)} cy={Y(silent(CATCH))} r={3} />
+              <text className="why-catchlab" x={X(CATCH) - 5} y={Y(0.46) - 5}>
+                CAUGHT · 40
               </text>
             </g>
 
@@ -283,24 +280,17 @@ export default function WhyBeyondAge() {
                 {t}
               </text>
             ))}
-            <text className="why-ax why-ax--unit" x={PR + 2} y={PB + 22} textAnchor="end">
-              AGE
-            </text>
             <text className="why-note" x={PL} y={VBH - 12}>
               ASYMPTOMATIC — THE BODY GIVES NO WARNING
             </text>
 
             {/* playhead (unclipped, follows the scrubber) */}
-            <line className="why-playline" x1={px} y1={PT - 8} x2={px} y2={PB} />
-            <circle className="why-dot why-dot--conv" cx={px} cy={Y(silent(age))} r={5} />
-            <circle className="why-dot why-dot--bey" cx={px} cy={Y(beyond(age))} r={5} />
+            <line className="why-playline" x1={px} y1={PT - 4} x2={px} y2={PB} stroke="url(#whyPlay)" />
+            <circle className="why-dot why-dot--conv" cx={px} cy={Y(silent(age))} r={3.6} />
+            <circle className="why-dot why-dot--bey" cx={px} cy={Y(beyond(age))} r={3.6} />
           </svg>
 
           <figcaption className="why-inst__cap">
-            <span className="why-inst__legend">
-              <span className="why-key why-key--conv">Silent progression</span>
-              <span className="why-key why-key--bey">With BeyondAge</span>
-            </span>
             <span className="why-inst__caption">{caption}</span>
           </figcaption>
         </figure>

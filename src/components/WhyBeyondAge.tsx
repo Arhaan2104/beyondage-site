@@ -1,0 +1,375 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+
+/**
+ * Why BeyondAge — the thesis chapter. A dark, cinematic manifesto that states
+ * the practice's whole idea in one breath: serious disease builds silently for
+ * years, so the intelligent move is to find it early and act in the decades
+ * before it arrives.
+ *
+ * Its centrepiece is a bespoke, *operable* diagnostic instrument — a "risk
+ * across your life" readout you can scrub (drag / hover / arrow-keys). It draws
+ * two paths: the silent progression that climbs unfelt until a late diagnosis,
+ * and the BeyondAge path caught early at 40. Everything below the symptom
+ * threshold is asymptomatic — the visual argument for the premise.
+ *
+ * Content is accurate to beyondage.health and the brief: advanced diagnostics,
+ * genomics and AI, read by a bench of India's most respected specialists,
+ * become a personalised plan and ongoing care. Three deep programmes: Cardiac,
+ * Metabolic, Sleep.
+ */
+
+/* ---- model (pure) — age domain, the two risk paths, plot geometry ---- */
+const A0 = 35, A1 = 75, CATCH = 40, THRESH = 0.8;
+const PL = 62, PR = 782, PT = 46, PB = 286;
+const VBW = 820, VBH = 348;
+const REVEAL_W = PR - PL;
+
+const clamp = (n: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, n));
+const tOf = (a: number) => (a - A0) / (A1 - A0);
+/** Silent progression, untreated: rises slowly then accelerates. */
+const silent = (a: number) => 0.05 + 0.92 * Math.pow(tOf(a), 2);
+/** BeyondAge: tracks the silent path until the catch, then bends down and holds low. */
+const beyond = (a: number) => {
+  if (a <= CATCH) return silent(a);
+  const sc = silent(CATCH);
+  return sc + (0.1 - sc) * (1 - Math.exp(-(a - CATCH) * 0.13));
+};
+const X = (a: number) => PL + tOf(a) * (PR - PL);
+const Y = (v: number) => PB - v * (PB - PT);
+/** Age where the silent path crosses the symptom threshold — the late diagnosis. */
+const DIAG = A0 + Math.sqrt((THRESH - 0.05) / 0.92) * (A1 - A0);
+
+function pathFor(fn: (a: number) => number) {
+  const N = 72;
+  let d = "";
+  for (let i = 0; i <= N; i++) {
+    const a = A0 + (i / N) * (A1 - A0);
+    d += `${i ? "L" : "M"}${X(a).toFixed(1)} ${Y(fn(a)).toFixed(1)} `;
+  }
+  return d.trim();
+}
+const areaFor = (fn: (a: number) => number) =>
+  `${pathFor(fn)} L${X(A1).toFixed(1)} ${PB} L${X(A0).toFixed(1)} ${PB} Z`;
+
+const CONV_PATH = pathFor(silent);
+const CONV_AREA = areaFor(silent);
+const BEY_PATH = pathFor(beyond);
+const BEY_AREA = areaFor(beyond);
+const TICKS = [35, 45, 55, 65, 75];
+
+const FACES = [
+  { img: "founder-soin", name: "Dr Arvinder Soin" },
+  { img: "mithal", name: "Dr Ambrish Mithal" },
+  { img: "vinayak", name: "Dr Vinayak Agrawal" },
+  { img: "bhatia", name: "Dr Manvir Bhatia" },
+  { img: "navin", name: "Dr Navin Dang" },
+];
+
+const PROGRAMMES = [
+  { name: "Cardiac", sub: "Heart & vascular" },
+  { name: "Metabolic", sub: "Glucose, insulin & liver" },
+  { name: "Sleep", sub: "Recovery & brain" },
+];
+
+export default function WhyBeyondAge() {
+  const [age, setAge] = useState(58);
+  const svgRef = useRef<SVGSVGElement>(null);
+  const figRef = useRef<HTMLElement>(null);
+  const userRef = useRef(false);
+  const rafRef = useRef(0);
+
+  // Reveal: scan the plot open left→right, then auto-sweep the playhead once to
+  // teach that it's operable — unless the visitor has already grabbed it.
+  useEffect(() => {
+    const fig = figRef.current;
+    if (!fig) return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const io = new IntersectionObserver(
+      (es) => {
+        if (!es[0].isIntersecting) return;
+        fig.classList.add("is-drawn");
+        io.disconnect();
+        if (reduce || userRef.current) return;
+        const dur = 2200;
+        const start = performance.now();
+        const step = (now: number) => {
+          if (userRef.current) return;
+          const p = clamp((now - start) / dur, 0, 1);
+          const e = 1 - Math.pow(1 - p, 3);
+          setAge(A0 + e * (A1 - A0));
+          if (p < 1) rafRef.current = requestAnimationFrame(step);
+          else setAge(58);
+        };
+        // small beat after the scan reveal begins
+        rafRef.current = requestAnimationFrame(() =>
+          (rafRef.current = requestAnimationFrame(step))
+        );
+      },
+      { threshold: 0.35 }
+    );
+    io.observe(fig);
+    return () => {
+      io.disconnect();
+      cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
+
+  const grab = () => {
+    userRef.current = true;
+    cancelAnimationFrame(rafRef.current);
+  };
+  const fromPointer = (clientX: number) => {
+    const svg = svgRef.current;
+    if (!svg) return;
+    const r = svg.getBoundingClientRect();
+    const svgX = (clientX - r.left) * (VBW / r.width);
+    setAge(clamp(A0 + ((svgX - PL) / (PR - PL)) * (A1 - A0), A0, A1));
+  };
+  const onDown = (e: React.PointerEvent) => {
+    grab();
+    (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
+    fromPointer(e.clientX);
+  };
+  const onMove = (e: React.PointerEvent) => {
+    // hover-scrub on mouse; drag-scrub (buttons held) on touch/pen
+    if (e.pointerType !== "mouse" && e.buttons === 0) return;
+    grab();
+    fromPointer(e.clientX);
+  };
+  const onKey = (e: React.KeyboardEvent) => {
+    const map: Record<string, number> = {
+      ArrowRight: 1, ArrowUp: 1, ArrowLeft: -1, ArrowDown: -1,
+      PageUp: 5, PageDown: -5,
+    };
+    let next: number | null = null;
+    if (e.key in map) next = age + map[e.key];
+    else if (e.key === "Home") next = A0;
+    else if (e.key === "End") next = A1;
+    if (next === null) return;
+    e.preventDefault();
+    grab();
+    setAge(clamp(next, A0, A1));
+  };
+
+  const a = Math.round(age);
+  const convPct = Math.round(silent(age) * 100);
+  const beyPct = Math.round(beyond(age) * 100);
+  const caption =
+    a < CATCH
+      ? "The first signals — silent, and years early."
+      : a < Math.round(DIAG)
+      ? "Caught at 40. Every year, the gap between the two paths widens."
+      : "On the old path, this is where the diagnosis finally arrives.";
+
+  const px = X(age);
+
+  return (
+    <section className="section why" id="about">
+      <div className="why-field" aria-hidden="true">
+        <div className="why-field__grid" />
+        <div className="why-field__grain" />
+      </div>
+
+      <div className="measure why-inner">
+        <div className="reveal why-head">
+          <p className="eyebrow why-eyebrow">
+            <span className="why-eyebrow__mark" /> What is BeyondAge
+          </p>
+          <h2 className="why-thesis">
+            Serious disease builds in silence for years. We find it while it&rsquo;s
+            still a whisper — and act in the{" "}
+            <em>decades before it would ever arrive</em>.
+          </h2>
+        </div>
+
+        {/* Signature instrument — operable risk-across-your-life readout */}
+        <figure className="reveal why-inst" ref={figRef}>
+          <div className="why-inst__top">
+            <span className="why-inst__tag">
+              <i className="why-inst__live" /> Risk across your life · drag to explore
+            </span>
+            <div className="why-inst__readout">
+              <span className="why-inst__age">AGE {a}</span>
+              <span className="why-inst__stat why-inst__stat--conv">
+                Untreated <b>{convPct}%</b>
+              </span>
+              <span className="why-inst__stat why-inst__stat--beyond">
+                BeyondAge <b>{beyPct}%</b>
+              </span>
+            </div>
+          </div>
+
+          <svg
+            ref={svgRef}
+            className="why-inst__svg"
+            viewBox={`0 0 ${VBW} ${VBH}`}
+            role="slider"
+            tabIndex={0}
+            aria-label="Risk across your life, by age"
+            aria-valuemin={A0}
+            aria-valuemax={A1}
+            aria-valuenow={a}
+            aria-valuetext={`Age ${a}. ${caption}`}
+            onPointerDown={onDown}
+            onPointerMove={onMove}
+            onKeyDown={onKey}
+          >
+            <defs>
+              <linearGradient id="whyConv" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stopColor="#e0956e" stopOpacity="0.22" />
+                <stop offset="1" stopColor="#e0956e" stopOpacity="0" />
+              </linearGradient>
+              <linearGradient id="whyBey" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stopColor="#d9b86c" stopOpacity="0.24" />
+                <stop offset="1" stopColor="#d9b86c" stopOpacity="0" />
+              </linearGradient>
+              <clipPath id="whyReveal">
+                <rect className="why-reveal-rect" x={PL} y="0" height={VBH} />
+              </clipPath>
+            </defs>
+
+            {/* grid */}
+            {TICKS.map((t) => (
+              <line key={`v${t}`} className="why-g" x1={X(t)} y1={PT} x2={X(t)} y2={PB} />
+            ))}
+            {[0.25, 0.5, 0.75].map((v) => (
+              <line key={`h${v}`} className="why-g why-g--em" x1={PL} y1={Y(v)} x2={PR} y2={Y(v)} />
+            ))}
+            <line className="why-base" x1={PL} y1={PB} x2={PR} y2={PB} />
+
+            {/* scan-revealed content */}
+            <g clipPath="url(#whyReveal)">
+              {/* asymptomatic zone (below the symptom threshold) */}
+              <rect
+                className="why-zone"
+                x={PL}
+                y={Y(THRESH)}
+                width={REVEAL_W}
+                height={PB - Y(THRESH)}
+              />
+              <line className="why-thr" x1={PL} y1={Y(THRESH)} x2={PR} y2={Y(THRESH)} />
+              <text className="why-thrlab" x={PR} y={Y(THRESH) - 7} textAnchor="end">
+                SYMPTOMS APPEAR
+              </text>
+
+              {/* areas + curves */}
+              <path className="why-beyarea" d={BEY_AREA} />
+              <path className="why-convarea" d={CONV_AREA} />
+              <path className="why-bey" d={BEY_PATH} />
+              <path className="why-conv" d={CONV_PATH} />
+
+              {/* caught-early marker */}
+              <line className="why-catch" x1={X(CATCH)} y1={PT} x2={X(CATCH)} y2={PB} />
+              <circle className="why-catchdot" cx={X(CATCH)} cy={Y(silent(CATCH))} r={4} />
+              <text className="why-catchlab" x={X(CATCH) + 9} y={PT + 12}>
+                CAUGHT · 40
+              </text>
+
+              {/* late diagnosis marker */}
+              <path
+                className="why-diag"
+                d={`M${X(DIAG)} ${Y(THRESH) - 6} L${X(DIAG) + 6} ${Y(THRESH)} L${X(DIAG)} ${Y(THRESH) + 6} L${X(DIAG) - 6} ${Y(THRESH)} Z`}
+              />
+              <text className="why-diaglab" x={X(DIAG)} y={Y(THRESH) + 20} textAnchor="middle">
+                DIAGNOSIS
+              </text>
+            </g>
+
+            {/* axis */}
+            {TICKS.map((t) => (
+              <text key={`ax${t}`} className="why-ax" x={X(t)} y={PB + 22} textAnchor="middle">
+                {t}
+              </text>
+            ))}
+            <text className="why-ax why-ax--unit" x={PR + 2} y={PB + 22} textAnchor="end">
+              AGE
+            </text>
+            <text className="why-note" x={PL} y={VBH - 12}>
+              ASYMPTOMATIC — THE BODY GIVES NO WARNING
+            </text>
+
+            {/* playhead (unclipped, follows the scrubber) */}
+            <line className="why-playline" x1={px} y1={PT - 8} x2={px} y2={PB} />
+            <circle className="why-dot why-dot--conv" cx={px} cy={Y(silent(age))} r={5} />
+            <circle className="why-dot why-dot--bey" cx={px} cy={Y(beyond(age))} r={5} />
+          </svg>
+
+          <figcaption className="why-inst__cap">
+            <span className="why-inst__legend">
+              <span className="why-key why-key--conv">Silent progression</span>
+              <span className="why-key why-key--bey">With BeyondAge</span>
+            </span>
+            <span className="why-inst__caption">{caption}</span>
+          </figcaption>
+        </figure>
+
+        {/* Method — the value prop, told as signal → the bench → your life */}
+        <div className="reveal why-method">
+          <p className="why-method__lead">
+            Advanced diagnostics, genomics and AI —{" "}
+            <em>read by a bench of India&rsquo;s most respected specialists</em> —
+            become a personalised plan, and the ongoing care to hold it.
+          </p>
+
+          <div className="why-flow">
+            <div className="why-node">
+              <span className="why-node__ico" aria-hidden="true">
+                <svg viewBox="0 0 40 40">
+                  <circle cx="20" cy="20" r="13" />
+                  <path d="M9 20h4l3-7 4 14 3-7h8" />
+                </svg>
+              </span>
+              <p className="why-node__k">The signal</p>
+              <p className="why-node__t">Diagnostics, imaging, genomics &amp; AI interpretation</p>
+            </div>
+
+            <span className="why-flow__link" aria-hidden="true"><i /></span>
+
+            <div className="why-node why-node--bench">
+              <span className="why-node__faces">
+                {FACES.map((f) => (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img key={f.img} src={`/assets/team/${f.img}.png`} alt={f.name} loading="lazy" />
+                ))}
+                <span className="why-node__more">+7</span>
+              </span>
+              <p className="why-node__k">The bench</p>
+              <p className="why-node__t">
+                Padma Shri &amp; Padma Bhushan laureates — physicians who shaped
+                cardiology, endocrinology and sleep medicine in India.
+              </p>
+            </div>
+
+            <span className="why-flow__link" aria-hidden="true"><i /></span>
+
+            <div className="why-node">
+              <span className="why-node__ico" aria-hidden="true">
+                <svg viewBox="0 0 40 40">
+                  <path d="M8 26c6 0 6-12 12-12s6 12 12 12" />
+                  <path className="why-node__check" d="M15 20l3.5 3.5L26 16" />
+                </svg>
+              </span>
+              <p className="why-node__k">Your life</p>
+              <p className="why-node__t">A precision plan &amp; continuity of care that compounds</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Programmes — teaser strip (each is a deep programme, detailed below) */}
+        <div className="reveal why-programmes">
+          <span className="why-programmes__label">Three deep programmes</span>
+          <div className="why-progs">
+            {PROGRAMMES.map((p) => (
+              <span key={p.name} className="why-prog">
+                <b>{p.name}</b>
+                <span>{p.sub}</span>
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

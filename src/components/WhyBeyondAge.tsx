@@ -180,9 +180,9 @@ export default function WhyBeyondAge() {
             <span className="why-eyebrow__mark" /> What is BeyondAge
           </p>
           <h2 className="why-thesis">
-            Serious disease builds in silence for years. We find it while it&rsquo;s
-            still a whisper — and act in the{" "}
-            <em>decades before it would ever arrive</em>.
+            <span className="why-thesis__line">Serious disease builds in silence for years.</span>
+            <span className="why-thesis__line">We find it while it&rsquo;s still a whisper.</span>
+            <span className="why-thesis__line">And act in the <em>decades before it would ever arrive</em>.</span>
           </h2>
         </div>
 

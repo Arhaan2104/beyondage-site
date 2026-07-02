@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BeyondAge
 
-## Getting Started
+The site for BeyondAge — a members-only longevity practice in Gurugram, led by
+senior physicians and built on clinical science. One long editorial page with a
+single argument: find risk decades early, then design the years ahead.
 
-First, run the development server:
+## The page
+
+Top to bottom, each section is its own component:
+
+- **Hero** (`Hero.tsx`) — the value proposition beside a playable film of
+  Dr Soin. It loops muted as an ambient preview; a click unmutes it.
+- **What you get** (`WhatYouGet.tsx` · `Instrument.tsx`) — the concrete
+  deliverables, each carried by a small animated diagnostic instrument.
+- **The bench** (`page.tsx`) — the founders, then the specialist roster.
+- **Why BeyondAge exists** — the founders' shift from late-stage cure to early
+  prevention.
+- **Health journeys** — cardiac, metabolic, sleep.
+- **How it works** (`HowItWorks.tsx`) — the five-step process. Pinned,
+  scroll-driven on desktop; stacked and numbered on phones.
+- **The product** (`HealthspanDashboard.tsx`) — a member dashboard rebuilt
+  natively: healthspan score, biological age, biomarkers, the day's actions.
+- **Predict vs cure** (`PreventionVsCure.tsx` · `DiagnosticInstrument.tsx`) —
+  the thesis, next to a risk curve that bends back down.
+- **Invitation** — the one call to action.
+
+## Running it
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open [localhost:3000](http://localhost:3000). `npm run build` and
+`npm start` for production; `npm run lint` for eslint.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## How it's built
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Next.js 16** (App Router, Turbopack) with React 19 and TypeScript.
+- **A handwritten design system** in `src/app/globals.css` — royal emerald lit
+  like a gem, gold as the precious accent, ivory for light. Emerald-dark and
+  warm-light sections alternate down the page. No component library.
+- **Canvas instruments** (`Instrument.tsx`) — a small 3D-wireframe engine
+  (custom perspective projection, additive glow, depth fog). One shared
+  `requestAnimationFrame` drives every visible instrument; off-screen ones
+  unregister via `IntersectionObserver`, and reduced-motion renders a single
+  static frame.
+- **Smooth scroll** via Lenis, wired in `SmoothScroll.tsx`.
+- **Mobile-first.** Every section is designed for the phone and verified there;
+  desktop layers on top — the pinned "how it works", the multi-column grids —
+  without ever being the baseline.
 
-## Learn More
+## Type
 
-To learn more about Next.js, take a look at the following resources:
+The display face is **Newsreader**, self-hosted at build through `next/font` so
+it renders identically on every device. Two licensed brand faces can slot in
+ahead of it without touching any markup — see `public/fonts/README.md`. Until
+they're added, the site falls back to a serif stack (Iowan / Palatino), never a
+generic Google webfont.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## A note on the framework
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This repo pins a build of Next.js that carries breaking changes from what you
+may remember. `AGENTS.md` is the standing rule: read the relevant guide under
+`node_modules/next/dist/docs/` before writing code against the framework.

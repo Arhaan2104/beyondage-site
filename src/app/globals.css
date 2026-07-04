@@ -10,7 +10,7 @@ html.lenis, html.lenis body { height: auto; }
    BeyondAge — Design System v0.3
    Royal emerald, lit like a gem. Gold as the precious accent. Ivory for light.
    Hybrid narrative: deep emerald → warm light. Calm, precise, certain.
-   Editorial serif: Newsreader (self-hosted). No AI-slop faces or flat fills.
+   Editorial serif: Playfair Display (self-hosted). No AI-slop faces or flat fills.
    ========================================================================== */
 
 :root {
@@ -33,7 +33,7 @@ html.lenis, html.lenis body { height: auto; }
   --line-lt:  rgba(243, 237, 224, 0.16);
 
   --font-display-licensed: "";
-  --ff-display: var(--font-display-licensed), var(--font-newsreader),
+  --ff-display: var(--font-display-licensed), var(--font-playfair),
     "Iowan Old Style", "Palatino Linotype", Georgia, serif;
   --ff-text: var(--font-schibsted), system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
 

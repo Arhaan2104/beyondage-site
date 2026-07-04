@@ -13,7 +13,7 @@ import type { JourneyData } from "./journeyData";
  * conversion. Per the brief: one call to action, no invented claims.
  */
 export default function JourneyPage({ data }: { data: JourneyData }) {
-  const INVITE = "mailto:contactus@beyondage.health";
+  const INVITE = "/begin-journey";
   return (
     <>
       <SiteHeader />
@@ -33,7 +33,7 @@ export default function JourneyPage({ data }: { data: JourneyData }) {
               <p className="jp-hero__tagline">{data.tagline}</p>
               <p className="jp-hero__lede">{data.lede}</p>
               <div className="jp-hero__actions">
-                <a href={INVITE} className="cta cta--gold">Request an invitation</a>
+                <Link href={INVITE} className="cta cta--gold">Begin your journey</Link>
                 <div className="jp-hero__stat">
                   <strong className="jp-hero__stat-val">{data.stat.value}</strong>
                   <span className="jp-hero__stat-label">{data.stat.label}</span>
@@ -139,7 +139,7 @@ export default function JourneyPage({ data }: { data: JourneyData }) {
               Schedule a consultation with our Healthcare Coordinator to discover how
               BeyondAge can optimise your health.
             </p>
-            <a href={INVITE} className="cta cta--gold jp-cta__btn">Request an invitation</a>
+            <Link href={INVITE} className="cta cta--gold jp-cta__btn">Begin your journey</Link>
           </div>
         </section>
       </main>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 
 /**
  * "How it works" — Mederva-style pinned, scroll-driven tab reveal, rebuilt in
@@ -170,9 +171,9 @@ export default function HowItWorks() {
                   </div>
                   <h3 className="how-panel__heading">{s.heading}</h3>
                   <p className="how-panel__body">{s.body}</p>
-                  <a href="#invitation" className="how-panel__cta">
-                    <span aria-hidden="true">↳</span> Request an invitation
-                  </a>
+                  <Link href="/begin-journey" className="how-panel__cta">
+                    <span aria-hidden="true">↳</span> Begin your journey
+                  </Link>
                 </article>
               ))}
             </div>

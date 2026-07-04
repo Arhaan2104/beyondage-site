@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 
 /**
  * Editorial hero: value proposition left, the founder film right — housed as a
@@ -136,9 +137,9 @@ export default function Hero() {
             and design the years ahead.
           </p>
           <div className="hero-actions">
-            <a href="#invitation" className="cta cta--emerald">
-              Request an invitation
-            </a>
+            <Link href="/begin-journey" className="cta cta--emerald">
+              Begin your journey
+            </Link>
           </div>
           <p className="hero-cred">
             <span className="hero-cred__faces">

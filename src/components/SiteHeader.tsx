@@ -102,9 +102,9 @@ export default function SiteHeader() {
             ))}
           </nav>
 
-          <a href={to("#invitation")} className="nav__cta">
-            Request an invitation
-          </a>
+          <Link href="/begin-journey" className="nav__cta">
+            Begin your journey
+          </Link>
 
           <button
             ref={toggleRef}
@@ -155,9 +155,9 @@ export default function SiteHeader() {
           </nav>
 
           <div className="mnav__foot" style={{ ["--i" as string]: String(MENU.length) }}>
-            <a href={to("#invitation")} className="cta cta--gold mnav__cta" onClick={(e) => go(e, "#invitation")}>
-              Request an invitation
-            </a>
+            <Link href="/begin-journey" className="cta cta--gold mnav__cta" onClick={() => setOpen(false)}>
+              Begin your journey
+            </Link>
             <p className="mnav__contact">
               <a href="mailto:contactus@beyondage.health">contactus@beyondage.health</a>
               <span aria-hidden="true"> · </span>By invitation, Gurugram

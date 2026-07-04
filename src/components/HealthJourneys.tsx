@@ -71,7 +71,7 @@ export default function HealthJourneys() {
   return (
     <section className="section warm" id="journeys">
       <div className="measure">
-        <div className="reveal">
+        <div className="reveal jrny-head">
           <p className="eyebrow chapter-eyebrow">Health Journeys</p>
           <h2 className="chapter-title">
             The body, read in <em>depth</em> — long before anything goes wrong.

@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 /**
  * Shared site footer. In-page anchors (#journeys, #team, …) resolve to the
@@ -30,7 +31,7 @@ export default function SiteFooter() {
             <a href={to("#journeys")}>Health Journeys</a>
             <a href={to("#team")}>The Bench</a>
             <a href={to("#how")}>How it works</a>
-            <a href={to("#invitation")}>Request an invitation</a>
+            <Link href="/begin-journey">Begin your journey</Link>
           </div>
           <div className="footer__col">
             <h4>Contact</h4>

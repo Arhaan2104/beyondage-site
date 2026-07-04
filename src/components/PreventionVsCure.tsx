@@ -29,7 +29,9 @@ export default function PreventionVsCure() {
           <div className="reveal">
             <p className="eyebrow chapter-eyebrow">Why not a normal check-up</p>
             <h2 className="chapter-title pvc-title">
-              Predict early. Prevent fully. So you may <em>never need a cure</em>.
+              <span className="pvc-title__line">Predict early.</span>
+              <span className="pvc-title__line">Prevent fully.</span>
+              <span className="pvc-title__line">So you may <em>never need a cure</em>.</span>
             </h2>
             <div className="pvc-compare">
               <div className="pvc-cmp">

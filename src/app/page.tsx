@@ -8,6 +8,7 @@ import WhyBeyondAge from "@/components/WhyBeyondAge";
 import HealthJourneys from "@/components/HealthJourneys";
 import SiteFooter from "@/components/SiteFooter";
 import FounderCard, { type Founder } from "@/components/FounderCard";
+import Link from "next/link";
 
 const TEAM_BASE = "/our-team";
 
@@ -80,9 +81,6 @@ export default function Home() {
         {/* Why BeyondAge — the thesis: silent disease, caught early, by the bench */}
         <WhyBeyondAge />
 
-        {/* What you get — concrete deliverables (real site content) */}
-        <WhatYouGet />
-
         {/* The bench — founders featured, then the specialist roster */}
         <section className="section bench" id="team">
           <div className="measure">
@@ -112,6 +110,9 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        {/* What you get — concrete deliverables (real site content) */}
+        <WhatYouGet />
 
         {/* Founders — the shift */}
         <section className="section founders">
@@ -171,9 +172,9 @@ export default function Home() {
             <h2 className="invitation__title">
               Choose who to trust with the <em>next thirty years</em>.
             </h2>
-            <a href="mailto:contactus@beyondage.health" className="cta cta--gold invitation__cta">
-              Request an invitation
-            </a>
+            <Link href="/begin-journey" className="cta cta--gold invitation__cta">
+              Begin your journey
+            </Link>
             <p className="invitation__note">
               Membership is limited and by invitation. A physician-led longevity
               practice in Gurugram.

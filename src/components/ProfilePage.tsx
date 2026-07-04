@@ -12,7 +12,7 @@ import { teamNeighbours } from "./teamData";
  * bench → the single conversion. One call to action, no invented claims.
  */
 export default function ProfilePage({ data }: { data: TeamMember }) {
-  const INVITE = "mailto:contactus@beyondage.health";
+  const INVITE = "/begin-journey";
   const others = teamNeighbours(data.slug, 3);
 
   return (
@@ -38,7 +38,7 @@ export default function ProfilePage({ data }: { data: TeamMember }) {
                 ))}
               </ul>
               <div className="jp-hero__actions">
-                <a href={INVITE} className="cta cta--gold">Request an invitation</a>
+                <Link href={INVITE} className="cta cta--gold">Begin your journey</Link>
               </div>
             </div>
 
@@ -139,7 +139,7 @@ export default function ProfilePage({ data }: { data: TeamMember }) {
               Schedule a consultation with our Healthcare Coordinator to discover how
               BeyondAge can optimise your health.
             </p>
-            <a href={INVITE} className="cta cta--gold jp-cta__btn">Request an invitation</a>
+            <Link href={INVITE} className="cta cta--gold jp-cta__btn">Begin your journey</Link>
           </div>
         </section>
       </main>

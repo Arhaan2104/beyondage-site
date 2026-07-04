@@ -10,42 +10,43 @@ import { useEffect, useRef, useState } from "react";
  * bloom + heading + body — crossfades. Tabs are also clickable. Reduced-motion
  * users get a static, click-only version (no pin, no scroll hijack).
  */
-// Verbatim from the live beyondage.health five-step process — condensed for the panel.
+// Content and imagery mirror the live beyondage.health five-step process.
+// The right-side photographs are the originals, sourced from the live site.
 const STEPS = [
   {
     n: "01",
     tab: "Discovery call",
     heading: "Book your discovery call",
     body: "Connect with our team to understand how we can help you achieve your health goals.",
-    viz: "how-viz--1",
+    img: "/assets/how/step1-discovery.jpg",
   },
   {
     n: "02",
     tab: "Consultation",
     heading: "Initial consultation",
-    body: "You meet our longevity physician, who designs your personalised advanced-diagnostics plan — after your medical history, lifestyle and health goals are evaluated by our team of doctors and health experts.",
-    viz: "how-viz--2",
+    body: "You meet our longevity physician, who discusses your personalised advanced-diagnostics plan — once your detailed medical history, lifestyle and health goals have been evaluated by our team of doctors and healthcare experts.",
+    img: "/assets/how/step2-consultation.jpg",
   },
   {
     n: "03",
     tab: "Diagnostics",
     heading: "Diagnostics & testing",
     body: "Comprehensive diagnostics integrating lab tests, imaging, biomarkers, genomics and AI-driven interpretations, curated for you — for early detection of disease risk.",
-    viz: "how-viz--3",
+    img: "/assets/how/step3-diagnostics.jpg",
   },
   {
     n: "04",
     tab: "Your plan",
     heading: "Personalised health plan",
     body: "Your clinical team translates your advanced-diagnostics results into a precision health-optimisation plan, combining lifestyle interventions and proven anti-aging treatments.",
-    viz: "how-viz--4",
+    img: "/assets/how/step4-plan.jpg",
   },
   {
     n: "05",
     tab: "Monitoring",
     heading: "Continuity of care & monitoring",
     body: "Our coaches and health team follow up with you regularly and adjust the plan to ensure positive health trends and outcomes.",
-    viz: "how-viz--5",
+    img: "/assets/how/step5-monitoring.jpg",
   },
 ];
 
@@ -156,8 +157,16 @@ export default function HowItWorks() {
                   className={`how-panel${i === active ? " is-active" : ""}`}
                   aria-hidden={i !== active}
                 >
-                  <div className={`how-viz ${s.viz}`} aria-hidden="true">
-                    <span className="how-viz__grain" />
+                  <div className="how-viz">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      className="how-viz__img"
+                      src={s.img}
+                      alt={s.heading}
+                      loading="lazy"
+                      draggable={false}
+                    />
+                    <span className="how-viz__grain" aria-hidden="true" />
                   </div>
                   <h3 className="how-panel__heading">{s.heading}</h3>
                   <p className="how-panel__body">{s.body}</p>

@@ -126,14 +126,14 @@ export default function Hero() {
 
       <div className="hero-inner">
         <div className="hero-content">
-          <p className="eyebrow hero-eyebrow">BeyondAge · By invitation</p>
+          <p className="eyebrow hero-eyebrow">By invitation</p>
           <h1 className="hero-h1">
             The science of a <em>longer</em> life.
           </h1>
           <p className="hero-sub">
-            A members-only longevity practice in Gurugram, led by some of India&rsquo;s
-            most respected physicians and powered by clinical science. We find risk
-            decades early — and design the years ahead.
+            A members-only longevity practice in Gurugram, built by some of
+            India&rsquo;s most respected physicians. We find risk decades early —
+            and design the years ahead.
           </p>
           <div className="hero-actions">
             <a href="#invitation" className="cta cta--emerald">
@@ -147,9 +147,13 @@ export default function Hero() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/assets/loomba.png" alt="" />
             </span>
-            <span>
-              Founded by <strong>Dr Arvinder Soin</strong>, Padma Shri, &amp;{" "}
-              <strong>Dr Vritti Loomba</strong>
+            <span className="hero-cred__names">
+              <span className="hero-cred__line">
+                Founded by <strong>Dr Arvinder Soin</strong>, Padma Shri,
+              </span>
+              <span className="hero-cred__line">
+                &amp; <strong>Dr Vritti Loomba</strong>
+              </span>
             </span>
           </p>
         </div>

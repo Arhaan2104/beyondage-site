@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 const LINKS: [string, string][] = [
   ["#journeys", "Health Journeys"],
@@ -21,18 +23,25 @@ type Lenis = { stop?: () => void; start?: () => void; scrollTo?: (t: Element, o?
 const getLenis = () => (window as unknown as { lenis?: Lenis }).lenis;
 
 export default function SiteHeader() {
-  const [floating, setFloating] = useState(false);
+  const pathname = usePathname();
+  const home = pathname === "/";
+  // On the homepage keep bare "#section" so SmoothScroll's Lenis handler catches
+  // it; on any other route make it root-absolute so the browser navigates home.
+  const to = (hash: string) => (home ? hash : `/${hash}`);
+  // The homepage hero is light paper (nav floats only on scroll); every other
+  // route has a dark hero, so the nav floats immediately for legibility.
+  const [floating, setFloating] = useState(!home);
   const [open, setOpen] = useState(false);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const wasOpen = useRef(false);
 
   useEffect(() => {
-    const onScroll = () => setFloating(window.scrollY > 24);
+    const onScroll = () => setFloating(!home || window.scrollY > 24);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [home]);
 
   // Lock the page behind the menu, handle Escape, and manage focus.
   useEffect(() => {
@@ -52,19 +61,22 @@ export default function SiteHeader() {
   }, [open]);
 
   // Close, then smooth-scroll to the section (Lenis if present, native otherwise).
-  const go = (e: React.MouseEvent, href: string) => {
-    e.preventDefault();
-    const el = document.getElementById(href.slice(1));
+  // `hash` is always the bare "#section". Off the homepage we let the anchor's
+  // /#section href navigate home; on the homepage we smooth-scroll in place.
+  const go = (e: React.MouseEvent, hash: string) => {
     const lenis = getLenis();
     setOpen(false);
     lenis?.start?.();
     document.documentElement.style.overflow = "";
+    if (!home) return;
+    e.preventDefault();
+    const el = document.getElementById(hash.slice(1));
     if (!el) return;
     requestAnimationFrame(() => {
       if (lenis?.scrollTo) lenis.scrollTo(el, { offset: -76 });
       else el.scrollIntoView({ behavior: "smooth" });
     });
-    history.replaceState(null, "", href);
+    history.replaceState(null, "", hash);
   };
 
   return (
@@ -76,21 +88,21 @@ export default function SiteHeader() {
           <span className="nav__mark nav__mark--bl" aria-hidden="true" />
           <span className="nav__mark nav__mark--br" aria-hidden="true" />
 
-          <a href="/" className="nav__logo" aria-label="BeyondAge — home">
+          <Link href="/" className="nav__logo" aria-label="BeyondAge — home">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/assets/logo.png" alt="BeyondAge" className="nav__logo-img" />
-          </a>
+          </Link>
 
           <nav className="nav__links">
             {LINKS.map(([href, label]) => (
-              <a key={href} href={href}>
+              <a key={href} href={to(href)}>
                 <span className="nav__ico" aria-hidden="true" />
                 {label}
               </a>
             ))}
           </nav>
 
-          <a href="#invitation" className="nav__cta">
+          <a href={to("#invitation")} className="nav__cta">
             Request an invitation
           </a>
 
@@ -131,7 +143,7 @@ export default function SiteHeader() {
             {MENU.map(([href, label], i) => (
               <a
                 key={href + label}
-                href={href}
+                href={to(href)}
                 className="mnav__link"
                 style={{ ["--i" as string]: String(i) }}
                 onClick={(e) => go(e, href)}
@@ -143,7 +155,7 @@ export default function SiteHeader() {
           </nav>
 
           <div className="mnav__foot" style={{ ["--i" as string]: String(MENU.length) }}>
-            <a href="#invitation" className="cta cta--gold mnav__cta" onClick={(e) => go(e, "#invitation")}>
+            <a href={to("#invitation")} className="cta cta--gold mnav__cta" onClick={(e) => go(e, "#invitation")}>
               Request an invitation
             </a>
             <p className="mnav__contact">

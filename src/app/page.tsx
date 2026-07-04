@@ -6,25 +6,29 @@ import HealthspanDashboard from "@/components/HealthspanDashboard";
 import PreventionVsCure from "@/components/PreventionVsCure";
 import WhyBeyondAge from "@/components/WhyBeyondAge";
 import HealthJourneys from "@/components/HealthJourneys";
+import SiteFooter from "@/components/SiteFooter";
+import FounderCard, { type Founder } from "@/components/FounderCard";
 
-const TEAM_BASE = "https://beyondage.health/our-team";
+const TEAM_BASE = "/our-team";
 
-// Founders — featured. Names, roles and imagery from beyondage.health.
+// Founders — featured, each frame plays their film (from beyondage.health).
 // Loomba has no profile page on the live site, so her card does not link.
-const FOUNDERS = [
+const FOUNDERS: Founder[] = [
   {
-    img: "founder-soin",
     name: "Dr Arvinder Soin",
     role: "Founder & Chairman",
     cred: "Padma Shri · India's liver-transplant pioneer — close to 5,000 transplants.",
     href: `${TEAM_BASE}/dr-arvind-soin`,
+    video: "/assets/soin-interview.mp4",
+    poster: "/assets/soin-poster.jpg",
   },
   {
-    img: "founder-loomba",
     name: "Dr Vritti Loomba",
     role: "Founder & CEO",
     cred: "Co-founder of BeyondAge — the physician-led longevity practice in Gurugram.",
     href: null,
+    video: "/assets/loomba-interview.mp4",
+    poster: "/assets/loomba-poster.jpg",
   },
 ];
 
@@ -42,6 +46,29 @@ const SPECIALISTS: [string, string, string, string][] = [
   ["monique", "Ms. Monique Jhingon", "Gut & Microbiome Optimization", "ms-monique-jhigon"],
   ["nidhi", "Dr Nidhi Arora", "Musculoskeletal Rehabilitation", "dr-nidhi-arora"],
 ];
+
+// Bench grid is 4-up on desktop; centre whatever doesn't fill the last row.
+const BENCH_COLS = 4;
+const ORPHANS = SPECIALISTS.length % BENCH_COLS;
+const SPLIT = SPECIALISTS.length - ORPHANS;
+
+const renderSpecialist = ([img, name, role, slug]: [string, string, string, string]) => (
+  <a
+    key={img}
+    href={`${TEAM_BASE}/${slug}`}
+    className="bench-card reveal"
+  >
+    <div className="bench-card__photo">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={`/assets/team/${img}.png`} alt={name} loading="lazy" />
+      <span className="bench-card__more" aria-hidden="true">View profile ↗</span>
+    </div>
+    <figcaption>
+      <span className="bench-card__name">{name}</span>
+      <span className="bench-card__role">{role}</span>
+    </figcaption>
+  </a>
+);
 
 export default function Home() {
   return (
@@ -68,52 +95,20 @@ export default function Home() {
             </div>
 
             <div className="founders-row">
-              {FOUNDERS.map((f) => {
-                const inner = (
-                  <>
-                    <div className="founder-card__photo">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={`/assets/team/${f.img}.png`} alt={f.name} loading="lazy" />
-                      <span className="founder-card__tag">Founder</span>
-                    </div>
-                    <div className="founder-card__meta">
-                      <h3 className="founder-card__name">{f.name}</h3>
-                      <p className="founder-card__role">{f.role}</p>
-                      {f.cred && <p className="founder-card__cred">{f.cred}</p>}
-                      {f.href && <span className="founder-card__more">View profile <span aria-hidden="true">↗</span></span>}
-                    </div>
-                  </>
-                );
-                return f.href ? (
-                  <a key={f.img} href={f.href} target="_blank" rel="noreferrer" className="founder-card reveal is-link">
-                    {inner}
-                  </a>
-                ) : (
-                  <div key={f.img} className="founder-card reveal">{inner}</div>
-                );
-              })}
+              {FOUNDERS.map((f) => (
+                <FounderCard key={f.name} {...f} />
+              ))}
             </div>
 
             <div className="bench-grid">
-              {SPECIALISTS.map(([img, name, role, slug]) => (
-                <a
-                  key={img}
-                  href={`${TEAM_BASE}/${slug}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="bench-card reveal"
-                >
-                  <div className="bench-card__photo">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={`/assets/team/${img}.png`} alt={name} loading="lazy" />
-                    <span className="bench-card__more" aria-hidden="true">View profile ↗</span>
-                  </div>
-                  <figcaption>
-                    <span className="bench-card__name">{name}</span>
-                    <span className="bench-card__role">{role}</span>
-                  </figcaption>
-                </a>
-              ))}
+              {SPECIALISTS.slice(0, SPLIT).map(renderSpecialist)}
+              {/* The roster doesn't divide evenly by four; centre the trailing
+                  row and bracket it with two hairline "caliper" rules so the gap
+                  reads as a deliberate coda, not a missing card. The rules hide
+                  below the 4-column breakpoint, where flex-centring alone suffices. */}
+              {ORPHANS > 0 && <span className="bench-rule bench-rule--l" aria-hidden="true" />}
+              {SPECIALISTS.slice(SPLIT).map(renderSpecialist)}
+              {ORPHANS > 0 && <span className="bench-rule bench-rule--r" aria-hidden="true" />}
             </div>
           </div>
         </section>
@@ -187,46 +182,7 @@ export default function Home() {
         </section>
 
         {/* Footer */}
-        <footer className="footer">
-          <div className="footer__inner measure">
-            <div className="footer__brand">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/assets/logo.png" alt="BeyondAge" className="logo logo--ivory footer__logo" />
-              <p>
-                A physician-led preventive and longevity practice for those who intend
-                to age on their own terms.
-              </p>
-            </div>
-            <div className="footer__cols">
-              <div className="footer__col">
-                <h4>Practice</h4>
-                <a href="#journeys">Health Journeys</a>
-                <a href="#team">The Bench</a>
-                <a href="#how">How it works</a>
-                <a href="#invitation">Request an invitation</a>
-              </div>
-              <div className="footer__col">
-                <h4>Contact</h4>
-                <a href="mailto:contactus@beyondage.health">contactus@beyondage.health</a>
-                <span>Gurugram, India</span>
-                <span>9:00 – 20:00 · Mon–Sat</span>
-              </div>
-              <div className="footer__col">
-                <h4>Follow</h4>
-                <a href="https://instagram.com" target="_blank" rel="noreferrer">Instagram</a>
-                <a href="https://linkedin.com" target="_blank" rel="noreferrer">LinkedIn</a>
-                <a href="https://youtube.com" target="_blank" rel="noreferrer">YouTube</a>
-              </div>
-            </div>
-          </div>
-          <div className="footer__base measure">
-            <span>© 2026 BeyondAge. All rights reserved.</span>
-            <span className="footer__legal">
-              <a href="#">Privacy</a>
-              <a href="#">Terms</a>
-            </span>
-          </div>
-        </footer>
+        <SiteFooter />
       </main>
     </>
   );

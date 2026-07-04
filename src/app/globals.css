@@ -686,8 +686,30 @@ body::after {
 .founder-card__name { font-family: var(--ff-display); font-weight: 400; font-size: clamp(1.3rem, 2vw, 1.7rem); color: var(--em-base); }
 .founder-card__role { font-size: 0.76rem; letter-spacing: 0.1em; text-transform: uppercase; color: color-mix(in oklab, var(--gold) 70%, var(--ink)); margin-top: 0.4rem; }
 .founder-card__cred { font-size: 0.9rem; line-height: 1.5; color: color-mix(in oklab, var(--ink) 66%, transparent); margin-top: 0.75rem; max-width: 42ch; }
-.founder-card__more { display: inline-block; margin-top: 1rem; font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: color-mix(in oklab, var(--ink) 52%, transparent); transition: color 320ms var(--ease-quiet); }
-.founder-card.is-link:hover .founder-card__more { color: color-mix(in oklab, var(--gold) 80%, var(--ink)); }
+.founder-card__more { display: inline-block; margin-top: 1rem; font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: color-mix(in oklab, var(--ink) 52%, transparent); text-decoration: none; transition: color 320ms var(--ease-quiet); }
+a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--ink)); }
+
+/* Founder film — the enlarged frame plays their interview (poster + frosted
+   play disc, mirroring the live "Founders Vision"). 16:9 native, plays inline. */
+.founder-card__photo--film { aspect-ratio: 16 / 9; }
+.founder-card__video { width: 100%; height: 100%; object-fit: cover; display: block; background: #063524;
+  cursor: pointer; filter: saturate(0.98) contrast(1.02); }
+.founder-card__play {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 72px; height: 72px; border-radius: 50%; display: grid; place-items: center; cursor: pointer; z-index: 3;
+  border: 1px solid rgba(243, 237, 224, 0.55); color: var(--ivory);
+  background: rgba(3, 26, 19, 0.32);
+  backdrop-filter: blur(12px) saturate(1.1); -webkit-backdrop-filter: blur(12px) saturate(1.1);
+  box-shadow: 0 12px 34px -12px rgba(2, 20, 14, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.4), inset 0 -3px 10px rgba(2, 20, 14, 0.25);
+  transition: transform 400ms var(--ease-quiet), background-color 400ms var(--ease-quiet),
+    border-color 400ms var(--ease-quiet), color 400ms var(--ease-quiet), opacity 380ms var(--ease-quiet);
+}
+.founder-card__play svg { width: 22px; height: 22px; fill: currentColor; margin-left: 3px; }
+.founder-card__play:hover { background: rgba(217, 184, 108, 0.22); border-color: rgba(241, 221, 166, 0.72);
+  color: var(--gold-bright); transform: translate(-50%, -50%) scale(1.06); }
+.founder-card__photo--film.is-playing .founder-card__play { opacity: 0; pointer-events: none; }
+.founder-card__photo--film.is-playing .founder-card__tag { opacity: 0; }
+.founder-card__tag { transition: opacity 380ms var(--ease-quiet); }
 
 /* Specialist roster — each card links to its live profile */
 /* Flex (not grid) so an incomplete last row centres instead of left-aligning

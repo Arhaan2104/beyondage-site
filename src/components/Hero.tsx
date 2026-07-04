@@ -158,7 +158,7 @@ export default function Hero() {
           <span className="hero-media__halo" aria-hidden="true" />
           <div className="hero-media__housing" ref={frameRef}>
             <div className="hero-media__chrome hero-media__chrome--top">
-              <span className="hero-media__id">Founder Film</span>
+              <span className="hero-media__id">Dr Arvinder Soin — Why We Built BeyondAge</span>
               <span className="hero-media__meta">
                 <span className={`hero-media__eq${sound ? " is-on" : ""}`} aria-hidden="true">
                   <i /><i /><i /><i /><i />
@@ -242,8 +242,9 @@ export default function Hero() {
           </div>
 
           <figcaption className={`hero-media__cap${sound ? " is-hidden" : ""}`}>
-            <span className="hero-media__cap-k">Watch · 2:43</span>
-            <span className="hero-media__cap-t">Dr Arvinder Soin — why we built BeyondAge</span>
+            <span className="hero-media__cap-cred">
+              Padma Shri · ~5,000 liver transplants · India&rsquo;s liver-transplant pioneer
+            </span>
           </figcaption>
         </figure>
       </div>

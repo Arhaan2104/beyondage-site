@@ -5,24 +5,7 @@ import WhatYouGet from "@/components/WhatYouGet";
 import HealthspanDashboard from "@/components/HealthspanDashboard";
 import PreventionVsCure from "@/components/PreventionVsCure";
 import WhyBeyondAge from "@/components/WhyBeyondAge";
-
-const JOURNEYS = [
-  {
-    num: "Heart Health",
-    title: "Cardiac",
-    body: "Coronary calcium scoring, AI-aided CT angiography, advanced lipid and genetic panels — read against your own trajectory, not a population average.",
-  },
-  {
-    num: "Metabolic Health",
-    title: "Metabolic",
-    body: "Continuous glucose, autonomic and retinal screening, insulin and fatty-liver mapping. The dysfunction behind most disease, found early.",
-  },
-  {
-    num: "Sleep Health",
-    title: "Sleep",
-    body: "Polysomnography, HRV and circadian profiling, psychomotor vigilance. The recovery your next thirty years are built on.",
-  },
-];
+import HealthJourneys from "@/components/HealthJourneys";
 
 const TEAM_BASE = "https://beyondage.health/our-team";
 
@@ -171,32 +154,8 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Health Journeys */}
-        <section className="section warm" id="journeys">
-          <div className="measure">
-            <div className="reveal">
-              <p className="eyebrow chapter-eyebrow">Health Journeys</p>
-              <h2 className="chapter-title">
-                The body, read in <em>depth</em> — long before anything goes wrong.
-              </h2>
-              <p className="lede">
-                Built by top physicians, powered by clinical science. Three deep
-                programs read the signal across heart, metabolism and sleep, and act
-                in the years when it still changes the outcome.
-              </p>
-            </div>
-            <div className="program-grid">
-              {JOURNEYS.map((p) => (
-                <a key={p.num} href="#" className="program-card reveal">
-                  <span className="program-card__num">{p.num}</span>
-                  <h3 className="program-card__title">{p.title}</h3>
-                  <p className="program-card__body">{p.body}</p>
-                  <span className="program-card__more">Explore →</span>
-                </a>
-              ))}
-            </div>
-          </div>
-        </section>
+        {/* Health Journeys — bespoke medical instruments per programme */}
+        <HealthJourneys />
 
         {/* How it works — Mederva-style pinned scroll reveal */}
         <HowItWorks />

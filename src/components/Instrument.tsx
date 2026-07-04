@@ -241,7 +241,7 @@ function makeScene(v: InstrumentVariant): Draw {
         const pz = persp(p[2]);
         return [cx + p[0] * R * pz, cy - p[1] * R * pz, (p[2] + 1) / 2];
       };
-      const prog = ((t * 0.12) % 1) * (PHASES + 1) - 0.5;
+      const prog = ((t * 0.16) % 1) * (PHASES + 1) - 0.5;
       // lane rails (time direction) + phase columns (across lanes)
       for (let l = 0; l < LANES; l++) {
         const line: number[][] = [];
@@ -265,7 +265,7 @@ function makeScene(v: InstrumentVariant): Draw {
           const cur = Math.abs(p - lprog) <= 0.5;
           const done = p < lprog - 0.3;
           if (cur) {
-            const pulse = 0.6 + 0.4 * Math.sin(t * 3 + l);
+            const pulse = 0.6 + 0.4 * Math.sin(t * 3.8 + l);
             node(ctx, pt[0], pt[1], 8.5 * dep, GOLD_BR, 0.92 * pulse);
           } else if (done) {
             node(ctx, pt[0], pt[1], 6 * dep, EM, 0.58);
@@ -323,7 +323,7 @@ function makeScene(v: InstrumentVariant): Draw {
 
   // flow — grid tunnel + rising trend ribbon with flowing nodes
   return (ctx, W, H, t) => {
-    grid(ctx, W, H, t, 0.25);
+    grid(ctx, W, H, t, 0.32);
     const vpX = W / 2, vpY = H * 0.46;
     const pts: number[][] = [];
     for (let i = 0; i <= 40; i++) {
@@ -344,12 +344,16 @@ function makeScene(v: InstrumentVariant): Draw {
     ctx.lineTo(pts[pts.length - 1][0], H); ctx.lineTo(pts[0][0], H); ctx.closePath(); ctx.fill();
     ctx.restore();
     polyDepth(ctx, pts, GOLD, 0.85, true, 1.7);
-    // flowing nodes travelling toward the viewer
+    // flowing nodes travelling toward the viewer (interpolated between path
+    // samples so they glide smoothly instead of snapping node-to-node)
     for (let k = 0; k < 4; k++) {
-      const u = ((t * 0.18 + k / 4) % 1);
-      const idx = Math.min(pts.length - 1, Math.floor(u * 40));
-      const p = pts[idx];
-      node(ctx, p[0], p[1], 5 + 5 * u, GOLD_BR, 0.3 + 0.6 * u);
+      const u = ((t * 0.24 + k / 4) % 1);
+      const f = u * 40;
+      const idx = Math.min(pts.length - 2, Math.floor(f));
+      const fr = f - idx;
+      const a = pts[idx], b = pts[idx + 1];
+      const px = a[0] + (b[0] - a[0]) * fr, py = a[1] + (b[1] - a[1]) * fr;
+      node(ctx, px, py, 5 + 5 * u, GOLD_BR, 0.3 + 0.6 * u);
     }
   };
 }

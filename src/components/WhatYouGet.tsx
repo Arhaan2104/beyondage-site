@@ -14,7 +14,7 @@ const ITEMS: { variant: InstrumentVariant; title: string; text: string }[] = [
   },
   {
     variant: "network",
-    title: "A longevity physician & specialist bench",
+    title: "A longevity specialist bench",
     text: "A dedicated longevity physician, backed by a bench of internationally renowned specialists across every system.",
   },
   {
@@ -29,7 +29,7 @@ const ITEMS: { variant: InstrumentVariant; title: string; text: string }[] = [
   },
   {
     variant: "gauge",
-    title: "Healthspan score & biological age",
+    title: "Healthspan and biological age",
     text: "Your BeyondAge Healthspan Score and biological age — the whole picture, made legible and tracked.",
   },
   {

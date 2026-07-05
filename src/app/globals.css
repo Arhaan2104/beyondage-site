@@ -576,14 +576,19 @@ body::after {
 /* centred section heading (eyebrow is inline-flex, so text-align centres it) */
 .jrny-head { text-align: center; }
 .jrny-head .chapter-title, .jrny-head .lede { margin-inline: auto; }
+/* Health Journeys lede — three stacked statements: the credibility claim, the
+   programmes sentence, then the payoff isolated on its own line. */
+.jrny-lede { display: flex; flex-direction: column; text-wrap: balance; }
+.jrny-lede__lead { display: block; }
+.jrny-lede__line { display: block; }
 .jrny-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1rem, 1.8vw, 1.5rem); margin-top: clamp(2.6rem, 5vw, 4rem); }
 @media (max-width: 980px) { .jrny-grid { grid-template-columns: 1fr; max-width: 34rem; margin-inline: auto; } }
 
 .jrny {
   position: relative; display: flex; flex-direction: column;
   padding: clamp(1.1rem, 1.6vw, 1.4rem); border-radius: 16px;
-  background: #fbf7ec; border: 1px solid rgba(6, 77, 57, 0.16);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+  background: #fbf7ec; border: 1px solid rgba(6, 77, 57, 0.24);
+  box-shadow: inset 0 0 0 1px rgba(160, 130, 74, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 22px 48px -38px rgba(6, 77, 57, 0.3);
   text-decoration: none; color: inherit;
   transition: transform 420ms var(--ease-quiet), border-color 420ms var(--ease-quiet), box-shadow 420ms var(--ease-quiet);
 }
@@ -1067,53 +1072,56 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 .pvc { position: relative; color: var(--ink); background:
   radial-gradient(rgba(14, 38, 28, 0.05) 1.1px, transparent 1.4px) 0 0 / 30px 30px,
   linear-gradient(180deg, #efe6d6, #f5efe3); }
-.pvc-grid { margin-top: clamp(2.4rem, 5vw, 3.6rem); display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, 4rem); align-items: center; }
-@media (max-width: 900px) { .pvc-grid { grid-template-columns: 1fr; gap: 2.4rem; } }
-.pvc-title { max-width: 20ch; }
+.pvc-head { max-width: 54rem; margin-inline: auto; text-align: center; }
+.pvc-title { max-width: 24ch; margin: clamp(1rem, 2vw, 1.4rem) auto 0; }
 .pvc-title__line { display: block; }
-.pvc-compare { display: flex; flex-direction: column; gap: 0.9rem; margin-top: clamp(1.8rem, 3vw, 2.4rem); }
-.pvc-cmp { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
-@media (max-width: 600px) { .pvc-cmp { grid-template-columns: 1fr; gap: 0.7rem; } }
-.pvc-cmp__col { border-radius: 12px; padding: 0.95rem 1.1rem; }
-.pvc-cmp__col--old { background: #f0e7d7; border: 1px solid var(--line); }
-.pvc-cmp__col--new { background: linear-gradient(158deg, #064d39, #04321f); border: 1px solid rgba(217,184,108,0.28); color: var(--ivory); }
-.pvc-cmp__tag { font-size: 0.64rem; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 0.5rem; }
-.pvc-cmp__col--old .pvc-cmp__tag { color: color-mix(in oklab, var(--ink) 48%, transparent); }
-.pvc-cmp__col--new .pvc-cmp__tag { color: var(--gold); }
-.pvc-cmp__item { font-size: 0.86rem; line-height: 1.45; padding: 0.35rem 0; display: flex; gap: 0.5rem; }
-.pvc-cmp__col--old .pvc-cmp__item { color: color-mix(in oklab, var(--ink) 68%, transparent); }
-.pvc-cmp__col--new .pvc-cmp__item { color: color-mix(in oklab, var(--ivory) 82%, transparent); }
-.pvc-cmp__item::before { content: "—"; opacity: 0.5; }
-.pvc-cmp__col--new .pvc-cmp__item::before { content: "✓"; color: var(--gold); opacity: 1; }
-.pvc-kicker { margin-top: 1.6rem; font-family: var(--ff-display); font-size: clamp(1.05rem, 1.6vw, 1.3rem); line-height: 1.3; color: var(--em-base); }
-.pvc-kicker em { font-style: italic; color: color-mix(in oklab, var(--gold) 82%, var(--ink)); }
+.pvc-title em { font-style: italic; color: color-mix(in oklab, var(--gold) 80%, var(--ink)); }
+.pvc-lede { margin: clamp(1rem, 2vw, 1.4rem) auto 0; max-width: 52ch;
+  font-size: clamp(0.98rem, 1.3vw, 1.12rem); line-height: 1.55;
+  color: color-mix(in oklab, var(--ink) 66%, transparent); }
 
-/* the diagnostic instrument (risk curve) — light card */
-.instrument { margin: 0; background: linear-gradient(158deg, #05301f, #021710); border: 1px solid rgba(217,184,108,0.24);
-  border-radius: 18px; padding: clamp(1.3rem, 2.4vw, 2rem); box-shadow: 0 60px 120px -60px rgba(0,0,0,0.6); }
-.instrument__head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 1rem; }
-.instrument__eyebrow { display: inline-flex; align-items: center; gap: 0.5rem; font-family: ui-monospace, Menlo, monospace; font-size: 0.66rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); }
-.instrument__live { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 10px var(--gold); animation: dash-float 3s ease-in-out infinite; }
-.instrument__sub { font-family: ui-monospace, Menlo, monospace; font-size: 0.62rem; letter-spacing: 0.08em; color: color-mix(in oklab, var(--ivory) 50%, transparent); }
-.instrument__svg { width: 100%; height: auto; overflow: visible; }
-.instrument__grid { stroke: rgba(217,184,108,0.12); stroke-width: 1; }
-.instrument__grid--v { stroke: rgba(217,184,108,0.08); }
-.instrument__axis { fill: color-mix(in oklab, var(--ivory) 46%, transparent); font-family: ui-monospace, Menlo, monospace; font-size: 11px; letter-spacing: 0.08em; }
-.instrument__axislabel { fill: color-mix(in oklab, var(--ivory) 40%, transparent); font-family: ui-monospace, Menlo, monospace; font-size: 10px; letter-spacing: 0.1em; }
-.instrument__area { fill: url(#beyondFill); }
-.instrument__curve { fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
-.instrument__curve--conv { stroke: #c9724f; stroke-dasharray: 5 5; opacity: 0.85; }
-.instrument__curve--beyond { stroke: var(--gold); }
-.instrument__dot--conv { fill: #c9724f; } .instrument__dot--beyond { fill: var(--gold); }
-.instrument__halo { fill: rgba(217,184,108,0.18); }
-.instrument__note { font-family: ui-monospace, Menlo, monospace; font-size: 11px; letter-spacing: 0.04em; }
-.instrument__note--conv { fill: color-mix(in oklab, #e0a487 88%, transparent); }
-.instrument__note--beyond { fill: var(--gold-bright); }
-.instrument__legend { display: flex; gap: 1.5rem; margin-top: 1rem; }
-.instrument__key { font-family: ui-monospace, Menlo, monospace; font-size: 0.68rem; letter-spacing: 0.04em; display: inline-flex; align-items: center; gap: 0.45rem; color: color-mix(in oklab, var(--ivory) 66%, transparent); }
-.instrument__key::before { content: ""; width: 14px; height: 2px; border-radius: 2px; }
-.instrument__key--conv::before { background: #c9724f; }
-.instrument__key--beyond::before { background: var(--gold); }
+/* The comparison — the centrepiece of the section */
+.pvc-cmp { margin: clamp(2.4rem, 5vw, 3.8rem) auto 0; max-width: 62rem;
+  display: grid; grid-template-columns: 1fr 1fr; gap: clamp(0.9rem, 2vw, 1.4rem); }
+@media (max-width: 640px) { .pvc-cmp { grid-template-columns: 1fr; } }
+.pvc-cmp__col { border-radius: 18px; padding: clamp(1.4rem, 2.6vw, 2.1rem); }
+.pvc-cmp__col--old { background: #f0e7d7; border: 1px solid var(--line); }
+.pvc-cmp__col--new { background: linear-gradient(158deg, #064d39, #04321f);
+  border: 1px solid rgba(217,184,108,0.28); color: var(--ivory);
+  box-shadow: 0 50px 100px -60px rgba(6,77,57,0.55); }
+.pvc-cmp__tag { font-family: var(--ff-text); font-size: 0.66rem; font-weight: 600;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  margin-bottom: 1rem; padding-bottom: 0.9rem; border-bottom: 1px solid; }
+.pvc-cmp__col--old .pvc-cmp__tag { color: color-mix(in oklab, var(--ink) 50%, transparent); border-color: var(--line); }
+.pvc-cmp__col--new .pvc-cmp__tag { color: var(--gold); border-color: rgba(217,184,108,0.22); }
+.pvc-cmp__list { list-style: none; margin: 0; padding: 0; }
+.pvc-cmp__item { font-size: clamp(0.9rem, 1.2vw, 0.98rem); line-height: 1.5;
+  padding: 0.72rem 0; display: flex; gap: 0.7rem; }
+.pvc-cmp__item + .pvc-cmp__item { border-top: 1px solid; }
+.pvc-cmp__col--old .pvc-cmp__item { color: color-mix(in oklab, var(--ink) 70%, transparent); }
+.pvc-cmp__col--old .pvc-cmp__item + .pvc-cmp__item { border-color: rgba(14,38,28,0.08); }
+.pvc-cmp__col--new .pvc-cmp__item { color: color-mix(in oklab, var(--ivory) 84%, transparent); }
+.pvc-cmp__col--new .pvc-cmp__item + .pvc-cmp__item { border-color: rgba(217,184,108,0.14); }
+.pvc-cmp__item::before { flex: none; font-family: var(--ff-text); }
+.pvc-cmp__col--old .pvc-cmp__item::before { content: "—"; color: color-mix(in oklab, var(--ink) 36%, transparent); }
+.pvc-cmp__col--new .pvc-cmp__item::before { content: "✓"; color: var(--gold); }
+
+/* The 5 P's — the framework the live site names, retold in our voice */
+.pvc-5p { margin: clamp(2.8rem, 5.5vw, 4.4rem) auto 0; max-width: 66rem; }
+.pvc-5p__title { text-align: center; font-family: var(--ff-text); font-size: 0.68rem;
+  font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase;
+  color: color-mix(in oklab, var(--ink) 48%, transparent); margin-bottom: clamp(1.5rem, 3vw, 2.2rem); }
+.pvc-5p__grid { list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: clamp(1rem, 2vw, 1.6rem); }
+@media (max-width: 900px) { .pvc-5p__grid { grid-template-columns: repeat(2, 1fr); gap: 1.8rem 1.4rem; } }
+@media (max-width: 480px) { .pvc-5p__grid { grid-template-columns: 1fr; } }
+.pvc-5p__item { display: flex; flex-direction: column; gap: 0.5rem;
+  padding-top: 0.95rem; border-top: 1px solid rgba(14,38,28,0.16); }
+.pvc-5p__n { font-family: ui-monospace, Menlo, monospace; font-size: 0.64rem;
+  letter-spacing: 0.1em; color: color-mix(in oklab, var(--gold) 62%, var(--ink)); }
+.pvc-5p__p { font-family: var(--ff-display); font-size: clamp(1.15rem, 1.8vw, 1.42rem);
+  line-height: 1.08; color: var(--em-base); }
+.pvc-5p__body { font-size: 0.85rem; line-height: 1.5; color: color-mix(in oklab, var(--ink) 62%, transparent); }
 
 /* =============================================================================
    Why BeyondAge — the thesis chapter (dark). A cinematic manifesto: the premise

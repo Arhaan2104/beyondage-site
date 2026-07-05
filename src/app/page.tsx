@@ -159,7 +159,7 @@ export default function Home() {
         {/* See the product — real member dashboard, rebuilt native */}
         <HealthspanDashboard />
 
-        {/* Why not a normal check-up — predict vs cure + risk instrument */}
+        {/* Why not a normal check-up — the comparison + the 5 P's framework */}
         <PreventionVsCure />
 
         {/* Invitation */}

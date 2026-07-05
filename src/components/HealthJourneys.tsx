@@ -76,10 +76,12 @@ export default function HealthJourneys() {
           <h2 className="chapter-title">
             The body, read in <em>depth</em> — long before anything goes wrong.
           </h2>
-          <p className="lede">
-            Built by top physicians, powered by clinical science. Three deep
-            programmes read the signal across heart, metabolism and sleep, and act
-            in the years when it still changes the outcome.
+          <p className="lede jrny-lede">
+            <span className="jrny-lede__line">
+              Three deep programmes read the signal across heart, metabolism and
+              sleep, and act in the years when
+            </span>
+            <span className="jrny-lede__line">it still changes the outcome.</span>
           </p>
         </div>
 

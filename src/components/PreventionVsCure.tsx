@@ -1,11 +1,9 @@
-import DiagnosticInstrument from "@/components/DiagnosticInstrument";
-
 /**
- * "Why not a normal check-up" — the practice's real predict-vs-cure thesis
- * (the 5-P framework line "Predict Early. Prevent Fully. So You May Never Need A
- * Cure." is taken verbatim from beyondage.health). The right column is the
- * diagnostic instrument: conventional care climbs silently to a late diagnosis;
- * BeyondAge catches risk early and bends the curve down.
+ * "Why not a normal check-up" — the predict-vs-cure thesis, told through one
+ * centrepiece: the annual check-up set against BeyondAge, side by side. Below it,
+ * the 5 P's of the BeyondAge Framework (Predict · Prevent · Personalise ·
+ * Participate · Purposeful) — the practice's own method, named on the live site
+ * and retold here in our voice.
  */
 const USUAL = [
   "Reactive — it looks for disease once it has already arrived",
@@ -21,42 +19,63 @@ const BEYOND = [
   "Continuity of care — the plan is adjusted as you go",
 ];
 
+// The five P's, verbatim in spirit from beyondage.health's framework.
+const FIVE_P = [
+  { p: "Predict", body: "Your future risks, read from your genetics, deep biomarkers and lifestyle." },
+  { p: "Prevent", body: "Advanced diagnostics and proactive, science-led interventions that delay decline." },
+  { p: "Personalise", body: "Interventions crafted for you — from cellular signals to daily rhythms." },
+  { p: "Participate", body: "Real-time data and expert guidance, so you own your health journey." },
+  { p: "Purposeful", body: "Physical, mental, emotional and spiritual health — a life lived with depth." },
+];
+
 export default function PreventionVsCure() {
   return (
     <section className="section pvc" id="why">
       <div className="measure">
-        <div className="pvc-grid">
-          <div className="reveal">
-            <p className="eyebrow chapter-eyebrow">Why not a normal check-up</p>
-            <h2 className="chapter-title pvc-title">
-              <span className="pvc-title__line">Predict early.</span>
-              <span className="pvc-title__line">Prevent fully.</span>
-              <span className="pvc-title__line">So you may <em>never need a cure</em>.</span>
-            </h2>
-            <div className="pvc-compare">
-              <div className="pvc-cmp">
-                <div className="pvc-cmp__col pvc-cmp__col--old">
-                  <p className="pvc-cmp__tag">The annual check-up</p>
-                  {USUAL.map((t) => (
-                    <p key={t} className="pvc-cmp__item">{t}</p>
-                  ))}
-                </div>
-                <div className="pvc-cmp__col pvc-cmp__col--new">
-                  <p className="pvc-cmp__tag">BeyondAge</p>
-                  {BEYOND.map((t) => (
-                    <p key={t} className="pvc-cmp__item">{t}</p>
-                  ))}
-                </div>
-              </div>
-            </div>
-            <p className="pvc-kicker">
-              Most disease climbs silently for years before a diagnosis. We find it in
-              the decades when it still <em>changes the outcome</em>.
-            </p>
+        <div className="pvc-head reveal">
+          <p className="eyebrow chapter-eyebrow">Why not a normal check-up</p>
+          <h2 className="chapter-title pvc-title">
+            <span className="pvc-title__line">Predict early. Prevent fully.</span>
+            <span className="pvc-title__line">So you may <em>never need a cure</em>.</span>
+          </h2>
+          <p className="pvc-lede">
+            Most disease climbs silently for years before a diagnosis. We find it in the
+            decades when it still changes the outcome.
+          </p>
+        </div>
+
+        {/* The comparison — the centrepiece of the section */}
+        <div className="pvc-cmp reveal">
+          <div className="pvc-cmp__col pvc-cmp__col--old">
+            <p className="pvc-cmp__tag">The annual check-up</p>
+            <ul className="pvc-cmp__list">
+              {USUAL.map((t) => (
+                <li key={t} className="pvc-cmp__item">{t}</li>
+              ))}
+            </ul>
           </div>
-          <div className="reveal">
-            <DiagnosticInstrument />
+          <div className="pvc-cmp__col pvc-cmp__col--new">
+            <p className="pvc-cmp__tag">BeyondAge</p>
+            <ul className="pvc-cmp__list">
+              {BEYOND.map((t) => (
+                <li key={t} className="pvc-cmp__item">{t}</li>
+              ))}
+            </ul>
           </div>
+        </div>
+
+        {/* The 5 P's framework — what BeyondAge actually does */}
+        <div className="pvc-5p reveal">
+          <p className="pvc-5p__title">The five P&rsquo;s of the BeyondAge framework</p>
+          <ol className="pvc-5p__grid">
+            {FIVE_P.map(({ p, body }, i) => (
+              <li key={p} className="pvc-5p__item">
+                <span className="pvc-5p__n">{String(i + 1).padStart(2, "0")}</span>
+                <span className="pvc-5p__p">{p}</span>
+                <span className="pvc-5p__body">{body}</span>
+              </li>
+            ))}
+          </ol>
         </div>
       </div>
     </section>

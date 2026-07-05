@@ -5,8 +5,8 @@ import { TEAM } from "@/components/teamData";
 const data = TEAM["dr-navin-dang"];
 
 export const metadata: Metadata = {
-  title: `${data.name} — The Bench · BeyondAge`,
-  description: `${data.role} · ${data.category}.`,
+  title: `${data.name} | BeyondAge`,
+  description: `${data.role}. ${data.category}.`,
 };
 
 export default function Page() {

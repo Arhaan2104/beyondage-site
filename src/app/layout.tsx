@@ -1,12 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Space_Grotesk, Schibsted_Grotesk } from "next/font/google";
+import { Space_Grotesk, Figtree } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 
 /* Display face is Space Grotesk, self-hosted at build by next/font: a geometric
-   grotesque with real character for the hero and all titles. Body/UI is Schibsted
-   Grotesk — a precise, highly legible grotesque — so headings and body share a
-   sans lineage while staying clearly distinct. */
+   grotesque with real character for the hero and all titles. Body/UI + subheads
+   are Figtree — a clean, warm humanist sans — so headings and body share a sans
+   lineage while staying clearly distinct. */
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space",
   subsets: ["latin"],
@@ -14,10 +14,11 @@ const spaceGrotesk = Space_Grotesk({
   display: "swap",
 });
 
-const schibsted = Schibsted_Grotesk({
-  variable: "--font-schibsted",
+const figtree = Figtree({
+  variable: "--font-figtree",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
   display: "swap",
 });
 
@@ -81,7 +82,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${spaceGrotesk.variable} ${schibsted.variable}`}>
+    <html lang="en" className={`${spaceGrotesk.variable} ${figtree.variable}`}>
       <body>
         <SmoothScroll />
         {children}

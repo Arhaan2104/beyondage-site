@@ -147,7 +147,7 @@ export default function WhyBeyondAge() {
   const beyPct = Math.round(beyond(age) * 100);
   const caption =
     a < CATCH
-      ? "The first signals — silent, and years early."
+      ? "The first signals, silent and years early."
       : a < Math.round(DIAG)
       ? "Caught at 40. Every year, the gap between the two paths widens."
       : "On the old path, this is where the diagnosis finally arrives.";
@@ -163,21 +163,19 @@ export default function WhyBeyondAge() {
 
       <div className="measure why-inner">
         <div className="reveal why-head">
-          <p className="eyebrow why-eyebrow">
-            <span className="why-eyebrow__mark" /> What is BeyondAge
+          <h2 className="why-thesis">The Science of a Longer Life</h2>
+          <p className="why-lede">
+            <span className="why-lede__line">Serious disease builds in silence for years.</span>
+            <span className="why-lede__line">We find it while it&rsquo;s still a whisper.</span>
+            <span className="why-lede__line">And act in the <em>decades before it would ever arrive</em>.</span>
           </p>
-          <h2 className="why-thesis">
-            <span className="why-thesis__line">Serious disease builds in silence for years.</span>
-            <span className="why-thesis__line">We find it while it&rsquo;s still a whisper.</span>
-            <span className="why-thesis__line">And act in the <em>decades before it would ever arrive</em>.</span>
-          </h2>
         </div>
 
         {/* Signature instrument — operable risk-across-your-life readout */}
         <figure className="reveal why-inst" ref={figRef}>
           <div className="why-inst__top">
             <span className="why-inst__tag">
-              <i className="why-inst__live" /> Risk across your life · drag to explore
+              <i className="why-inst__live" /> Drag to explore your risk over the years
             </span>
             <div className="why-inst__readout">
               <span className="why-inst__age">AGE {a}</span>
@@ -238,7 +236,7 @@ export default function WhyBeyondAge() {
               {/* symptom threshold — a fine dotted line; everything under it is silent */}
               <line className="why-thr" x1={PL} y1={Y(THRESH)} x2={PR} y2={Y(THRESH)} />
               <text className="why-thrlab" x={PL + 2} y={Y(THRESH) - 9}>
-                SYMPTOMS APPEAR
+                Symptoms appear
               </text>
 
               {/* soft area washes, then the two solid paths */}
@@ -250,14 +248,14 @@ export default function WhyBeyondAge() {
               {/* late diagnosis — where the silent path crosses into symptoms */}
               <path className="why-diag" d={dia(X(DIAG), Y(THRESH), 4.5)} />
               <text className="why-diaglab" x={X(DIAG) - 10} y={Y(THRESH) - 9} textAnchor="end">
-                DIAGNOSIS
+                Diagnosis
               </text>
 
               {/* caught-early — a slim leader up from the point the paths part */}
               <line className="why-catch" x1={X(CATCH)} y1={Y(silent(CATCH))} x2={X(CATCH)} y2={Y(0.46)} />
               <circle className="why-catchdot" cx={X(CATCH)} cy={Y(silent(CATCH))} r={3} />
               <text className="why-catchlab" x={X(CATCH) - 5} y={Y(0.46) - 5}>
-                CAUGHT · 40
+                Caught at 40
               </text>
             </g>
 
@@ -267,9 +265,6 @@ export default function WhyBeyondAge() {
                 {t}
               </text>
             ))}
-            <text className="why-note" x={PL} y={VBH - 12}>
-              ASYMPTOMATIC — THE BODY GIVES NO WARNING
-            </text>
 
             {/* playhead (unclipped, follows the scrubber) */}
             <line className="why-playline" x1={px} y1={PT - 4} x2={px} y2={PB} stroke="url(#whyPlay)" />
@@ -282,27 +277,23 @@ export default function WhyBeyondAge() {
           </figcaption>
         </figure>
 
-        {/* The founder's shift — from treating end-stage illness to preventing it */}
+        {/* The founder's shift, from treating end-stage illness to preventing it */}
         <div className="reveal why-founder">
           <figure className="why-founder__photo">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/assets/soin-poster.jpg" alt="Dr Arvinder Soin, Founder &amp; Chairman of BeyondAge" loading="lazy" />
+            <img src="/assets/soin-poster.jpg" alt="Dr Arvinder Soin, Founder and Chairman of BeyondAge" loading="lazy" />
           </figure>
           <div className="why-founder__body">
-            <p className="eyebrow why-founder__eyebrow">Why BeyondAge exists</p>
             <blockquote className="why-founder__quote">
               For a career, he saved lives at the very end.{" "}
               <em>BeyondAge is the other end of that story.</em>
             </blockquote>
             <p className="why-founder__bio">
-              Dr Arvinder Soin performed India&rsquo;s first liver transplant, and
-              close to five thousand since — a Padma Shri for the work. BeyondAge
-              turns that expertise upstream: finding disease in the decades before it
-              would ever arrive.
+              Dr Arvinder Soin performed India&rsquo;s first liver transplant, and close
+              to five thousand since. BeyondAge turns that expertise upstream, to find
+              disease in the decades before it would ever arrive.
             </p>
-            <p className="why-founder__name">
-              Dr Arvinder Soin <span>· Founder &amp; Chairman</span>
-            </p>
+            <p className="why-founder__name">Dr Arvinder Soin, Founder &amp; Chairman</p>
           </div>
         </div>
       </div>

@@ -1,11 +1,11 @@
 import type { InstrumentKind } from "./journeyInstruments";
 
 /**
- * Journey-page content — sourced verbatim from beyondage.health/health-journeys
+ * Journey-page content, sourced verbatim from beyondage.health/health-journeys
  * (heart-health, metabolic-health, sleep-health). Wording, diagnostics, the
  * "interventions may include" lists, the goal statements and the Common Concerns
  * Q&A are the site's own; only light punctuation/casing is normalised. Nothing
- * here is invented — per the brief, credibility is the product.
+ * here is invented; per the brief, credibility is the product.
  */
 
 export type FAQ = { q: string; a: string };
@@ -19,7 +19,7 @@ export type JourneyData = {
   tagline: string;
   lede: string;
   stat: { value: string; label: string };
-  instrument: { chan: string; unit: string; caption: string };
+  instrument: { caption: string };
   intro: string;
   consultations: string[];
   diagnostics: string[];
@@ -37,39 +37,28 @@ const HEART: JourneyData = {
   title: "Heart Health",
   tagline: "Science-backed evidence to keep your heart healthy.",
   lede:
-    "Advanced cardiovascular screening, precision biomarkers and personalised interventions — to detect and prevent heart disease decades before symptoms appear.",
+    "Advanced cardiovascular screening, precision biomarkers and personalised interventions, decades before symptoms appear.",
   stat: { value: "1 in 4", label: "Indians die of heart attack or stroke." },
   instrument: {
-    chan: "ECG · Lead II",
-    unit: "mV",
-    caption: "Illustrative Lead-II trace — the electrical signal a cardiac work-up reads.",
+    caption: "Illustrative Lead-II trace, the electrical signal a cardiac work-up reads.",
   },
   intro:
-    "A complete cardiovascular work-up — consultations, advanced diagnostics and a personalised plan — coordinated by our physicians and health coaches. Heart disease often develops silently, so we read the signal early, and act.",
+    "A complete cardiovascular work-up: consultations, advanced diagnostics and a personalised plan, coordinated by our physicians and health coaches. Heart disease often develops silently, so we read the signal early and act.",
   consultations: [
     "Discovery Consultation",
-    "Questionnaire / Risk Score Assessment",
     "Lifestyle / Longevity Consultation",
-    "Follow-up — Longevity consult (each month end)",
     "Cardiology Consultation",
     "Nutrition Consultation",
-    "Follow-up — Nutritionist",
-    "Musculoskeletal / Fitness Assessment",
     "Emotional Wellbeing Consultation",
-    "Sleep Assessment Consultation",
-    "Final consultation with the lifestyle & longevity physician",
-    "Coordinated specialist / journey referral when needed",
+    "Monthly longevity follow-up",
   ],
   diagnostics: [
     "Advanced BA Biomarker Panel",
     "ECG",
     "ECHO",
-    "CPET (without ECHO)",
     "Low Dose CT Coronary Calcium Score",
     "AI-aided CT Angio",
-    "Vascular Testing — Arterial & Venous Leg Doppler, Carotid Intima Thickness",
-    "AI-aided Body Composition Analysis (DEXA)",
-    "Focused Genome — Genetic Testing",
+    "Vascular Testing: Arterial & Venous Leg Doppler, Carotid Intima Thickness",
   ],
   monitoring: ["Personalized intervention plan", "Monitoring and follow-up with Health Coach"],
   interventions: [
@@ -77,10 +66,10 @@ const HEART: JourneyData = {
     "Personalised nutrition and fitness plans",
     "Sleep optimisation and stress management",
     "Medications, supplements, and anti-inflammatory support",
-    "Correcting key risk markers — like blood pressure, blood sugar, and other cardio-metabolic factors",
+    "Correcting key risk markers like blood pressure, blood sugar, and other cardio-metabolic factors",
   ],
   goal:
-    "The goal is simple: to strengthen your heart health today and sustain it for decades to come. You are closely guided by our doctors and health coaches, ensuring continuous monitoring and the best possible outcomes. No generic protocols — everything is tailored to you.",
+    "Strengthen your heart health today and sustain it for decades, guided by our doctors and health coaches with continuous monitoring.",
   faqs: [
     {
       q: "What are the earliest warning signs that my heart may not be healthy?",
@@ -114,43 +103,31 @@ const METABOLIC: JourneyData = {
   kind: "metabolic",
   index: "02",
   title: "Metabolic Health",
-  tagline: "Most health problems begin with metabolic dysfunction — found early, it can be reversed.",
+  tagline: "Most health problems begin with metabolic dysfunction. Found early, it can be reversed.",
   lede:
     "Precision metabolic testing and targeted lifestyle interventions that restore insulin sensitivity, improve energy metabolism, and prevent chronic disease.",
   stat: {
     value: "18.5%",
-    label: "of urban Indians over 15 have diabetes — and only 1 in 4 are aware of it.",
+    label: "of urban Indians over 15 have diabetes, and only 1 in 4 are aware of it.",
   },
   instrument: {
-    chan: "Glucose · Response",
-    unit: "mg/dL",
-    caption: "Illustrative post-meal glucose response — read against the normal range.",
+    caption: "Illustrative post-meal glucose response, read against the normal range.",
   },
   intro:
-    "Latest research says the majority of your health problems are a result of metabolic dysfunction. Detailed insights from our top physicians on optimising metabolic health — weight management, cholesterol, blood pressure, and the prevention or early detection of diabetes.",
+    "Detailed insights from our top physicians on optimising metabolic health: weight management, cholesterol, blood pressure, and the prevention or early detection of diabetes.",
   consultations: [
     "Discovery Consultation",
-    "Questionnaire / Risk Score Assessment",
     "Lifestyle / Longevity Consultation",
-    "Follow-up — Longevity consult (each month end)",
     "Endocrinology Consultation",
     "Cardiology Consultation",
-    "Liver Consultation",
     "Nutrition Consultation",
-    "Follow-up — Nutritionist",
-    "Detailed Musculoskeletal (Joint, Mobility & Muscle) Assessment",
-    "Emotional Wellbeing Consultation",
-    "Sleep Assessment Consultation",
-    "Follow-up consultation with the lifestyle & longevity physician",
-    "Coordinated specialist / journey referral when needed",
+    "Monthly longevity follow-up",
   ],
   diagnostics: [
     "Advanced BA Biomarkers Panel",
     "Low Dose CT Coronary Calcium Score",
     "AI-aided CT Coronary Angio",
     "AI-aided Body Composition Analysis",
-    "Vascular Testing",
-    "Autonomic Nervous System Analysis",
     "Diabetes Neuropathy Screening",
     "Retinal Screening",
   ],
@@ -163,7 +140,7 @@ const METABOLIC: JourneyData = {
     "Control of blood pressure, blood sugar, lipids, metabolic risk factors and liver steatosis (fatty liver)",
   ],
   goal:
-    "Reprogram your metabolism to restore energy, strengthen immunity, optimise fat loss, extend healthspan, and prevent chronic disease through precision diagnostics and personalised interventions. You are closely guided by our doctors and health coaches, ensuring continuous monitoring and the best possible outcomes.",
+    "Reprogram your metabolism to restore energy, strengthen immunity, optimise fat loss, extend healthspan, and prevent chronic disease, guided by our doctors and health coaches.",
   faqs: [
     {
       q: "What is metabolic syndrome?",
@@ -199,34 +176,27 @@ const SLEEP: JourneyData = {
   title: "Sleep Health",
   tagline: "Science-backed guidance on improving your quality and duration of sleep and recovery.",
   lede:
-    "Comprehensive sleep diagnostics and circadian-rhythm optimisation — to restore deep sleep, and support brain and metabolic health.",
+    "Comprehensive sleep diagnostics and circadian-rhythm optimisation to restore deep sleep and support brain and metabolic health.",
   stat: { value: "60%", label: "of people have inadequate sleep." },
   instrument: {
-    chan: "Hypnogram · 7 h",
-    unit: "stage",
-    caption: "Illustrative overnight hypnogram — the sleep architecture a study maps.",
+    caption: "Illustrative overnight hypnogram, the sleep architecture a study maps.",
   },
   intro:
-    "Comprehensive sleep diagnostics, and circadian-rhythm and sleep-cycle optimisation strategies to restore deep sleep, and support brain and metabolic health — supported by regular reviews of your sleep logs, wearable data and symptoms.",
+    "Circadian-rhythm and sleep-cycle optimisation strategies, supported by regular reviews of your sleep logs, wearable data and symptoms.",
   consultations: [
     "Discovery Consultation",
-    "Questionnaire / Risk Score Assessment",
     "Lifestyle / Longevity Consultation",
-    "Follow-up — Longevity consult (each month end)",
     "Sleep Assessment Consultation",
     "Nutrition Consultation",
-    "Follow-up — Nutritionist",
     "Emotional Wellbeing Consultation",
-    "Detailed Musculoskeletal (Joint, Mobility & Muscle) Assessment",
-    "Follow-up consultation with the lifestyle & longevity physician",
-    "Coordinated specialist / journey referral when needed",
+    "Monthly longevity follow-up",
   ],
   diagnostics: [
-    "Advanced BA Biomarkers Sleep Panel — Level 1",
-    "Advanced BA Biomarkers Sleep Panel — Level 2",
-    "Reaction Time — Psychomotor Vigilance Testing",
+    "Advanced BA Biomarkers Sleep Panel, Level 1",
+    "Advanced BA Biomarkers Sleep Panel, Level 2",
+    "Reaction Time: Psychomotor Vigilance Testing",
     "Psychology Assessment",
-    "Polysomnography — Level 2, Level 3, Level 4 (as indicated)",
+    "Polysomnography: Level 2, Level 3, Level 4 (as indicated)",
     "ENT assessment (if indicated)",
   ],
   monitoring: [
@@ -242,7 +212,7 @@ const SLEEP: JourneyData = {
     "Medications, supplements, and other anti-inflammatory sleep-supportive therapies when clinically indicated",
   ],
   goal:
-    "The goal is simple: to help you fall asleep more easily, stay asleep through the night, wake feeling restored, and sustain healthy sleep patterns for years to come. You are closely supported by our clinicians and health coaches, with regular reviews of your sleep logs, wearable data, and symptoms. No generic protocols — every element of your sleep-wellness journey is tailored to you.",
+    "Fall asleep more easily, stay asleep through the night, wake feeling restored, and sustain healthy sleep patterns for years, supported by our clinicians and health coaches.",
   faqs: [
     {
       q: "How many hours of sleep do adults actually need?",

@@ -19,8 +19,6 @@ type Journey = {
   k: string;
   title: string;
   slug: string;
-  chan: string;
-  unit: string;
   body: string;
   chips: string[];
   kind: InstrumentKind;
@@ -28,22 +26,19 @@ type Journey = {
 const JOURNEYS: Journey[] = [
   {
     idx: "01", k: "Heart & vascular", title: "Cardiac", slug: "heart-health",
-    chan: "ECG · Lead II", unit: "mV",
-    body: "Advanced cardiovascular screening and precision biomarkers — to detect and prevent heart disease decades before symptoms appear.",
+    body: "Advanced cardiovascular screening and precision biomarkers, to catch heart disease decades before symptoms appear.",
     chips: ["Calcium score", "AI-aided CT Angio", "Focused Genome"],
     kind: "cardiac",
   },
   {
     idx: "02", k: "Glucose, insulin & liver", title: "Metabolic", slug: "metabolic-health",
-    chan: "Glucose · Response", unit: "mg/dL",
-    body: "Precision metabolic testing that restores insulin sensitivity and energy metabolism — the dysfunction behind most chronic disease, found early.",
+    body: "Precision testing that restores insulin sensitivity and energy metabolism, the dysfunction behind most chronic disease.",
     chips: ["Insulin sensitivity", "Autonomic analysis", "Retinal screening"],
     kind: "metabolic",
   },
   {
     idx: "03", k: "Recovery & brain", title: "Sleep", slug: "sleep-health",
-    chan: "Hypnogram · 7 h", unit: "stage",
-    body: "Comprehensive sleep diagnostics and circadian-rhythm optimisation — to restore deep sleep, and protect brain and metabolic health.",
+    body: "Comprehensive sleep diagnostics and circadian-rhythm work to restore deep sleep, and protect brain and metabolic health.",
     chips: ["Polysomnography", "HRV", "Psychomotor vigilance"],
     kind: "sleep",
   },
@@ -72,15 +67,15 @@ export default function HealthJourneys() {
     <section className="section warm" id="journeys">
       <div className="measure">
         <div className="reveal jrny-head">
-          <p className="eyebrow chapter-eyebrow">Health Journeys</p>
-          <h2 className="chapter-title">
-            The body, read in <em>depth</em> — long before anything goes wrong.
+          <h2 className="chapter-title jrny-title">
+            <span className="jrny-title__line">The body, read in <em>depth</em>,</span>
+            <span className="jrny-title__line">long before anything goes wrong.</span>
           </h2>
           <p className="lede jrny-lede">
             <span className="jrny-lede__line">
-              Three deep programmes read the signal across heart, metabolism and sleep,
+              Three programmes that read signals across heart, metabolism, and sleep
             </span>
-            <span className="jrny-lede__line">and help you act in time.</span>
+            <span className="jrny-lede__line">to help you act in time.</span>
           </p>
         </div>
 
@@ -98,12 +93,6 @@ export default function HealthJourneys() {
                 </div>
 
                 <div className="jrny__inst">
-                  <div className="jrny__strip">
-                    <span className="jrny__chan">
-                      <i className="jrny__live" /> {j.chan}
-                    </span>
-                    <span className="jrny__unit">{j.unit}</span>
-                  </div>
                   <svg className="jinst" viewBox={`0 0 ${VBW} ${VBH}`} aria-hidden="true">
                     <Viz />
                   </svg>
@@ -126,8 +115,8 @@ export default function HealthJourneys() {
         </div>
 
         <p className="jrny-note reveal">
-          Illustrative signal traces — not BeyondAge data. The diagnostics each
-          journey names are drawn from beyondage.health/health-journeys.
+          Illustrative traces. The diagnostics each journey names are drawn from
+          beyondage.health.
         </p>
       </div>
     </section>

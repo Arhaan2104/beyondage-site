@@ -29,7 +29,7 @@ export default function BeginJourney() {
           </h1>
           <p className="bj-lede">
             Tell us a little about yourself and what you want from the years ahead.
-            Our team will reach out to arrange your discovery call — the start of a
+            Our team will reach out to arrange your discovery call, the start of a
             members-only practice built around you.
           </p>
         </div>
@@ -37,7 +37,7 @@ export default function BeginJourney() {
         {submitted ? (
           <div className="bj-form bj-thanks reveal" role="status">
             <span className="bj-thanks__mark" aria-hidden="true">✓</span>
-            <h2 className="bj-thanks__title">Thank you — we&rsquo;ll be in touch.</h2>
+            <h2 className="bj-thanks__title">Thank you. We&rsquo;ll be in touch.</h2>
             <p className="bj-thanks__note">
               Your details are with our team. Expect a note from us shortly to arrange
               your discovery call.

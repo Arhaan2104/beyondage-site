@@ -6,10 +6,10 @@ import type { MetadataRoute } from "next";
  */
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "BeyondAge — Longevity medicine, by invitation",
+    name: "BeyondAge | Longevity medicine, by invitation",
     short_name: "BeyondAge",
     description:
-      "A physician-led preventive and longevity practice in Gurugram. We catch disease while it is still a whisper — years before the diagnosis.",
+      "A physician-led preventive and longevity practice in Gurugram. We catch disease while it is still a whisper, years before the diagnosis.",
     start_url: "/",
     display: "standalone",
     background_color: "#ece4d3",

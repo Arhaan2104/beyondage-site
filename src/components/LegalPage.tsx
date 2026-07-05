@@ -17,8 +17,7 @@ export default function LegalPage({ doc }: { doc: LegalDoc }) {
           <div className="measure legal__inner">
             <header className="legal__head reveal">
               <p className="eyebrow legal__eyebrow">
-                <Link href="/" className="legal__crumb">BeyondAge</Link>
-                <span aria-hidden="true">·</span> Legal
+                <Link href="/" className="legal__crumb">BeyondAge</Link> Legal
               </p>
               <h1 className="legal__title">{doc.title}</h1>
             </header>

@@ -358,15 +358,6 @@ function makeScene(v: InstrumentVariant): Draw {
   };
 }
 
-const LABELS: Record<InstrumentVariant, string> = {
-  scan: "SCAN · IMAGING · GENOMICS",
-  network: "12 SPECIALISTS · ONE BENCH",
-  signal: "BIOMARKERS · VS BASELINE",
-  protocol: "PRECISION PROTOCOL",
-  gauge: "HEALTHSPAN · 89 / 100",
-  flow: "TREND · ADJUSTED MONTHLY",
-};
-
 export default function Instrument({ variant }: { variant: InstrumentVariant }) {
   const canRef = useRef<HTMLCanvasElement>(null);
 
@@ -420,7 +411,6 @@ export default function Instrument({ variant }: { variant: InstrumentVariant }) 
   return (
     <>
       <canvas ref={canRef} className="inst-canvas" aria-hidden="true" />
-      <span className="wyg-viz__label">{LABELS[variant]}</span>
     </>
   );
 }

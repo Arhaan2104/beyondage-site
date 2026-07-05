@@ -6,9 +6,9 @@ import FounderCard, { type Founder } from "@/components/FounderCard";
 import { TEAM, TEAM_ORDER } from "@/components/teamData";
 
 export const metadata: Metadata = {
-  title: "Our Team — BeyondAge",
+  title: "Our Team | BeyondAge",
   description:
-    "Internationally renowned specialists in healthspan optimisation — the physician bench behind BeyondAge, a members-only longevity practice in Gurugram.",
+    "Internationally renowned specialists in healthspan optimisation, the physician bench behind BeyondAge, a members-only longevity practice in Gurugram.",
 };
 
 // Founders — the two feature films (mirrors the live site's "Our Founders").
@@ -16,7 +16,7 @@ const FOUNDERS: Founder[] = [
   {
     name: "Dr Arvinder Soin",
     role: "Founder & Chairman",
-    cred: "Padma Shri · India's liver-transplant pioneer — close to 5,000 transplants.",
+    cred: "Padma Shri. India's liver-transplant pioneer, close to 5,000 transplants.",
     href: "/our-team/dr-arvind-soin",
     video: "/assets/soin-interview.mp4",
     poster: "/assets/soin-poster.jpg",
@@ -24,7 +24,7 @@ const FOUNDERS: Founder[] = [
   {
     name: "Dr Vritti Loomba",
     role: "Founder & CEO",
-    cred: "Co-founder of BeyondAge — the physician-led longevity practice in Gurugram.",
+    cred: "Co-founder of BeyondAge, the physician-led longevity practice in Gurugram.",
     href: null,
     video: "/assets/loomba-interview.mp4",
     poster: "/assets/loomba-poster.jpg",
@@ -42,8 +42,7 @@ export default function OurTeamPage() {
           <div className="measure">
             <div className="reveal bench-head team__head">
               <p className="eyebrow bench-eyebrow">
-                <Link href="/" className="team__crumb">BeyondAge</Link>
-                <span aria-hidden="true"> · </span> Our Team
+                <Link href="/" className="team__crumb">BeyondAge</Link> Our Team
               </p>
               <h2 className="bench-title">
                 Internationally renowned specialists
@@ -51,7 +50,7 @@ export default function OurTeamPage() {
               </h2>
               <p className="team__lede">
                 A bench of physicians who shaped cardiology, endocrinology, sleep medicine
-                and diagnostics in India — now turning that expertise upstream, to the
+                and diagnostics in India, now turning that expertise upstream, to the
                 decades before disease would ever arrive.
               </p>
             </div>

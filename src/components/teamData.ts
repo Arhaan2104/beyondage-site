@@ -1,5 +1,5 @@
 /**
- * The Bench — individual specialist profiles.
+ * The Bench: individual specialist profiles.
  *
  * Every field is sourced from the physician's own profile page on
  * beyondage.health/our-team. Credentials, roles, education and awards are
@@ -30,14 +30,14 @@ const MEMBERS: TeamMember[] = [
     role: "Founder & Chairman",
     founder: true,
     credentials: [
-      "MBBS — AIIMS, New Delhi, 1985",
-      "FRCS (General Surgery) — Royal College of Physicians and Surgeons, Glasgow, 1993",
+      "MBBS, AIIMS, New Delhi, 1985",
+      "FRCS (General Surgery), Royal College of Physicians and Surgeons, Glasgow, 1993",
       "Intercollegiate FRCS (Transplant Surgery), 1997",
     ],
     bio: [
-      "Dr Arvinder Soin, a Padma Shri awardee and world-renowned liver-transplant surgeon, has spent over three decades transforming liver care in India and beyond. A pioneer in the field, he performed India’s first successful liver transplant in 1998, and has since performed India’s highest number — nearly 5,000 liver transplants.",
-      "He has launched liver-transplant programmes at 23 centres, authored over 270 research publications, delivered more than 1,400 invited lectures worldwide, and received numerous national and international honours — all a testament to his clinical leadership and contributions to transplant science.",
-      "Having treated critically ill patients throughout his career, Dr Soin now works at the other end of the spectrum: to prevent people from ever reaching that stage. Longevity medicine and healthspan optimisation is his new focus, and he applies the same rigour and precision that defined his transplant work — convinced that the future of medicine lies in early prediction and detection, prevention, and personalised care.",
+      "Dr Arvinder Soin, a Padma Shri awardee and world-renowned liver-transplant surgeon, has spent over three decades transforming liver care in India and beyond. A pioneer in the field, he performed India’s first successful liver transplant in 1998, and has since performed India’s highest number, nearly 5,000 liver transplants.",
+      "He has launched liver-transplant programmes at 23 centres, authored over 270 research publications, delivered more than 1,400 invited lectures worldwide, and received numerous national and international honours. All are a testament to his clinical leadership and contributions to transplant science.",
+      "Having treated critically ill patients throughout his career, Dr Soin now works at the other end of the spectrum: to prevent people from ever reaching that stage. Longevity medicine and healthspan optimisation is his new focus, and he applies the same rigour and precision that defined his transplant work, convinced that the future of medicine lies in early prediction and detection, prevention, and personalised care.",
     ],
     awards: ["Padma Shri"],
   },
@@ -47,10 +47,10 @@ const MEMBERS: TeamMember[] = [
     name: "Dr Vinayak Agrawal",
     category: "Preventive Cardiology",
     role: "Medical Director & Director, Preventive Cardiology",
-    credentials: ["MBBS", "MD — Medicine", "DNB — Cardiology"],
+    credentials: ["MBBS", "MD, Medicine", "DNB, Cardiology"],
     bio: [
       "Dr Vinayak Agrawal brings more than 24 years of experience across non-invasive, clinical and interventional cardiology. After his initial internal-medicine training, he also spent nearly a year and a half in neurology following his MD in Medicine.",
-      "An alumnus of Maulana Azad Medical College and University College of Medical Sciences, New Delhi, he began as a consultant cardiologist at Escorts Heart Institute and Research Centre. As part of the core inception group, he then joined Medanta, The Medicity for ten years — his last role there being Associate Director, Cardiology — before moving to Pushpawati Singhania Research Institute (PSRI), Saket, as Director & Head of Clinical Cardiology and Cardiac Imaging in 2019.",
+      "An alumnus of Maulana Azad Medical College and University College of Medical Sciences, New Delhi, he began as a consultant cardiologist at Escorts Heart Institute and Research Centre. As part of the core inception group, he then joined Medanta, The Medicity for ten years, where his last role was Associate Director, Cardiology. In 2019 he moved to Pushpawati Singhania Research Institute (PSRI), Saket, as Director & Head of Clinical Cardiology and Cardiac Imaging.",
     ],
     focus: [
       "Early heart-disease detection",
@@ -70,18 +70,18 @@ const MEMBERS: TeamMember[] = [
     img: "mithal",
     name: "Dr Ambrish Mithal",
     category: "Metabolic Health",
-    role: "Senior Advisor — Metabolic, Hormone & Longevity Medicine",
+    role: "Senior Advisor, Metabolic, Hormone & Longevity Medicine",
     credentials: [
-      "MBBS — Kanpur University, 1980",
-      "MD — Kanpur University, 1984",
-      "DM (Endocrinology) — AIIMS, New Delhi, 1987 (the first DM in Endocrinology from AIIMS)",
+      "MBBS, Kanpur University, 1980",
+      "MD, Kanpur University, 1984",
+      "DM (Endocrinology), AIIMS, New Delhi, 1987 (the first DM in Endocrinology from AIIMS)",
     ],
     bio: [
-      "Dr Ambrish Mithal is one of the most renowned names in endocrinology and a widely respected thought leader in the medical community. He is Chairman and Head of Endocrinology and Diabetes at Max Healthcare, a role he has held since December 2019. Earlier, he was Chairman of the Division of Endocrinology and Diabetes at Medanta — The Medicity (2009–2019), where he led and significantly expanded the department; his earlier associations include Apollo Hospital, New Delhi, and the Sanjay Gandhi Postgraduate Institute of Medical Sciences, Lucknow.",
+      "Dr Ambrish Mithal is one of the most renowned names in endocrinology and a widely respected thought leader in the medical community. He is Chairman and Head of Endocrinology and Diabetes at Max Healthcare, a role he has held since December 2019. Earlier, he was Chairman of the Division of Endocrinology and Diabetes at Medanta, The Medicity (2009–2019), where he led and significantly expanded the department; his earlier associations include Apollo Hospital, New Delhi, and the Sanjay Gandhi Postgraduate Institute of Medical Sciences, Lucknow.",
       "He completed his MBBS (1980) and MD (1984) at Kanpur University, followed by a DM in Endocrinology (1987) at AIIMS, New Delhi, and was a Fogarty Fellow at Harvard Medical School (1993–94). He has been nominated to the Governing Council of the National Health Authority and serves as Honorary President of AIIMS, Gorakhpur.",
     ],
     awards: [
-      "Padma Bhushan, 2015 — India’s third-highest civilian honour",
+      "Padma Bhushan, 2015, India’s third-highest civilian honour",
       "Endocrine Society (USA) International Excellence in Endocrinology Award, 2020",
       "Endocrine Society Laureate Award, 2021",
       "International Osteoporosis Foundation President’s Award, 2016",
@@ -95,8 +95,8 @@ const MEMBERS: TeamMember[] = [
     category: "Sleep Medicine, Brain Health & Preventive Neurology",
     role: "Senior Advisor & Chief Consultant",
     credentials: [
-      "MBBS — Christian Medical College & Hospital, Ludhiana",
-      "DM (Neurology) — AIIMS, New Delhi",
+      "MBBS, Christian Medical College & Hospital, Ludhiana",
+      "DM (Neurology), AIIMS, New Delhi",
     ],
     bio: [
       "Dr Manvir Bhatia is a well-known neurologist and sleep specialist associated with the Neurology and Sleep Centre, Hauz Khas, with 46 years of experience in neurology. She has contributed to numerous complex cases across several hospitals and is known for her precise diagnoses and empathetic care.",
@@ -114,7 +114,7 @@ const MEMBERS: TeamMember[] = [
     awards: [
       "Indira Gandhi Mahila Ratan Award",
       "Best prize, ‘10,000 Women’ Entrepreneur Certificate Programme, ISB Hyderabad",
-      "AAPIOS (American Association of Physicians of Indian Origin, Boston) — ‘Extraordinary Contribution in Sleep Medicine’, 2017",
+      "AAPIOS (American Association of Physicians of Indian Origin, Boston), ‘Extraordinary Contribution in Sleep Medicine’, 2017",
     ],
   },
   {
@@ -124,8 +124,8 @@ const MEMBERS: TeamMember[] = [
     category: "Laboratory Medicine, Diagnostic Strategy & Longevity Biomarkers",
     role: "Senior Advisor",
     credentials: [
-      "MBBS — University College of Medical Sciences, Delhi",
-      "MD (Medical Microbiology) — PGIMER, Chandigarh",
+      "MBBS, University College of Medical Sciences, Delhi",
+      "MD (Medical Microbiology), PGIMER, Chandigarh",
     ],
     bio: [
       "Dr Navin Dang is the Founder and Director of Dr Dangs Lab LLP, a pioneering diagnostic centre known for its excellence in patient care and laboratory medicine. Since establishing the lab in 1988, he has been instrumental in advancing diagnostic services in India.",
@@ -143,8 +143,8 @@ const MEMBERS: TeamMember[] = [
     category: "Cancer Prevention, Precision Oncology & Longevity",
     role: "Senior Advisor",
     credentials: [
-      "MBBS — University of Delhi, 1998",
-      "DNB (Medical Oncology) — University of Delhi, 2000",
+      "MBBS, University of Delhi, 1998",
+      "DNB (Medical Oncology), University of Delhi, 2000",
     ],
     bio: [
       "Dr Nitesh Rohatgi is Senior Director, Medical Oncology at Fortis Memorial Research Institute, Gurugram. He previously worked at the London Oncology Clinic (Leaders in Oncology Care), Harley Street, London, and is a Fellow of the Royal College of Physicians (Edinburgh, UK) and the Royal Society of Medicine.",
@@ -167,12 +167,12 @@ const MEMBERS: TeamMember[] = [
     category: "Aesthetic Medicine & Anti-Aging",
     role: "Senior Advisor",
     credentials: [
-      "MBBS — Government Medical College, Patiala",
-      "MPhil — University of Cambridge",
-      "Training — St John’s Institute of Dermatology, London",
+      "MBBS, Government Medical College, Patiala",
+      "MPhil, University of Cambridge",
+      "Training, St John’s Institute of Dermatology, London",
     ],
     bio: [
-      "Dr Simal Soin is a renowned Indian cosmetic dermatologist and founder of the AAYNA Clinic, known for her expertise in anti-aging, lasers and skin health, with over 20 years of experience. She trained at St John’s Institute of Dermatology, London, and the University of Cambridge, and is a prominent Key Opinion Leader in aesthetic medicine in India — combining medical dermatology with cosmetic enhancement.",
+      "Dr Simal Soin is a renowned Indian cosmetic dermatologist and founder of the AAYNA Clinic, known for her expertise in anti-aging, lasers and skin health, with over 20 years of experience. She trained at St John’s Institute of Dermatology, London, and the University of Cambridge, and is a prominent Key Opinion Leader in aesthetic medicine in India, combining medical dermatology with cosmetic enhancement.",
     ],
   },
   {
@@ -202,14 +202,14 @@ const MEMBERS: TeamMember[] = [
     category: "Healthspan & Functional Lab Diagnostics",
     role: "Chief Consultant",
     credentials: [
-      "MBBS — Sri Ramachandra Medical College, Chennai",
-      "MD (Pathology) — Sri Ramachandra Medical College, Chennai",
-      "Fellowship in Liver Pathology — King’s College Hospital, London",
-      "Certification in Allergy & Immunology — EAACI",
+      "MBBS, Sri Ramachandra Medical College, Chennai",
+      "MD (Pathology), Sri Ramachandra Medical College, Chennai",
+      "Fellowship in Liver Pathology, King’s College Hospital, London",
+      "Certification in Allergy & Immunology, EAACI",
     ],
     bio: [
-      "Dr Arjun Dang is CEO & Partner of Dr Dangs Lab, New Delhi — one of India’s most reputed standalone diagnostic centres. His experience includes serving as a Senior Resident in specialised haematology at Lady Hardinge Medical College and as a Research Fellow in histopathology at Indraprastha Apollo Hospital, New Delhi.",
-      "Certified in Allergy and Immunology by the EAACI, he is recognised for his expertise in gastrointestinal disorders, allergy diagnostics and personalised testing panels. He is a national thought leader in specialised diagnostics — including component-resolved diagnostics (CRD) for allergies under the AllergyniusDx brand, and Dendrite Dx, an advanced Alzheimer’s and cognitive-health initiative — and an active researcher across laboratory diagnostics, oncopathology, allergy testing and precision medicine.",
+      "Dr Arjun Dang is CEO & Partner of Dr Dangs Lab, New Delhi, one of India’s most reputed standalone diagnostic centres. His experience includes serving as a Senior Resident in specialised haematology at Lady Hardinge Medical College and as a Research Fellow in histopathology at Indraprastha Apollo Hospital, New Delhi.",
+      "Certified in Allergy and Immunology by the EAACI, he is recognised for his expertise in gastrointestinal disorders, allergy diagnostics and personalised testing panels. He is a national thought leader in specialised diagnostics, including component-resolved diagnostics (CRD) for allergies under the AllergyniusDx brand and Dendrite Dx, an advanced Alzheimer’s and cognitive-health initiative. He is also an active researcher across laboratory diagnostics, oncopathology, allergy testing and precision medicine.",
     ],
     focus: [
       "Gastrointestinal Disorders",
@@ -224,9 +224,9 @@ const MEMBERS: TeamMember[] = [
     name: "Dr Anshika Gupta",
     category: "Longevity & Functional Medicine",
     role: "Longevity Medicine Consultant",
-    credentials: ["MBBS — Kasturba Medical College, Manipal", "MRCP (UK)", "Functional Medicine — IFM"],
+    credentials: ["MBBS, Kasturba Medical College, Manipal", "MRCP (UK)", "Functional Medicine, IFM"],
     bio: [
-      "Dr Anshika Gupta is an MBBS graduate of Kasturba Medical College, Manipal, and holds the MRCP (UK) qualification. With three years of clinical experience in the NHS, she has managed a diverse range of cases — especially those involving metabolic disorders, autoimmune conditions and complex gut-health issues.",
+      "Dr Anshika Gupta is an MBBS graduate of Kasturba Medical College, Manipal, and holds the MRCP (UK) qualification. With three years of clinical experience in the NHS, she has managed a diverse range of cases, especially those involving metabolic disorders, autoimmune conditions and complex gut-health issues.",
       "Certified in Functional Medicine by the Institute for Functional Medicine (IFM), she integrates root-cause, patient-centric care into her practice.",
     ],
   },
@@ -236,7 +236,7 @@ const MEMBERS: TeamMember[] = [
     name: "Monique Jhingon",
     category: "Gut & Microbiome Optimization",
     role: "Director of Functional Nutrition & Micro-biomics",
-    credentials: ["MSc, Personalised Nutrition — Middlesex University"],
+    credentials: ["MSc, Personalised Nutrition, Middlesex University"],
     bio: [
       "Monique Jhingon is a Functional Nutrition & Lifestyle Consultant with over 12 years of experience and a master’s degree in Personalised Nutrition. She holds certifications in Functional Nutrition & Lifestyle Counselling, Functional Root-Cause Diagnostic Testing, Nutrigenetics, Gut & Microbiome Restoration, Yoga and more.",
     ],
@@ -246,7 +246,7 @@ const MEMBERS: TeamMember[] = [
     img: "nidhi",
     name: "Dr Nidhi Arora",
     category: "Musculoskeletal Rehabilitation",
-    role: "Head — MSK Optimisation",
+    role: "Head of MSK Optimisation",
     credentials: [
       "Bachelor of Physical Therapy (CMT)",
       "Manual Therapist",

@@ -224,28 +224,18 @@ export function DrawInView({
   );
 }
 
-/* ---- InstrumentPanel — the framed readout (channel strip + SVG). Used by the
-   journey-page heroes; the homepage grid renders its own framed variant. ---- */
+/* ---- InstrumentPanel — the framed SVG readout used by the journey-page heroes;
+   the homepage grid renders its own framed variant. ---- */
 export function InstrumentPanel({
   kind,
-  chan,
-  unit,
   className = "",
 }: {
   kind: InstrumentKind;
-  chan: string;
-  unit: string;
   className?: string;
 }) {
   const Viz = VIZ[kind];
   return (
     <div className={`jrny__inst ${className}`.trim()}>
-      <div className="jrny__strip">
-        <span className="jrny__chan">
-          <i className="jrny__live" /> {chan}
-        </span>
-        <span className="jrny__unit">{unit}</span>
-      </div>
       <svg className="jinst" viewBox={`0 0 ${VBW} ${VBH}`} aria-hidden="true">
         <Viz />
       </svg>

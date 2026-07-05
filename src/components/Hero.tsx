@@ -22,6 +22,8 @@ export default function Hero() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const frameRef = useRef<HTMLDivElement>(null);
   const scrubRef = useRef<HTMLDivElement>(null);
+  const heroRef = useRef<HTMLElement>(null);
+  const bylineRef = useRef<HTMLParagraphElement>(null);
   const startedRef = useRef(false);
 
   const [sound, setSound] = useState(false);
@@ -110,10 +112,29 @@ export default function Hero() {
     return () => document.removeEventListener("fullscreenchange", onFsChange);
   }, []);
 
+  // On desktop, sit the byline exactly midway between the film's lower edge and
+  // the section's bottom. On mobile the CSS `bottom` keeps it near the base.
+  useEffect(() => {
+    const place = () => {
+      const hero = heroRef.current, film = frameRef.current, byline = bylineRef.current;
+      if (!hero || !film || !byline) return;
+      if (window.innerWidth < 941) { byline.style.top = ""; byline.style.bottom = ""; return; }
+      const h = hero.getBoundingClientRect();
+      const filmBottom = film.getBoundingClientRect().bottom - h.top; // vs section top
+      const mid = (filmBottom + h.height) / 2;
+      byline.style.top = `${Math.round(mid - byline.offsetHeight / 2)}px`;
+      byline.style.bottom = "auto";
+    };
+    place();
+    const raf = requestAnimationFrame(place); // after fonts/layout settle
+    window.addEventListener("resize", place);
+    return () => { cancelAnimationFrame(raf); window.removeEventListener("resize", place); };
+  }, []);
+
   const pct = `${(progress * 100).toFixed(2)}%`;
 
   return (
-    <section className="hero">
+    <section ref={heroRef} className="hero">
       <div className="hero-bg" aria-hidden="true">
         <div className="hero-bg__base" />
         <div className="hero-bg__engrave" />
@@ -129,41 +150,24 @@ export default function Hero() {
         <div className="hero-content">
           <p className="eyebrow hero-eyebrow">By invitation</p>
           <h1 className="hero-h1">
-            The science of a <em>longer</em> life.
+            A New Era of <em>Healthy Aging</em>
           </h1>
           <p className="hero-sub">
-            A members-only longevity practice in Gurugram, built by some of
-            India&rsquo;s most respected physicians. We find risks early and
-            design the years ahead.
+            A members-only longevity practice in Gurugram.<br />
+            We find risks early and design the years ahead.
           </p>
           <div className="hero-actions">
             <Link href="/begin-journey" className="cta cta--emerald">
               Begin your journey
             </Link>
           </div>
-          <p className="hero-cred">
-            <span className="hero-cred__faces">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/assets/soin.png" alt="" />
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/assets/loomba.png" alt="" />
-            </span>
-            <span className="hero-cred__names">
-              <span className="hero-cred__line">
-                Founded by <strong>Dr Arvinder Soin</strong>, Padma Shri,
-              </span>
-              <span className="hero-cred__line">
-                &amp; <strong>Dr Vritti Loomba</strong>
-              </span>
-            </span>
-          </p>
         </div>
 
         <figure className="hero-media">
           <span className="hero-media__halo" aria-hidden="true" />
           <div className="hero-media__housing" ref={frameRef}>
             <div className="hero-media__chrome hero-media__chrome--top">
-              <span className="hero-media__id">Dr Arvinder Soin — Why We Built BeyondAge</span>
+              <span className="hero-media__id">Dr Arvinder Soin: Why We Built BeyondAge</span>
               <span className="hero-media__meta">
                 <span className={`hero-media__eq${sound ? " is-on" : ""}`} aria-hidden="true">
                   <i /><i /><i /><i /><i />
@@ -246,13 +250,14 @@ export default function Hero() {
             </div>
           </div>
 
-          <figcaption className={`hero-media__cap${sound ? " is-hidden" : ""}`}>
-            <span className="hero-media__cap-cred">
-              Padma Shri · ~5,000 liver transplants · India&rsquo;s liver-transplant pioneer
-            </span>
-          </figcaption>
         </figure>
       </div>
+
+      <p ref={bylineRef} className="hero-byline">
+        <span aria-hidden="true" className="hero-byline__rule" />
+        Built by India&rsquo;s most respected physicians
+        <span aria-hidden="true" className="hero-byline__rule" />
+      </p>
     </section>
   );
 }

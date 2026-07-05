@@ -5,8 +5,8 @@ import { LEGAL_DOCS } from "@/components/legalContent";
 const doc = LEGAL_DOCS["cookie-policy"];
 
 export const metadata: Metadata = {
-  title: `${doc.title} — BeyondAge`,
-  description: `${doc.title} for BeyondAge — a physician-led preventive and longevity practice in Gurugram.`,
+  title: `${doc.title} | BeyondAge`,
+  description: `${doc.title} for BeyondAge, a physician-led preventive and longevity practice in Gurugram.`,
 };
 
 export default function Page() {

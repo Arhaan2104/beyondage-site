@@ -2,6 +2,7 @@ import Link from "next/link";
 import SiteHeader from "./SiteHeader";
 import SiteFooter from "./SiteFooter";
 import { DrawInView, InstrumentPanel } from "./journeyInstruments";
+import JourneyDiagram from "./journeyDiagrams";
 import type { JourneyData } from "./journeyData";
 
 /**
@@ -27,7 +28,6 @@ export default function JourneyPage({ data }: { data: JourneyData }) {
             <div className="jp-hero__copy">
               <p className="eyebrow jp-hero__eyebrow">
                 <Link href="/#journeys" className="jp-hero__crumb">Health Journeys</Link>
-                <span aria-hidden="true">·</span> {data.index} / 03
               </p>
               <h1 className="jp-hero__title">{data.title}</h1>
               <p className="jp-hero__tagline">{data.tagline}</p>
@@ -42,7 +42,7 @@ export default function JourneyPage({ data }: { data: JourneyData }) {
             </div>
 
             <DrawInView className="jp-hero__viz" threshold={0.3}>
-              <InstrumentPanel kind={data.kind} chan={data.instrument.chan} unit={data.instrument.unit} />
+              <InstrumentPanel kind={data.kind} />
               <p className="jp-hero__viz-cap">{data.instrument.caption}</p>
             </DrawInView>
           </div>
@@ -52,10 +52,13 @@ export default function JourneyPage({ data }: { data: JourneyData }) {
         <section className="section jp-diag">
           <div className="measure">
             <div className="reveal">
-              <p className="eyebrow chapter-eyebrow">Diagnostics &amp; Interventions</p>
-              <h2 className="chapter-title">Everything measured — then a plan built around you.</h2>
+              <h2 className="chapter-title">Everything measured, then a plan built around you.</h2>
               <p className="lede">{data.intro}</p>
             </div>
+
+            <DrawInView className="jp-plate-wrap reveal" threshold={0.28}>
+              <JourneyDiagram kind={data.kind} />
+            </DrawInView>
 
             <div className="jp-cols">
               <div className="jp-col reveal">
@@ -96,7 +99,6 @@ export default function JourneyPage({ data }: { data: JourneyData }) {
         <section className="section jp-faq">
           <div className="measure jp-faq__wrap">
             <div className="reveal jp-faq__head">
-              <p className="eyebrow chapter-eyebrow">Common Concerns</p>
               <h2 className="chapter-title">Questions our members ask.</h2>
             </div>
             <div className="jp-faq__list reveal">
@@ -116,7 +118,6 @@ export default function JourneyPage({ data }: { data: JourneyData }) {
         {/* ---- Other journeys ---- */}
         <section className="section jp-related">
           <div className="measure">
-            <p className="eyebrow chapter-eyebrow jp-related__eyebrow">Continue exploring</p>
             <div className="jp-related__grid">
               {data.related.map((r) => (
                 <a key={r.slug} href={`/health-journeys/${r.slug}`} className="jp-related__card reveal">
@@ -133,7 +134,7 @@ export default function JourneyPage({ data }: { data: JourneyData }) {
         <section className="section jp-cta" id="invitation">
           <div className="jp-cta__bg" aria-hidden="true"><div className="jp-cta__grain" /></div>
           <div className="measure jp-cta__inner reveal">
-            <p className="eyebrow jp-cta__eyebrow">By invitation · Gurugram</p>
+            <p className="eyebrow jp-cta__eyebrow">By invitation, Gurugram</p>
             <h2 className="jp-cta__title">Ready to begin your journey?</h2>
             <p className="jp-cta__body">
               Schedule a consultation with our Healthcare Coordinator to discover how

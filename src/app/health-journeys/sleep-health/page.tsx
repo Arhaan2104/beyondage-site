@@ -5,7 +5,7 @@ import { JOURNEYS } from "@/components/journeyData";
 const data = JOURNEYS["sleep-health"];
 
 export const metadata: Metadata = {
-  title: "Sleep Health — BeyondAge Health Journeys",
+  title: "Sleep Health | BeyondAge",
   description: data.lede,
 };
 

@@ -88,7 +88,7 @@ export default function SiteHeader() {
           <span className="nav__mark nav__mark--bl" aria-hidden="true" />
           <span className="nav__mark nav__mark--br" aria-hidden="true" />
 
-          <Link href="/" className="nav__logo" aria-label="BeyondAge — home">
+          <Link href="/" className="nav__logo" aria-label="BeyondAge home">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/assets/logo.png" alt="BeyondAge" className="nav__logo-img" />
           </Link>
@@ -160,7 +160,7 @@ export default function SiteHeader() {
             </Link>
             <p className="mnav__contact">
               <a href="mailto:contactus@beyondage.health">contactus@beyondage.health</a>
-              <span aria-hidden="true"> · </span>By invitation, Gurugram
+              <span className="mnav__contact-sub">By invitation, Gurugram</span>
             </p>
           </div>
         </div>

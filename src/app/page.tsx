@@ -18,7 +18,7 @@ const FOUNDERS: Founder[] = [
   {
     name: "Dr Arvinder Soin",
     role: "Founder & Chairman",
-    cred: "Padma Shri · India's liver-transplant pioneer — close to 5,000 transplants.",
+    cred: "Padma Shri. India's liver-transplant pioneer, close to 5,000 transplants.",
     href: `${TEAM_BASE}/dr-arvind-soin`,
     video: "/assets/soin-interview.mp4",
     poster: "/assets/soin-poster.jpg",
@@ -26,7 +26,7 @@ const FOUNDERS: Founder[] = [
   {
     name: "Dr Vritti Loomba",
     role: "Founder & CEO",
-    cred: "Co-founder of BeyondAge — the physician-led longevity practice in Gurugram.",
+    cred: "Co-founder of BeyondAge, the physician-led longevity practice in Gurugram.",
     href: null,
     video: "/assets/loomba-interview.mp4",
     poster: "/assets/loomba-poster.jpg",
@@ -85,9 +85,8 @@ export default function Home() {
         <section className="section bench" id="team">
           <div className="measure">
             <div className="reveal bench-head">
-              <p className="eyebrow bench-eyebrow">The Bench</p>
               <h2 className="bench-title">
-                Some of the country&rsquo;s most respected specialists.
+                <span className="bench-title__line">Some of the country&rsquo;s most respected specialists.</span>
                 <span className="bench-title__line"><em>On one bench.</em></span>
               </h2>
             </div>
@@ -111,11 +110,11 @@ export default function Home() {
           </div>
         </section>
 
-        {/* What you get — concrete deliverables (real site content) */}
-        <WhatYouGet />
-
         {/* Health Journeys — bespoke medical instruments per programme */}
         <HealthJourneys />
+
+        {/* What you get — concrete deliverables (real site content) */}
+        <WhatYouGet />
 
         {/* How it works — Mederva-style pinned scroll reveal */}
         <HowItWorks />
@@ -132,7 +131,7 @@ export default function Home() {
             <div className="invitation__grain" />
           </div>
           <div className="invitation__inner reveal">
-            <p className="eyebrow invitation__eyebrow">By invitation · Gurugram</p>
+            <p className="eyebrow invitation__eyebrow">By invitation, Gurugram</p>
             <h2 className="invitation__title">
               Choose who to trust with the <em>next thirty years</em>.
             </h2>

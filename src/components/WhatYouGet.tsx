@@ -10,32 +10,32 @@ const ITEMS: { variant: InstrumentVariant; title: string; text: string }[] = [
   {
     variant: "scan",
     title: "Advanced diagnostics",
-    text: "Lab tests, imaging, biomarkers, genomics and AI-driven interpretations — curated for the early detection of disease risk.",
+    text: "Labs, imaging, biomarkers and genomics, read by AI for the earliest signs of risk.",
   },
   {
     variant: "network",
     title: "A longevity specialist bench",
-    text: "A dedicated longevity physician, backed by a bench of internationally renowned specialists across every system.",
+    text: "A dedicated longevity physician, backed by internationally renowned specialists across every system.",
   },
   {
     variant: "signal",
     title: "A deep biomarker profile",
-    text: "Markers like ApoB, HbA1c and HRV, read against your own baseline and tracked as they move over time.",
+    text: "Markers like ApoB, HbA1c and HRV, tracked against your own baseline over time.",
   },
   {
     variant: "protocol",
     title: "A precision health plan",
-    text: "A personalised optimisation plan combining lifestyle interventions and proven anti-aging treatments — your protocol, not a template.",
+    text: "A personalised plan of lifestyle and proven anti-aging interventions. Your protocol, not a template.",
   },
   {
     variant: "gauge",
     title: "Healthspan and biological age",
-    text: "Your BeyondAge Healthspan Score and biological age — the whole picture, made legible and tracked.",
+    text: "Your Healthspan Score and biological age, made legible and tracked.",
   },
   {
     variant: "flow",
-    title: "Continuity of care & monitoring",
-    text: "Coaches and a health team who follow up regularly and adjust your plan — so the gains hold and compound.",
+    title: "Continuity of care",
+    text: "A health team that follows up and adjusts your plan, so the gains hold and compound.",
   },
 ];
 
@@ -44,13 +44,13 @@ export default function WhatYouGet() {
     <section className="section wyg" id="what-you-get">
       <div className="measure">
         <div className="reveal wyg-head">
-          <p className="eyebrow chapter-eyebrow">What you get</p>
           <h2 className="chapter-title wyg-title">
-            A new era of healthy ageing — <em>tailored to you</em>.
+            <span className="wyg-title__line">A new era of healthy ageing,</span>
+            <span className="wyg-title__line"><em>tailored to you</em>.</span>
           </h2>
           <p className="lede">
-            Not a one-time report. A physician-led system — diagnostics, a plan, and a
-            team that understands your health in depth and keeps optimising it.
+            Not a one-time report, but a physician-led system: diagnostics, a plan,
+            and a team that understands your health in depth and keeps optimising it.
           </p>
         </div>
         <div className="wyg-grid">

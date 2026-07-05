@@ -61,19 +61,6 @@ const BEY_PATH = pathFor(beyond);
 const BEY_AREA = areaFor(beyond);
 const TICKS = [35, 45, 55, 65, 75];
 
-const FACES = [
-  { img: "founder-soin", name: "Dr Arvinder Soin" },
-  { img: "mithal", name: "Dr Ambrish Mithal" },
-  { img: "vinayak", name: "Dr Vinayak Agrawal" },
-  { img: "bhatia", name: "Dr Manvir Bhatia" },
-  { img: "navin", name: "Dr Navin Dang" },
-];
-
-const PROGRAMMES = [
-  { name: "Cardiac", sub: "Heart & vascular" },
-  { name: "Metabolic", sub: "Glucose, insulin & liver" },
-  { name: "Sleep", sub: "Recovery & brain" },
-];
 
 export default function WhyBeyondAge() {
   const [age, setAge] = useState(58);
@@ -295,68 +282,27 @@ export default function WhyBeyondAge() {
           </figcaption>
         </figure>
 
-        {/* Method — the value prop, told as signal → the bench → your life */}
-        <div className="reveal why-method">
-          <p className="why-method__lead">
-            Advanced diagnostics, genomics and AI —{" "}
-            <em>read by a bench of India&rsquo;s most respected specialists</em> —
-            become a personalised plan, and the ongoing care to hold it.
-          </p>
-
-          <div className="why-flow">
-            <div className="why-node">
-              <span className="why-node__ico" aria-hidden="true">
-                <svg viewBox="0 0 40 40">
-                  <circle cx="20" cy="20" r="13" />
-                  <path d="M9 20h4l3-7 4 14 3-7h8" />
-                </svg>
-              </span>
-              <p className="why-node__k">The signal</p>
-              <p className="why-node__t">Diagnostics, imaging, genomics &amp; AI interpretation</p>
-            </div>
-
-            <span className="why-flow__link" aria-hidden="true"><i /></span>
-
-            <div className="why-node why-node--bench">
-              <span className="why-node__faces">
-                {FACES.map((f) => (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img key={f.img} src={`/assets/team/${f.img}.png`} alt={f.name} loading="lazy" />
-                ))}
-                <span className="why-node__more">+7</span>
-              </span>
-              <p className="why-node__k">The bench</p>
-              <p className="why-node__t">
-                Padma Shri &amp; Padma Bhushan laureates — physicians who shaped
-                cardiology, endocrinology and sleep medicine in India.
-              </p>
-            </div>
-
-            <span className="why-flow__link" aria-hidden="true"><i /></span>
-
-            <div className="why-node">
-              <span className="why-node__ico" aria-hidden="true">
-                <svg viewBox="0 0 40 40">
-                  <path d="M8 26c6 0 6-12 12-12s6 12 12 12" />
-                  <path className="why-node__check" d="M15 20l3.5 3.5L26 16" />
-                </svg>
-              </span>
-              <p className="why-node__k">Your life</p>
-              <p className="why-node__t">A precision plan &amp; continuity of care that compounds</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Programmes — teaser strip (each is a deep programme, detailed below) */}
-        <div className="reveal why-programmes">
-          <span className="why-programmes__label">Three deep programmes</span>
-          <div className="why-progs">
-            {PROGRAMMES.map((p) => (
-              <span key={p.name} className="why-prog">
-                <b>{p.name}</b>
-                <span>{p.sub}</span>
-              </span>
-            ))}
+        {/* The founder's shift — from treating end-stage illness to preventing it */}
+        <div className="reveal why-founder">
+          <figure className="why-founder__photo">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/assets/soin-poster.jpg" alt="Dr Arvinder Soin, Founder &amp; Chairman of BeyondAge" loading="lazy" />
+          </figure>
+          <div className="why-founder__body">
+            <p className="eyebrow why-founder__eyebrow">Why BeyondAge exists</p>
+            <blockquote className="why-founder__quote">
+              For a career, he saved lives at the very end.{" "}
+              <em>BeyondAge is the other end of that story.</em>
+            </blockquote>
+            <p className="why-founder__bio">
+              Dr Arvinder Soin performed India&rsquo;s first liver transplant, and
+              close to five thousand since — a Padma Shri for the work. BeyondAge
+              turns that expertise upstream: finding disease in the decades before it
+              would ever arrive.
+            </p>
+            <p className="why-founder__name">
+              Dr Arvinder Soin <span>· Founder &amp; Chairman</span>
+            </p>
           </div>
         </div>
       </div>

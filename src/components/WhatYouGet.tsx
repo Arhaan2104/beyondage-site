@@ -46,11 +46,11 @@ export default function WhatYouGet() {
         <div className="reveal wyg-head">
           <p className="eyebrow chapter-eyebrow">What you get</p>
           <h2 className="chapter-title wyg-title">
-            Everything you need to age on your <em>own terms</em>.
+            A new era of healthy ageing — <em>tailored to you</em>.
           </h2>
           <p className="lede">
             Not a one-time report. A physician-led system — diagnostics, a plan, and a
-            team — that reads your health in depth and keeps optimising it.
+            team that understands your health in depth and keeps optimising it.
           </p>
         </div>
         <div className="wyg-grid">

@@ -114,42 +114,6 @@ export default function Home() {
         {/* What you get — concrete deliverables (real site content) */}
         <WhatYouGet />
 
-        {/* Founders — the shift */}
-        <section className="section founders">
-          <div className="measure">
-            <p className="eyebrow founders-eyebrow">Why BeyondAge exists</p>
-            <div className="founders-lead reveal">
-              <figure className="founders-portrait">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/assets/frame1.png" alt="Dr Arvinder Soin, Founder and Chairman of BeyondAge" />
-              </figure>
-              <div className="founders-copy">
-                <h2 className="founders-quote">
-                  For a career, he saved lives at the very end.{" "}
-                  <em>BeyondAge is the other end of that story.</em>
-                </h2>
-                <p className="founders-bio">
-                  Dr Arvinder Soin performed India&rsquo;s first liver transplant, and
-                  close to five thousand since — a Padma Shri for the work. BeyondAge
-                  turns that expertise upstream: finding disease in the decades before it
-                  would ever arrive.
-                </p>
-                <p className="founders-name">
-                  Dr Arvinder Soin <span>· Founder &amp; Chairman</span>
-                </p>
-                <div className="founders-cofounder">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/assets/loomba.png" alt="Dr Vritti Loomba, Founder and CEO of BeyondAge" />
-                  <p>
-                    <strong>Dr Vritti Loomba</strong> · Founder &amp; CEO. Building the
-                    practice, and the circle of peers around it.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
         {/* Health Journeys — bespoke medical instruments per programme */}
         <HealthJourneys />
 

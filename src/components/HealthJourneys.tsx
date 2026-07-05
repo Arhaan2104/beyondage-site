@@ -78,10 +78,9 @@ export default function HealthJourneys() {
           </h2>
           <p className="lede jrny-lede">
             <span className="jrny-lede__line">
-              Three deep programmes read the signal across heart, metabolism and
-              sleep, and act in the years when
+              Three deep programmes read the signal across heart, metabolism and sleep,
             </span>
-            <span className="jrny-lede__line">it still changes the outcome.</span>
+            <span className="jrny-lede__line">and help you act in time.</span>
           </p>
         </div>
 

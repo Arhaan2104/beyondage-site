@@ -133,8 +133,8 @@ export default function Hero() {
           </h1>
           <p className="hero-sub">
             A members-only longevity practice in Gurugram, built by some of
-            India&rsquo;s most respected physicians. We find risk decades early —
-            and design the years ahead.
+            India&rsquo;s most respected physicians. We find risks early and
+            design the years ahead.
           </p>
           <div className="hero-actions">
             <Link href="/begin-journey" className="cta cta--emerald">

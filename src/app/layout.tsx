@@ -1,18 +1,16 @@
 import type { Metadata, Viewport } from "next";
-import { Playfair_Display, Schibsted_Grotesk } from "next/font/google";
+import { Space_Grotesk, Schibsted_Grotesk } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 
-/* Playfair Display is self-hosted at build by next/font — the brand's editorial
-   serif (display): a high-contrast Didone that matches the BeyondAge logo
-   wordmark. Body/UI is Schibsted Grotesk: a precise, editorial grotesque that
-   reads clinical and premium, distinctive without shouting, and highly legible —
-   deliberately uncommon in the longevity space (no system-sans/Inter default). */
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
+/* Display face is Space Grotesk, self-hosted at build by next/font: a geometric
+   grotesque with real character for the hero and all titles. Body/UI is Schibsted
+   Grotesk — a precise, highly legible grotesque — so headings and body share a
+   sans lineage while staying clearly distinct. */
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
-  style: ["normal", "italic"],
   display: "swap",
 });
 
@@ -25,13 +23,13 @@ const schibsted = Schibsted_Grotesk({
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://beyondage.health";
 const DESCRIPTION =
-  "A physician-led preventive and longevity practice in Gurugram. We catch disease while it is still a whisper — years before the diagnosis.";
+  "A physician-led preventive and longevity practice in Gurugram. We catch disease while it is still a whisper, years before the diagnosis.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "BeyondAge — Longevity medicine, by invitation",
-    template: "%s · BeyondAge",
+    default: "BeyondAge | Longevity medicine, by invitation",
+    template: "%s | BeyondAge",
   },
   description: DESCRIPTION,
   applicationName: "BeyondAge",
@@ -53,12 +51,12 @@ export const metadata: Metadata = {
     locale: "en_IN",
     url: SITE_URL,
     siteName: "BeyondAge",
-    title: "BeyondAge — Longevity medicine, by invitation",
+    title: "BeyondAge | Longevity medicine, by invitation",
     description: DESCRIPTION,
   },
   twitter: {
     card: "summary_large_image",
-    title: "BeyondAge — Longevity medicine, by invitation",
+    title: "BeyondAge | Longevity medicine, by invitation",
     description: DESCRIPTION,
   },
   robots: {
@@ -83,7 +81,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${playfair.variable} ${schibsted.variable}`}>
+    <html lang="en" className={`${spaceGrotesk.variable} ${schibsted.variable}`}>
       <body>
         <SmoothScroll />
         {children}

@@ -465,9 +465,11 @@ export default function JourneyDiagram({ kind }: { kind: DiagramKind }) {
         </span>
         <span className="jp-plate__unit">{m.unit}</span>
       </figcaption>
-      <svg className="jp-plate__svg" viewBox={`0 0 ${DW} ${DH}`} role="img" aria-label={m.cap}>
-        <Diagram motion={!reduced} />
-      </svg>
+      <div className="jp-plate__scroll">
+        <svg className="jp-plate__svg" viewBox={`0 0 ${DW} ${DH}`} role="img" aria-label={m.cap}>
+          <Diagram motion={!reduced} />
+        </svg>
+      </div>
       <p className="jp-plate__cap">{m.cap}</p>
     </figure>
   );

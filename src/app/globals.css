@@ -1665,7 +1665,15 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
   box-shadow: 0 0 7px rgba(217, 184, 108, 0.6); animation: jd-blink 3.2s ease-in-out infinite; }
 .jp-plate__unit { font-family: var(--ff-text); font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase;
   color: color-mix(in oklab, var(--em-base) 68%, transparent); white-space: nowrap; }
-.jp-plate__svg { display: block; width: 100%; height: auto; padding: clamp(0.5rem, 1.5vw, 1rem); }
+.jp-plate__scroll { padding: clamp(0.5rem, 1.5vw, 1rem); }
+.jp-plate__svg { display: block; width: 100%; height: auto; }
+/* On phones the wide diagram would shrink its labels to ~4px; keep it at a
+   legible scale and let the reader pan it instead. The clipped frame at the
+   right edge signals there's more. */
+@media (max-width: 640px) {
+  .jp-plate__scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: thin; }
+  .jp-plate__svg { min-width: 620px; }
+}
 .jp-plate__cap { margin: 0; padding: 0 clamp(0.9rem, 2vw, 1.35rem) 1rem; font-size: 0.8rem; line-height: 1.5;
   max-width: 70ch; color: color-mix(in oklab, var(--ink) 58%, transparent); }
 @keyframes jd-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
@@ -1673,9 +1681,9 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 /* shared grammar */
 .jd-frame { fill: none; stroke: color-mix(in oklab, var(--gold) 58%, var(--ink)); stroke-width: 1.1; }
 .jd-grid { stroke: rgba(6, 77, 57, 0.08); stroke-width: 1; }
-.jd-lab { fill: color-mix(in oklab, var(--ink) 42%, transparent); font-family: var(--ff-text); font-size: 8px; letter-spacing: 0.11em; }
+.jd-lab { fill: color-mix(in oklab, var(--ink) 42%, transparent); font-family: var(--ff-text); font-size: 9px; letter-spacing: 0.11em; }
 .jd-lab--em { fill: color-mix(in oklab, var(--gold) 74%, var(--ink)); }
-.jd-ax { fill: color-mix(in oklab, var(--ink) 40%, transparent); font-family: var(--ff-text); font-size: 8px; letter-spacing: 0.08em; }
+.jd-ax { fill: color-mix(in oklab, var(--ink) 40%, transparent); font-family: var(--ff-text); font-size: 9px; letter-spacing: 0.08em; }
 
 /* draw-on traces (shared) */
 .jd-vessel, .jd-ecg, .jd-eeg, .jd-hrv, .jd-step, .jd-curve, .jd-plaque-cap {

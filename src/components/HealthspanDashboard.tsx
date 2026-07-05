@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * "See the product" — a crisp, native recreation of BeyondAge's real member
  * dashboard (the "Your Heart Protocol" screen shown on beyondage.health). Every
@@ -5,7 +7,51 @@
  * Healthspan Score 89/100, Biological Age 32.4 yrs, Adherence 88%, the biomarker
  * deltas, the precision actions, and the four daily rings. Rendered in the
  * emerald/gold system and floated on a diagnostic-instrument field.
+ *
+ * On scroll into view the whole panel "assembles": the gauge needle sweeps up,
+ * the headline figures count up, and the daily rings draw on. Reduced-motion
+ * skips straight to the final values.
  */
+
+import { useEffect, useRef, useState } from "react";
+
+/* fires true once the element scrolls into view (immediately if reduced-motion) */
+function useInView<T extends Element>(threshold = 0.3) {
+  const ref = useRef<T>(null);
+  const [inView, setInView] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { setInView(true); return; }
+    const io = new IntersectionObserver(
+      (es) => { if (es[0].isIntersecting) { setInView(true); io.disconnect(); } },
+      { threshold }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [threshold]);
+  return [ref, inView] as const;
+}
+
+/* eases a number from 0 to target once `run` is true */
+function useCountUp(target: number, run: boolean, decimals = 0, duration = 1150) {
+  const [val, setVal] = useState(0);
+  useEffect(() => {
+    if (!run) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { setVal(target); return; }
+    let raf = 0, start = 0;
+    const step = (t: number) => {
+      if (!start) start = t;
+      const p = Math.min(1, (t - start) / duration);
+      const eased = 1 - Math.pow(1 - p, 3);
+      setVal(Number((target * eased).toFixed(decimals)));
+      if (p < 1) raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [target, run, decimals, duration]);
+  return val;
+}
 
 const polar = (v: number, r: number) => {
   const t = (Math.PI * (100 - v)) / 100; // 0 -> left(π), 100 -> right(0)
@@ -30,9 +76,10 @@ function Gauge({ value }: { value: number }) {
   );
 }
 
-function Ring({ label, pct }: { label: string; pct: number }) {
+function Ring({ label, pct, live }: { label: string; pct: number; live: boolean }) {
   const R = 26;
   const C = 2 * Math.PI * R;
+  const v = useCountUp(pct, live, 0, 1150);
   return (
     <div className="dash-ring">
       <div className="dash-ring__chart">
@@ -42,10 +89,10 @@ function Ring({ label, pct }: { label: string; pct: number }) {
             cx="32" cy="32" r={R}
             className="dash-ring__val"
             transform="rotate(-90 32 32)"
-            style={{ strokeDasharray: C, strokeDashoffset: C * (1 - pct / 100) }}
+            style={{ strokeDasharray: C, strokeDashoffset: C * (1 - v / 100) }}
           />
         </svg>
-        <span className="dash-ring__pct">{pct}%</span>
+        <span className="dash-ring__pct">{v}%</span>
       </div>
       <span className="dash-ring__label">{label}</span>
     </div>
@@ -59,7 +106,7 @@ const BIOMARKERS = [
 ] as const;
 
 const ACTIONS = [
-  { t: "Limit glucose spikes — finish eating by 8 PM", done: true },
+  { t: "Limit glucose spikes: finish eating by 8 PM", done: true },
   { t: "2.0g Omega-3 supplementation with a meal", done: true },
   { t: "30 min of Zone 2 cardio (a walk counts)", done: false },
 ] as const;
@@ -72,6 +119,10 @@ const RINGS = [
 ] as const;
 
 export default function HealthspanDashboard() {
+  const [deviceRef, live] = useInView<HTMLDivElement>(0.3);
+  const score = useCountUp(89, live);
+  const bioAge = useCountUp(32.4, live, 1);
+  const adherence = useCountUp(88, live);
   return (
     <section className="section dash" id="dashboard">
       <div className="dash-field" aria-hidden="true">
@@ -85,41 +136,42 @@ export default function HealthspanDashboard() {
 
       <div className="measure dash-inner">
         <div className="reveal dash-head">
-          <p className="eyebrow dash-eyebrow"><span className="dash-eyebrow__mark" />The product</p>
           <h2 className="dash-title">
             Your health, made <em>legible</em>.
           </h2>
           <p className="lede dash-lede">
-            Every plan lives in one place — a healthspan score, your biological age,
-            biomarkers read against your own trajectory, and the precise actions for
-            today. Continuously optimised for you.
+            Every plan lives in one place, continuously optimised for you.
           </p>
         </div>
 
-        <div className="reveal dash-device">
+        <div className="reveal dash-device" ref={deviceRef}>
           <div className="dash-screen">
             <div className="dash-topbar">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/assets/logo.png" alt="BeyondAge" className="logo logo--ivory dash-topbar__logo" />
-              <span className="dash-topbar__title">Your Heart Protocol · Continuously optimised for you</span>
+              {/* decorative live-signal — ambient product telemetry, not data */}
+              <span className="dash-topbar__sig" aria-hidden="true">
+                <span className="dash-topbar__live" />
+                <span className="dash-topbar__eq"><i /><i /><i /><i /></span>
+              </span>
             </div>
 
             <div className="dash-body">
               <div className="dash-row dash-row--top">
                 <div className="dash-card dash-card--gauge">
-                  <Gauge value={89} />
+                  <Gauge value={score} />
                   <div className="dash-gauge__read">
-                    <strong>89</strong><span>/100</span>
+                    <strong>{score}</strong><span>/100</span>
                   </div>
                   <p className="dash-card__label">BeyondAge Healthspan Score</p>
                 </div>
                 <div className="dash-card dash-card--stat">
                   <p className="dash-card__label">Biological Age</p>
-                  <p className="dash-stat"><strong>32.4</strong><span>yrs</span></p>
+                  <p className="dash-stat"><strong>{bioAge.toFixed(1)}</strong><span>yrs</span></p>
                 </div>
                 <div className="dash-card dash-card--stat">
                   <p className="dash-card__label">Adherence</p>
-                  <p className="dash-stat dash-stat--gold"><strong>88</strong><span>%</span></p>
+                  <p className="dash-stat dash-stat--gold"><strong>{adherence}</strong><span>%</span></p>
                 </div>
               </div>
 
@@ -155,12 +207,12 @@ export default function HealthspanDashboard() {
 
               <div className="dash-row dash-row--rings">
                 {RINGS.map(([label, pct]) => (
-                  <Ring key={label} label={label} pct={pct as number} />
+                  <Ring key={label} label={label} pct={pct as number} live={live} />
                 ))}
               </div>
             </div>
           </div>
-          <p className="dash-device__note">Illustrative member dashboard · figures shown as on beyondage.health</p>
+          <p className="dash-device__note">Illustrative member dashboard. Figures shown as on beyondage.health</p>
         </div>
       </div>
     </section>

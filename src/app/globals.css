@@ -640,7 +640,7 @@ body::after {
 
 .jrny__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
 .jrny__k { font-family: var(--ff-text); font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--em-base); }
-.jrny__idx { font-family: var(--ff-text); font-size: 0.62rem; letter-spacing: 0.14em; color: color-mix(in oklab, var(--ink) 38%, transparent); }
+.jrny__idx { font-family: var(--ff-text); font-size: 0.62rem; letter-spacing: 0.14em; color: color-mix(in oklab, var(--ink) 55%, transparent); }
 .jrny__title { font-family: var(--ff-display); font-weight: 700; font-size: clamp(1.4rem, 2vw, 1.75rem); color: var(--em-base); margin: 0.5rem 0 0; letter-spacing: -0.01em; }
 
 /* instrument frame */
@@ -680,7 +680,7 @@ body::after {
 
 .jrny__body { font-size: 0.9rem; line-height: 1.58; color: color-mix(in oklab, var(--ink) 72%, transparent); margin-top: 1rem; }
 .jrny__reads { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: auto; padding-top: 1rem; }
-.jrny__chip { display: inline-flex; align-items: center; gap: 0.4rem; font-family: var(--ff-text); font-size: 0.58rem; letter-spacing: 0.06em; text-transform: uppercase; color: color-mix(in oklab, var(--ink) 60%, transparent); padding: 0.32rem 0.55rem; border: 1px solid rgba(6, 77, 57, 0.16); border-radius: 999px; }
+.jrny__chip { display: inline-flex; align-items: center; gap: 0.4rem; font-family: var(--ff-text); font-size: 0.58rem; letter-spacing: 0.06em; text-transform: uppercase; color: color-mix(in oklab, var(--ink) 74%, transparent); padding: 0.32rem 0.55rem; border: 1px solid rgba(6, 77, 57, 0.16); border-radius: 999px; }
 .jrny__chip::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 6px rgba(217, 184, 108, 0.5); }
 .jrny__more { display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 1rem; font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: color-mix(in oklab, var(--ink) 50%, transparent); transition: color 320ms var(--ease-quiet); }
 .jrny__more span { transition: transform 320ms var(--ease-quiet); }
@@ -1661,11 +1661,11 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
   padding: 0.7rem clamp(0.9rem, 2vw, 1.35rem); border-bottom: 1px solid rgba(6, 77, 57, 0.1);
   background: rgba(6, 77, 57, 0.022); }
 .jp-plate__tag { display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--ff-text);
-  font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: color-mix(in oklab, var(--ink) 58%, transparent); }
+  font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: color-mix(in oklab, var(--ink) 70%, transparent); }
 .jp-plate__live { width: 5px; height: 5px; border-radius: 50%; background: var(--gold);
   box-shadow: 0 0 7px rgba(217, 184, 108, 0.6); animation: jd-blink 3.2s ease-in-out infinite; }
 .jp-plate__unit { font-family: var(--ff-text); font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase;
-  color: color-mix(in oklab, var(--em-base) 68%, transparent); white-space: nowrap; }
+  color: color-mix(in oklab, var(--em-base) 84%, transparent); white-space: nowrap; }
 .jp-plate__scroll { padding: clamp(0.5rem, 1.5vw, 1rem); }
 .jp-plate__svg { display: block; width: 100%; height: auto; }
 /* On phones the wide diagram would shrink its labels to ~4px; keep it at a
@@ -1682,9 +1682,9 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 /* shared grammar */
 .jd-frame { fill: none; stroke: color-mix(in oklab, var(--gold) 58%, var(--ink)); stroke-width: 1.1; }
 .jd-grid { stroke: rgba(6, 77, 57, 0.08); stroke-width: 1; }
-.jd-lab { fill: color-mix(in oklab, var(--ink) 42%, transparent); font-family: var(--ff-text); font-size: 9px; letter-spacing: 0.11em; }
+.jd-lab { fill: color-mix(in oklab, var(--ink) 60%, transparent); font-family: var(--ff-text); font-size: 9px; letter-spacing: 0.11em; }
 .jd-lab--em { fill: color-mix(in oklab, var(--gold) 74%, var(--ink)); }
-.jd-ax { fill: color-mix(in oklab, var(--ink) 40%, transparent); font-family: var(--ff-text); font-size: 9px; letter-spacing: 0.08em; }
+.jd-ax { fill: color-mix(in oklab, var(--ink) 58%, transparent); font-family: var(--ff-text); font-size: 9px; letter-spacing: 0.08em; }
 
 /* draw-on traces (shared) */
 .jd-vessel, .jd-ecg, .jd-eeg, .jd-hrv, .jd-step, .jd-curve, .jd-plaque-cap {

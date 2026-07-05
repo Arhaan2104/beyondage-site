@@ -312,7 +312,7 @@ body::after {
 }
 
 .hero-content { text-align: left; }
-.hero-eyebrow { color: color-mix(in oklab, var(--gold) 66%, var(--ink)); animation: fade-rise 1000ms var(--ease-quiet) 150ms both; }
+.hero-eyebrow { color: var(--em-base); animation: fade-rise 1000ms var(--ease-quiet) 150ms both; }
 .hero-h1 {
   font-family: var(--ff-display); font-weight: 400; color: var(--em-base);
   font-size: clamp(2.6rem, 5.4vw, 4.6rem); line-height: 1.03; letter-spacing: -0.022em;
@@ -438,7 +438,7 @@ body::after {
 .hero-media__ticks i:nth-child(4) { bottom: 0; left: 0; border-bottom: 1px solid rgba(201, 170, 110, 0.5); border-left: 1px solid rgba(201, 170, 110, 0.5); }
 /* expand-to-fullscreen control */
 .hero-media__expand { position: absolute; top: 12px; right: 12px; z-index: 4;
-  width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center; cursor: pointer;
+  width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center; cursor: pointer;
   border: 1px solid rgba(243, 237, 224, 0.4); color: var(--ivory);
   background: rgba(2, 20, 14, 0.34); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
   transition: transform 320ms var(--ease-quiet), background-color 320ms var(--ease-quiet),
@@ -702,7 +702,7 @@ body::after {
   background: rgba(2, 22, 15, 0.46); backdrop-filter: blur(6px); padding: 4px 10px; border-radius: 999px; border: 1px solid rgba(217, 184, 108, 0.32); }
 .founder-card__meta { padding: clamp(1.2rem, 2vw, 1.7rem); }
 .founder-card__name { font-family: var(--ff-display); font-weight: 400; font-size: clamp(1.3rem, 2vw, 1.7rem); color: var(--em-base); }
-.founder-card__role { font-size: 0.76rem; letter-spacing: 0.1em; text-transform: uppercase; color: color-mix(in oklab, var(--gold) 70%, var(--ink)); margin-top: 0.4rem; }
+.founder-card__role { font-size: 0.76rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--em-base); margin-top: 0.4rem; }
 .founder-card__cred { font-size: 0.9rem; line-height: 1.5; color: color-mix(in oklab, var(--ink) 66%, transparent); margin-top: 0.75rem; max-width: 42ch; }
 .founder-card__more { display: inline-block; margin-top: 1rem; font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: color-mix(in oklab, var(--ink) 52%, transparent); text-decoration: none; transition: color 320ms var(--ease-quiet); }
 a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--ink)); }
@@ -805,8 +805,11 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 .how-viewport {
   position: sticky; top: 0; height: 100vh; overflow: hidden;
   display: grid; place-items: center;
+  /* reserve clearance for the fixed navbar so the eyebrow sits clearly below it
+     when the section pins; the content then centres in the space that remains. */
+  padding-top: clamp(6.5rem, 12vh, 8rem);
 }
-.how-inner { width: 100%; padding-inline: clamp(1.5rem, 5vw, 6rem); padding-top: clamp(2.5rem, 6vh, 5rem); }
+.how-inner { width: 100%; padding-inline: clamp(1.5rem, 5vw, 6rem); }
 .how-title { max-width: 26ch; }
 .how-title__lead { color: color-mix(in oklab, var(--em-base) 44%, transparent); }
 
@@ -927,8 +930,9 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
     content: "Step 0" counter(how-step);
     display: block; margin-bottom: 0.55rem;
     font-family: var(--ff-text); font-size: 0.68rem; font-weight: 600;
-    letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold);
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--em-base);
   }
+  .how-panel__cta { padding-block: 0.5rem; margin-top: clamp(0.8rem, 2vw, 1.1rem); }
 }
 @media (prefers-reduced-motion: reduce) {
   .how { height: auto; padding-block: clamp(5.5rem, 12vw, 11rem); }
@@ -1129,7 +1133,7 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 .pvc-5p__item { display: flex; flex-direction: column; gap: 0.5rem;
   padding-top: 0.95rem; border-top: 1px solid rgba(14,38,28,0.16); }
 .pvc-5p__n { font-family: ui-monospace, Menlo, monospace; font-size: 0.64rem;
-  letter-spacing: 0.1em; color: color-mix(in oklab, var(--gold) 62%, var(--ink)); }
+  letter-spacing: 0.1em; color: var(--em-base); }
 .pvc-5p__p { font-family: var(--ff-display); font-size: clamp(1.15rem, 1.8vw, 1.42rem);
   line-height: 1.08; color: var(--em-base); }
 .pvc-5p__body { font-size: 0.85rem; line-height: 1.5; color: color-mix(in oklab, var(--ink) 62%, transparent); }
@@ -1313,8 +1317,8 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 .footer__news { margin-top: clamp(1.6rem, 3vw, 2.1rem); max-width: 23rem; }
 .footer__news-label { display: block; font-family: var(--ff-text); font-size: 0.72rem;
   letter-spacing: 0.16em; text-transform: uppercase; color: color-mix(in oklab, var(--ivory) 58%, transparent); margin-bottom: 0.7rem; }
-.footer__news-field { display: flex; align-items: stretch; gap: 0.4rem; min-height: 48px;
-  border: 1px solid var(--line-lt); border-radius: 999px; padding: 5px 5px 5px 1rem;
+.footer__news-field { display: flex; align-items: stretch; gap: 0.4rem; min-height: 54px;
+  border: 1px solid var(--line-lt); border-radius: 999px; padding: 5px 5px 5px 1.1rem;
   background: rgba(243, 237, 224, 0.03); transition: border-color 320ms var(--ease-quiet); }
 .footer__news-field:focus-within { border-color: rgba(217, 184, 108, 0.55); }
 .footer__news-field input { flex: 1; min-width: 0; align-self: stretch; background: transparent; border: 0; outline: none;
@@ -1571,7 +1575,7 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
      with the body copy rather than sitting indented */
   .jp-hero__actions { flex-direction: column; align-items: flex-start; gap: 1.4rem; }
   .jp-hero__stat { border-left: none; padding-left: 0; }
-  .jp-hero__crumb { display: inline-block; padding-block: 0.15rem; }
+  .jp-hero__crumb { display: inline-block; padding: 0.5rem 0.1rem; margin: -0.5rem 0; }
 }
 /* comfortable footer tap targets on phones (secondary text links) */
 @media (max-width: 640px) {

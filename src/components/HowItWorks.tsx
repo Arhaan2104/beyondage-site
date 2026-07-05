@@ -25,14 +25,14 @@ const STEPS = [
     n: "02",
     tab: "Consultation",
     heading: "Initial consultation",
-    body: "You meet our longevity physician, who discusses your personalised advanced-diagnostics plan — once your detailed medical history, lifestyle and health goals have been evaluated by our team of doctors and healthcare experts.",
+    body: "You meet our longevity physician, who shapes your personalised diagnostics plan around your medical history, lifestyle and goals.",
     img: "/assets/how/step2-consultation.jpg",
   },
   {
     n: "03",
     tab: "Diagnostics",
     heading: "Diagnostics & testing",
-    body: "Comprehensive diagnostics integrating lab tests, imaging, biomarkers, genomics and AI-driven interpretations, curated for you — for early detection of disease risk.",
+    body: "Lab tests, imaging, biomarkers and genomics, read with AI and curated for the early detection of risk.",
     img: "/assets/how/step3-diagnostics.jpg",
   },
   {
@@ -123,11 +123,7 @@ export default function HowItWorks() {
       <div className="how-viewport">
         <div className="measure how-inner">
           <div className="reveal">
-            <p className="eyebrow chapter-eyebrow">How it works</p>
-            <h2 className="chapter-title how-title">
-              <span className="how-title__lead">One considered path,</span> from first
-              question to ongoing <em>care</em>.
-            </h2>
+            <h2 className="chapter-title how-title">How it Works</h2>
           </div>
 
           <div className="how-grid">

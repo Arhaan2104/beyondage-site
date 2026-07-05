@@ -805,9 +805,13 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 .how-viewport {
   position: sticky; top: 0; height: 100vh; overflow: hidden;
   display: grid; place-items: center;
-  /* reserve clearance for the fixed navbar so the eyebrow sits clearly below it
-     when the section pins; the content then centres in the space that remains. */
-  padding-top: clamp(6.5rem, 12vh, 8rem);
+  /* Reserve clearance for the fixed navbar so the eyebrow sits clearly below it
+     when the section pins, then centre the content in the space that remains.
+     Tied to the free space above the ~784px content block (calc), so it gives
+     full clearance on normal displays and gracefully shrinks toward zero on very
+     short viewports — keeping the content visible instead of clipping the last
+     step. */
+  padding-top: clamp(0px, calc(100vh - 790px), 7rem);
 }
 .how-inner { width: 100%; padding-inline: clamp(1.5rem, 5vw, 6rem); }
 .how-title { max-width: 26ch; }
@@ -1188,7 +1192,7 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 .why-inst__top { display: flex; align-items: baseline; justify-content: space-between; gap: 0.9rem 1.4rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
 .why-inst__tag { display: inline-flex; align-items: center; gap: 0.5rem;
   font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase;
-  color: color-mix(in oklab, var(--gold) 68%, var(--ink)); }
+  color: var(--em-base); }
 .why-inst__live { width: 5px; height: 5px; border-radius: 50%; background: color-mix(in oklab, var(--gold) 74%, var(--ink)); box-shadow: 0 0 7px rgba(184,148,84,0.5); animation: why-dot-breathe 3.4s ease-in-out infinite; }
 @keyframes why-dot-breathe { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
 .why-inst__readout { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 0.4rem 1rem;
@@ -1733,7 +1737,7 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
   font-size: 0.95rem; letter-spacing: 0.005em; margin: 1.6rem 0 0.5rem; }
 .legal__body p { margin: 0 0 1.1rem; }
 .legal__body p:empty { display: none; }
-.legal__body a { color: color-mix(in oklab, var(--gold) 66%, var(--ink)); text-decoration: underline; text-underline-offset: 2px; }
+.legal__body a { color: var(--em-base); text-decoration: underline; text-underline-offset: 2px; }
 .legal__body a:hover { color: var(--em-base); }
 .legal__body strong, .legal__body b { font-weight: 600; color: var(--ink); }
 .legal__body em, .legal__body i { font-style: italic; }
@@ -1752,7 +1756,7 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 .team__group { margin-top: clamp(3rem, 6vw, 4.8rem); }
 .team__group--founders { margin-top: clamp(3.6rem, 7vw, 5.6rem); }
 .team__grouplabel { text-align: center; font-family: var(--ff-text); font-size: 0.72rem; font-weight: 600;
-  letter-spacing: 0.2em; text-transform: uppercase; color: color-mix(in oklab, var(--gold) 74%, var(--ink)); margin: 0 0 clamp(1.6rem, 3vw, 2.2rem); }
+  letter-spacing: 0.2em; text-transform: uppercase; color: var(--em-base); margin: 0 0 clamp(1.6rem, 3vw, 2.2rem); }
 .team__groupsub { text-align: center; margin: -0.7rem auto clamp(1.8rem, 3vw, 2.4rem); max-width: 48ch;
   font-family: var(--ff-display); font-style: italic; font-size: clamp(1.05rem, 1.5vw, 1.25rem);
   color: color-mix(in oklab, var(--em-base) 84%, transparent); }

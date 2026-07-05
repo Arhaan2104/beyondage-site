@@ -42,11 +42,10 @@ const SOCIALS = [
   },
 ];
 
-// Legal docs live on the canonical beyondage.health pages.
 const LEGAL = [
-  { label: "Privacy Policy", href: "https://beyondage.health/privacy-policy" },
-  { label: "Terms of Service", href: "https://beyondage.health/terms-of-service" },
-  { label: "Cookie Policy", href: "https://beyondage.health/cookie-policy" },
+  { label: "Privacy Policy", href: "/privacy-policy" },
+  { label: "Terms of Service", href: "/terms-of-service" },
+  { label: "Cookie Policy", href: "/cookie-policy" },
 ];
 
 export default function SiteFooter() {
@@ -122,9 +121,9 @@ export default function SiteFooter() {
           <div className="footer__col">
             <h4>Legal</h4>
             {LEGAL.map((l) => (
-              <a key={l.label} href={l.href} target="_blank" rel="noreferrer">
+              <Link key={l.label} href={l.href}>
                 {l.label}
-              </a>
+              </Link>
             ))}
           </div>
           <div className="footer__col">

@@ -49,7 +49,7 @@ export default function JourneyPage({ data }: { data: JourneyData }) {
         </section>
 
         {/* ---- Diagnostics & Interventions ---- */}
-        <section className="section warm jp-diag">
+        <section className="section jp-diag">
           <div className="measure">
             <div className="reveal">
               <p className="eyebrow chapter-eyebrow">Diagnostics &amp; Interventions</p>
@@ -114,7 +114,7 @@ export default function JourneyPage({ data }: { data: JourneyData }) {
         </section>
 
         {/* ---- Other journeys ---- */}
-        <section className="section warm jp-related">
+        <section className="section jp-related">
           <div className="measure">
             <p className="eyebrow chapter-eyebrow jp-related__eyebrow">Continue exploring</p>
             <div className="jp-related__grid">

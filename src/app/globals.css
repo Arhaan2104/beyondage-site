@@ -271,17 +271,20 @@ body::after {
 .hero-bg__base {
   position: absolute; inset: 0;
   background:
+    /* soft warm spotlight behind the headline — lifts the text off the ground */
+    radial-gradient(44% 54% at 26% 46%, rgba(255, 253, 247, 0.72), transparent 66%),
     radial-gradient(72% 64% at 16% 20%, rgba(255, 252, 245, 0.9), transparent 62%),
     radial-gradient(60% 72% at 95% 82%, rgba(221, 213, 197, 0.55), transparent 72%),
     linear-gradient(150deg, #f5f0e5 0%, #efe8d9 56%, #e8e0cf 100%);
 }
-/* faint technical dotted grid — the "engineered" texture (ties to the navbar) */
+/* faint technical dotted grid — the "engineered" texture (ties to the navbar).
+   Held a touch longer across the left so it whispers behind the headline. */
 .hero-bg__engrave {
   position: absolute; inset: 0; pointer-events: none;
-  background-image: radial-gradient(rgba(14, 38, 28, 0.06) 1px, transparent 1.6px);
+  background-image: radial-gradient(rgba(14, 38, 28, 0.1) 1px, transparent 1.6px);
   background-size: 26px 26px;
-  -webkit-mask-image: linear-gradient(118deg, #000 0%, rgba(0,0,0,0.35) 42%, transparent 64%);
-  mask-image: linear-gradient(118deg, #000 0%, rgba(0,0,0,0.35) 42%, transparent 64%);
+  -webkit-mask-image: linear-gradient(118deg, #000 0%, rgba(0,0,0,0.58) 48%, transparent 78%);
+  mask-image: linear-gradient(118deg, #000 0%, rgba(0,0,0,0.58) 48%, transparent 78%);
 }
 /* soft tonal clouds — layered depth on the paper */
 .hero-bg__glow { position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none; }
@@ -567,7 +570,9 @@ body::after {
 .warm .chapter-title em { color: var(--gold); }
 .warm .lede { color: color-mix(in oklab, var(--ivory) 74%, transparent); }
 .warm .jrny-note { color: color-mix(in oklab, var(--ivory) 46%, transparent); }
-.chapter-eyebrow { display: inline-flex; align-items: center; gap: 0.6rem; margin-bottom: 1.4rem; color: color-mix(in oklab, var(--gold) 78%, var(--ink)); }
+/* eyebrows read in emerald on light grounds (gold is low-contrast on cream);
+   the DARK homepage Journeys keeps gold via `.warm .chapter-eyebrow` above. */
+.chapter-eyebrow { display: inline-flex; align-items: center; gap: 0.6rem; margin-bottom: 1.4rem; color: var(--em-base); }
 .chapter-title {
   font-family: var(--ff-display); font-weight: 400; color: var(--em-base);
   font-size: clamp(2rem, 4.2vw, 3.3rem); line-height: 1.1; letter-spacing: -0.018em; margin: 0 0 1.5rem;
@@ -605,7 +610,7 @@ body::after {
 }
 
 .jrny__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
-.jrny__k { font-family: ui-monospace, Menlo, monospace; font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: color-mix(in oklab, var(--gold) 74%, var(--ink)); }
+.jrny__k { font-family: ui-monospace, Menlo, monospace; font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--em-base); }
 .jrny__idx { font-family: ui-monospace, Menlo, monospace; font-size: 0.62rem; letter-spacing: 0.14em; color: color-mix(in oklab, var(--ink) 38%, transparent); }
 .jrny__title { font-family: var(--ff-display); font-weight: 400; font-size: clamp(1.4rem, 2vw, 1.75rem); color: var(--em-base); margin: 0.5rem 0 0; letter-spacing: -0.01em; }
 
@@ -614,7 +619,7 @@ body::after {
 .jrny__strip { display: flex; align-items: center; justify-content: space-between; padding: 0.42rem 0.6rem; border-bottom: 1px solid rgba(6, 77, 57, 0.1); }
 .jrny__chan { display: inline-flex; align-items: center; gap: 0.45rem; font-family: ui-monospace, Menlo, monospace; font-size: 0.56rem; letter-spacing: 0.16em; text-transform: uppercase; color: color-mix(in oklab, var(--ink) 52%, transparent); }
 .jrny__live { width: 5px; height: 5px; border-radius: 50%; background: color-mix(in oklab, var(--gold) 78%, var(--ink)); box-shadow: 0 0 7px rgba(184, 148, 84, 0.55); animation: why-dot-breathe 3.4s ease-in-out infinite; }
-.jrny__unit { font-family: ui-monospace, Menlo, monospace; font-size: 0.56rem; letter-spacing: 0.14em; text-transform: uppercase; color: color-mix(in oklab, var(--gold) 66%, var(--ink)); }
+.jrny__unit { font-family: ui-monospace, Menlo, monospace; font-size: 0.56rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--em-base); }
 .jinst { display: block; width: 100%; height: auto; }
 
 /* instrument primitives */
@@ -671,7 +676,7 @@ body::after {
     linear-gradient(180deg, #f2ece0, #ece4d3);
 }
 .bench-head { text-align: center; max-width: 44rem; margin-inline: auto; }
-.bench-eyebrow { color: color-mix(in oklab, var(--gold) 66%, var(--ink)); }
+.bench-eyebrow { color: var(--em-base); }
 .bench-title {
   font-family: var(--ff-display); font-weight: 400; color: var(--em-base);
   font-size: clamp(1.9rem, 3.8vw, 3rem); line-height: 1.12; letter-spacing: -0.015em;
@@ -801,7 +806,7 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
   position: sticky; top: 0; height: 100vh; overflow: hidden;
   display: grid; place-items: center;
 }
-.how-inner { width: 100%; padding-inline: clamp(1.5rem, 5vw, 6rem); }
+.how-inner { width: 100%; padding-inline: clamp(1.5rem, 5vw, 6rem); padding-top: clamp(2.5rem, 6vh, 5rem); }
 .how-title { max-width: 26ch; }
 .how-title__lead { color: color-mix(in oklab, var(--em-base) 44%, transparent); }
 
@@ -1308,15 +1313,15 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 .footer__news { margin-top: clamp(1.6rem, 3vw, 2.1rem); max-width: 23rem; }
 .footer__news-label { display: block; font-family: var(--ff-text); font-size: 0.72rem;
   letter-spacing: 0.16em; text-transform: uppercase; color: color-mix(in oklab, var(--ivory) 58%, transparent); margin-bottom: 0.7rem; }
-.footer__news-field { display: flex; align-items: center; gap: 0.5rem;
-  border: 1px solid var(--line-lt); border-radius: 999px; padding: 0.28rem 0.28rem 0.28rem 1rem;
+.footer__news-field { display: flex; align-items: stretch; gap: 0.4rem; min-height: 48px;
+  border: 1px solid var(--line-lt); border-radius: 999px; padding: 5px 5px 5px 1rem;
   background: rgba(243, 237, 224, 0.03); transition: border-color 320ms var(--ease-quiet); }
 .footer__news-field:focus-within { border-color: rgba(217, 184, 108, 0.55); }
-.footer__news-field input { flex: 1; min-width: 0; background: transparent; border: 0; outline: none;
-  color: var(--ivory); font-family: var(--ff-text); font-size: 0.85rem; }
+.footer__news-field input { flex: 1; min-width: 0; align-self: stretch; background: transparent; border: 0; outline: none;
+  color: var(--ivory); font-family: var(--ff-text); font-size: 0.9rem; }
 .footer__news-field input::placeholder { color: color-mix(in oklab, var(--ivory) 34%, transparent); }
 .footer__news-field button { flex: none; border: 0; cursor: pointer; border-radius: 999px;
-  padding: 0.5rem 1.05rem; font-family: var(--ff-text); font-size: 0.72rem; font-weight: 600;
+  padding: 0 1.15rem; font-family: var(--ff-text); font-size: 0.72rem; font-weight: 600;
   letter-spacing: 0.1em; text-transform: uppercase; color: #04271c;
   background: linear-gradient(180deg, var(--gold-bright), var(--gold));
   box-shadow: 0 8px 20px -10px rgba(217, 184, 108, 0.55); transition: filter 320ms var(--ease-quiet), transform 320ms var(--ease-quiet); }
@@ -1327,7 +1332,7 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 .footer__social-label { display: block; font-family: var(--ff-text); font-size: 0.72rem;
   letter-spacing: 0.16em; text-transform: uppercase; color: color-mix(in oklab, var(--ivory) 58%, transparent); margin-bottom: 0.8rem; }
 .footer__social-row { display: flex; gap: 0.6rem; }
-.footer__social-link { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%;
+.footer__social-link { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%;
   border: 1px solid var(--line-lt); color: color-mix(in oklab, var(--ivory) 66%, transparent);
   transition: color 320ms var(--ease-quiet), border-color 320ms var(--ease-quiet), background 320ms var(--ease-quiet), transform 320ms var(--ease-quiet); }
 .footer__social-link:hover { color: #04271c; border-color: transparent;
@@ -1492,11 +1497,13 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
   radial-gradient(66% 56% at 16% -6%, rgba(255, 251, 243, 0.5), transparent 60%),
   linear-gradient(180deg, #ece4d3, #f2ece0);
 }
+/* small labels read in emerald on the light ground (gold is low-contrast here) */
+.jp-diag .chapter-eyebrow, .jp-related .chapter-eyebrow { color: var(--em-base); }
 .jp-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1.6rem, 3vw, 2.8rem); margin-top: clamp(2.6rem, 5vw, 4rem); }
 @media (max-width: 900px) { .jp-cols { grid-template-columns: 1fr; gap: 2rem; max-width: 42rem; } }
 .jp-col__k { display: flex; align-items: center; gap: 0.6rem; margin: 0 0 1.1rem; padding-bottom: 0.85rem; border-bottom: 1px solid var(--line);
   font-family: ui-monospace, Menlo, monospace; font-size: 0.66rem; letter-spacing: 0.16em; text-transform: uppercase; color: color-mix(in oklab, var(--ink) 60%, transparent); }
-.jp-col__n { color: color-mix(in oklab, var(--gold) 68%, var(--ink)); }
+.jp-col__n { color: var(--em-base); }
 .jp-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.62rem; }
 .jp-list li { position: relative; padding-left: 1.25rem; font-size: 0.9rem; line-height: 1.46; color: color-mix(in oklab, var(--ink) 78%, transparent); }
 .jp-list li::before { content: ""; position: absolute; left: 1px; top: 0.5em; width: 5px; height: 5px; transform: rotate(45deg); background: var(--gold); box-shadow: 0 0 6px rgba(217, 184, 108, 0.4); }
@@ -1539,7 +1546,7 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 .jp-related__card { display: flex; flex-direction: column; gap: 0.5rem; padding: clamp(1.4rem, 2.4vw, 2rem); border: 1px solid rgba(6, 77, 57, 0.16); border-radius: 14px; background: #fbf7ec; text-decoration: none; color: inherit;
   transition: transform 420ms var(--ease-quiet), border-color 420ms var(--ease-quiet), box-shadow 420ms var(--ease-quiet); }
 .jp-related__card:hover { transform: translateY(-4px); border-color: color-mix(in oklab, var(--gold) 46%, rgba(6, 77, 57, 0.2)); box-shadow: 0 40px 74px -52px rgba(6, 77, 57, 0.45); }
-.jp-related__k { font-family: ui-monospace, Menlo, monospace; font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: color-mix(in oklab, var(--gold) 74%, var(--ink)); }
+.jp-related__k { font-family: ui-monospace, Menlo, monospace; font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--em-base); }
 .jp-related__title { font-family: var(--ff-display); font-size: clamp(1.4rem, 2.2vw, 1.9rem); color: var(--em-base); }
 .jp-related__more { margin-top: 0.4rem; font-family: var(--ff-text); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: color-mix(in oklab, var(--ink) 50%, transparent); transition: color 300ms var(--ease-quiet); }
 .jp-related__more span { display: inline-block; transition: transform 300ms var(--ease-quiet); }
@@ -1568,10 +1575,11 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 }
 /* comfortable footer tap targets on phones (secondary text links) */
 @media (max-width: 640px) {
-  .footer__col { gap: 0.35rem; }
-  .footer__col a { padding-block: 0.28rem; }
-  .footer__legal { gap: 1.6rem; }
-  .footer__legal a { padding-block: 0.28rem; }
+  .footer__col { gap: 0.1rem; }
+  .footer__col a { padding-block: 0.62rem; }
+  .footer__col span { padding-block: 0.28rem; }
+  .footer__legal { gap: 0.6rem 1.6rem; flex-wrap: wrap; }
+  .footer__legal a { padding-block: 0.5rem; display: inline-block; }
 }
 
 /* =============================================================================
@@ -1608,7 +1616,7 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
     radial-gradient(70% 58% at 84% -4%, rgba(20, 132, 97, 0.06), transparent 60%),
     linear-gradient(180deg, #f2ece0, #ece4d3);
 }
-.pp-about .chapter-eyebrow, .pp-related .chapter-eyebrow { color: color-mix(in oklab, var(--gold) 78%, var(--ink)); }
+.pp-about .chapter-eyebrow, .pp-related .chapter-eyebrow { color: var(--em-base); }
 
 /* profile body — bio + sidebar */
 .pp-about__wrap { display: grid; grid-template-columns: 1.55fr 0.95fr; gap: clamp(2rem, 5vw, 4.5rem); align-items: start; }
@@ -1619,7 +1627,7 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 
 .pp-about__side { display: flex; flex-direction: column; gap: clamp(1.6rem, 3vw, 2.2rem); }
 .pp-side__block { padding-top: 1.2rem; border-top: 1px solid var(--line); }
-.pp-side__k { font-family: ui-monospace, Menlo, monospace; font-size: 0.64rem; letter-spacing: 0.18em; text-transform: uppercase; color: color-mix(in oklab, var(--gold) 72%, var(--ink)); margin: 0 0 0.95rem; }
+.pp-side__k { font-family: ui-monospace, Menlo, monospace; font-size: 0.64rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--em-base); margin: 0 0 0.95rem; }
 .pp-side__list li { font-size: 0.84rem; }
 .pp-chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
 .pp-chips li { font-family: var(--ff-text); font-size: 0.74rem; letter-spacing: 0.005em; color: color-mix(in oklab, var(--ink) 74%, transparent); padding: 0.4rem 0.72rem; border: 1px solid rgba(6, 77, 57, 0.18); border-radius: 999px; background: rgba(255, 251, 243, 0.5); }
@@ -1633,7 +1641,7 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 .pp-people__photo { flex: none; width: 64px; height: 64px; border-radius: 50%; overflow: hidden; border: 1px solid var(--em-base); }
 .pp-people__photo img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
 .pp-people__meta { display: flex; flex-direction: column; gap: 0.18rem; min-width: 0; }
-.pp-people__cat { font-family: ui-monospace, Menlo, monospace; font-size: 0.54rem; letter-spacing: 0.14em; text-transform: uppercase; line-height: 1.35; color: color-mix(in oklab, var(--gold) 74%, var(--ink)); }
+.pp-people__cat { font-family: ui-monospace, Menlo, monospace; font-size: 0.54rem; letter-spacing: 0.14em; text-transform: uppercase; line-height: 1.35; color: var(--em-base); }
 .pp-people__name { font-family: var(--ff-display); font-size: clamp(1.08rem, 1.6vw, 1.28rem); line-height: 1.15; color: var(--em-base); }
 .pp-people__more { font-family: var(--ff-text); font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase; color: color-mix(in oklab, var(--ink) 50%, transparent); margin-top: 0.2rem; transition: color 300ms var(--ease-quiet); }
 .pp-people__card:hover .pp-people__more { color: color-mix(in oklab, var(--gold) 78%, var(--ink)); }
@@ -1649,7 +1657,7 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
   padding-top: clamp(9rem, 18vh, 12rem); }
 .bj-inner { max-width: 56rem; margin-inline: auto; }
 .bj-head { text-align: center; max-width: 44rem; margin-inline: auto; }
-.bj-eyebrow { display: inline-block; color: color-mix(in oklab, var(--gold) 68%, var(--ink)); }
+.bj-eyebrow { display: inline-block; color: var(--em-base); }
 .bj-title { font-family: var(--ff-display); font-weight: 400; color: var(--em-base);
   font-size: clamp(2.1rem, 4.4vw, 3.4rem); line-height: 1.08; letter-spacing: -0.02em;
   margin: 1.1rem 0 0; text-wrap: balance; }
@@ -1666,7 +1674,7 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 .bj-field { display: flex; flex-direction: column; gap: 0.5rem; min-width: 0; }
 .bj-field--full { grid-column: 1 / -1; }
 .bj-label { font-family: ui-monospace, Menlo, monospace; font-size: 0.62rem; letter-spacing: 0.16em;
-  text-transform: uppercase; color: color-mix(in oklab, var(--gold) 66%, var(--ink)); }
+  text-transform: uppercase; color: var(--em-base); }
 .bj-input { width: 100%; font-family: var(--ff-text); font-size: 0.95rem; color: var(--ink);
   background: #fffdf7; border: 1px solid rgba(6, 77, 57, 0.2); border-radius: 11px;
   padding: 0.8rem 0.95rem; transition: border-color 260ms var(--ease-quiet), box-shadow 260ms var(--ease-quiet), background-color 260ms var(--ease-quiet); }
@@ -1705,7 +1713,7 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 .legal__head { border-bottom: 1px solid var(--line);
   padding-bottom: clamp(1.6rem, 3vw, 2.2rem); margin-bottom: clamp(2rem, 4vw, 3rem); }
 .legal__eyebrow { display: inline-flex; align-items: center; gap: 0.5rem;
-  color: color-mix(in oklab, var(--gold) 72%, var(--ink)); }
+  color: var(--em-base); }
 .legal__crumb { color: inherit; text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 300ms var(--ease-quiet); }
 .legal__crumb:hover { border-bottom-color: currentColor; }
 .legal__title { font-family: var(--ff-display); font-weight: 400; color: var(--em-base);

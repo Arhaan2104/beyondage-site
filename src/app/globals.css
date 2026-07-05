@@ -557,11 +557,16 @@ body::after {
    Warm chapter — the narrative emerges into light
    ========================================================================== */
 .warm {
-  position: relative; z-index: 2; color: var(--ink);
-  background:
-    radial-gradient(rgba(14, 38, 28, 0.05) 1px, transparent 1.5px) 0 0 / 26px 26px,
-    linear-gradient(180deg, #f2ece0, #ece4d3);
+  position: relative; z-index: 2; color: var(--ivory);
 }
+/* Health Journeys runs on the dark emerald ground (the site's "headline moment"
+   treatment). Flip the section chrome to ivory/gold; the instrument cards stay
+   luminous cream and float on the dark, like the Dashboard section. */
+.warm .chapter-title { color: var(--ivory); }
+.warm .chapter-eyebrow { color: var(--gold); }
+.warm .chapter-title em { color: var(--gold); }
+.warm .lede { color: color-mix(in oklab, var(--ivory) 74%, transparent); }
+.warm .jrny-note { color: color-mix(in oklab, var(--ivory) 46%, transparent); }
 .chapter-eyebrow { display: inline-flex; align-items: center; gap: 0.6rem; margin-bottom: 1.4rem; color: color-mix(in oklab, var(--gold) 78%, var(--ink)); }
 .chapter-title {
   font-family: var(--ff-display); font-weight: 400; color: var(--em-base);
@@ -935,8 +940,9 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 .wyg { position: relative; color: var(--ink); background:
   radial-gradient(rgba(14, 38, 28, 0.05) 1.1px, transparent 1.4px) 0 0 / 30px 30px,
   linear-gradient(180deg, #f5efe3, #efe6d6); }
-.wyg-head { max-width: 60rem; }
-.wyg-title { max-width: 20ch; }
+.wyg-head { max-width: 60rem; margin-inline: auto; text-align: center; }
+.wyg-title { max-width: 22ch; margin-inline: auto; }
+.wyg-head .lede { margin-inline: auto; }
 .wyg-grid { margin-top: clamp(2.6rem, 5vw, 4rem); display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1rem, 2vw, 1.5rem); }
 @media (max-width: 900px) { .wyg-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 560px) { .wyg-grid { grid-template-columns: 1fr; } }
@@ -1222,70 +1228,27 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 .why-inst__caption { font-family: var(--ff-display); font-style: italic; font-size: clamp(1rem, 1.4vw, 1.2rem); color: color-mix(in oklab, var(--em-base) 84%, transparent); text-align: right; }
 @media (max-width: 620px) { .why-inst__cap { justify-content: flex-start; } .why-inst__caption { text-align: left; } }
 
-/* --- method: signal → the bench → your life --- */
-.why-method { margin: clamp(3.4rem, 6vw, 5.2rem) auto 0; max-width: 62rem; text-align: center; }
-.why-method__lead { font-family: var(--ff-display); font-weight: 400; font-size: clamp(1.2rem, 2vw, 1.62rem); line-height: 1.42; color: color-mix(in oklab, var(--ivory) 92%, transparent); max-width: 40ch; margin: 0 auto; text-wrap: balance; }
-.why-method__lead em { font-style: italic; color: var(--gold); }
-.why-flow { display: flex; align-items: stretch; gap: 0.5rem; margin-top: clamp(2.2rem, 4vw, 3.2rem); }
-.why-node { position: relative; flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 0.7rem;
-  padding: clamp(1.4rem, 2.2vw, 1.9rem) clamp(1rem, 1.7vw, 1.5rem);
-  background: linear-gradient(180deg, #f7f0e0 0%, #efe5cd 100%);
-  border: 1px solid rgba(160,130,74,0.3); border-radius: 18px;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), 0 2px 4px rgba(14,38,28,0.05), 0 30px 60px -48px rgba(6,77,57,0.42);
-  transition: transform 500ms var(--ease-quiet), border-color 500ms var(--ease-quiet), box-shadow 500ms var(--ease-quiet); }
-/* matching paper grain, behind the content */
-.why-node > * { position: relative; z-index: 1; }
-.why-node::before { content: ""; position: absolute; inset: 0; border-radius: inherit; z-index: 0; pointer-events: none;
-  opacity: 0.4; mix-blend-mode: multiply; background-size: 220px 220px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.6  0 0 0 0 0.52  0 0 0 0 0.36  0 0 0 0.5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E"); }
-.why-node:hover { transform: translateY(-4px); border-color: rgba(160,130,74,0.5);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.7), 0 2px 4px rgba(14,38,28,0.05), 0 44px 80px -44px rgba(6,77,57,0.42); }
-.why-node__ico { width: 50px; height: 50px; display: grid; place-items: center; border-radius: 50%;
-  border: 1px solid rgba(6,77,57,0.2); background: radial-gradient(circle at 50% 30%, rgba(6,77,57,0.07), rgba(6,77,57,0.015));
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.7); }
-.why-node__ico svg { width: 28px; height: 28px; fill: none; stroke: var(--em-base); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
-.why-node__ico svg circle { opacity: 0.35; }
-.why-node__check { stroke: #0a8a63; }
-.why-node__k { font-family: ui-monospace, Menlo, monospace; font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: color-mix(in oklab, var(--gold) 58%, var(--ink)); }
-.why-node__t { font-size: 0.85rem; line-height: 1.55; color: color-mix(in oklab, var(--ink) 68%, transparent); max-width: 27ch; }
-.why-node--bench { border-color: rgba(160,130,74,0.45); background: linear-gradient(180deg, #f8f2e4 0%, #efe5cd 100%); }
-.why-node__faces { display: inline-flex; align-items: center; height: 50px; }
-.why-node__faces img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; object-position: top;
-  border: 1.5px solid rgba(160,130,74,0.55); box-shadow: 0 0 0 1px rgba(255,255,255,0.7), 0 3px 8px rgba(14,38,28,0.28); }
-.why-node__faces img:not(:first-child) { margin-left: -11px; }
-.why-node__more { display: inline-grid; place-items: center; width: 40px; height: 40px; margin-left: -11px; border-radius: 50%;
-  background: linear-gradient(160deg, #f1e8d4, #e6d9bf); border: 1.5px solid rgba(160,130,74,0.55); color: var(--em-base);
-  box-shadow: 0 0 0 1px rgba(255,255,255,0.6), 0 3px 8px rgba(14,38,28,0.28);
-  font-family: ui-monospace, Menlo, monospace; font-size: 0.66rem; letter-spacing: 0.02em; }
-.why-flow__link { flex: 0 0 clamp(1.6rem, 3vw, 3rem); align-self: center; position: relative; height: 1px; background: linear-gradient(90deg, rgba(217,184,108,0.05), rgba(217,184,108,0.32), rgba(217,184,108,0.05)); overflow: visible; }
-.why-flow__link i { position: absolute; top: 50%; left: 0; width: 4px; height: 4px; border-radius: 50%; background: var(--gold-bright); box-shadow: 0 0 6px rgba(217,184,108,0.7); transform: translate(-50%, -50%); animation: why-flow-dot 2.8s var(--ease-quiet) infinite; }
-.why-flow__link:last-of-type i { animation-delay: -1.4s; }
-@keyframes why-flow-dot { 0% { left: 0; opacity: 0; } 18% { opacity: 1; } 82% { opacity: 1; } 100% { left: 100%; opacity: 0; } }
-@media (max-width: 760px) {
-  .why-flow { flex-direction: column; align-items: stretch; }
-  .why-flow__link { flex-basis: 1.6rem; width: 1px; height: auto; margin-inline: auto;
-    background: linear-gradient(180deg, rgba(217,184,108,0.05), rgba(217,184,108,0.32), rgba(217,184,108,0.05)); }
-  .why-flow__link i { top: 0; left: 50%; animation-name: why-flow-dot-v; }
+/* --- the founder's shift: from treating end-stage illness to preventing it --- */
+.why-founder { margin: clamp(3.6rem, 6vw, 5.6rem) auto 0; max-width: 58rem; text-align: center; }
+.why-founder__eyebrow { display: block; margin-bottom: clamp(1.4rem, 2.6vw, 2rem); color: color-mix(in oklab, var(--gold) 72%, var(--ivory)); }
+.why-founder__photo {
+  margin: 0 auto clamp(2rem, 3.4vw, 2.8rem); width: min(100%, 460px); aspect-ratio: 3 / 2;
+  border-radius: 16px; overflow: hidden; position: relative;
+  border: 1px solid var(--line-lt); box-shadow: 0 46px 92px -54px rgba(0, 0, 0, 0.8);
 }
-@keyframes why-flow-dot-v { 0% { top: 0; opacity: 0; } 18% { opacity: 1; } 82% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
-
-/* --- programmes teaser strip — typographic, no boxes --- */
-.why-programmes { display: flex; align-items: center; justify-content: center; gap: clamp(1.2rem, 3.5vw, 3rem); flex-wrap: wrap;
-  margin: clamp(2.8rem, 5vw, 4.2rem) auto 0; padding-top: clamp(2rem, 4vw, 3rem); border-top: 1px solid var(--line-lt); max-width: 60rem; }
-.why-programmes__label { font-family: ui-monospace, Menlo, monospace; font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: color-mix(in oklab, var(--ivory) 44%, transparent); }
-.why-progs { display: inline-flex; align-items: stretch; flex-wrap: wrap; justify-content: center; }
-.why-prog { display: flex; flex-direction: column; gap: 0.28rem; text-align: center; padding: 0.1rem clamp(1.1rem, 2.6vw, 2rem); }
-.why-prog + .why-prog { border-left: 1px solid var(--line-lt); }
-.why-prog b { font-family: var(--ff-display); font-weight: 400; font-size: clamp(1.05rem, 1.5vw, 1.25rem); color: var(--gold-bright); letter-spacing: 0.01em; }
-.why-prog span { font-size: 0.72rem; letter-spacing: 0.03em; color: color-mix(in oklab, var(--ivory) 52%, transparent); }
-@media (max-width: 560px) {
-  .why-programmes { flex-direction: column; gap: 1.3rem; }
-  .why-progs { flex-direction: column; gap: 1.1rem; }
-  .why-prog + .why-prog { border-left: 0; }
-}
+.why-founder__photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 46%; display: block; }
+.why-founder__photo::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), inset 0 0 0 1px rgba(255, 255, 255, 0.04); }
+.why-founder__quote { margin: 0; font-family: var(--ff-display); font-weight: 400; color: var(--ivory);
+  font-size: clamp(1.7rem, 3.2vw, 2.55rem); line-height: 1.16; letter-spacing: -0.018em; text-wrap: balance; }
+.why-founder__quote em { font-style: italic; color: var(--gold); }
+.why-founder__bio { margin: clamp(1.5rem, 2.8vw, 2.1rem) auto 0; max-width: 58ch;
+  font-size: clamp(1rem, 1.2vw, 1.12rem); line-height: 1.66; color: color-mix(in oklab, var(--ivory) 70%, transparent); }
+.why-founder__name { margin-top: clamp(1.4rem, 2.4vw, 1.9rem); font-size: 0.92rem; letter-spacing: 0.04em; color: var(--ivory); }
+.why-founder__name span { color: color-mix(in oklab, var(--ivory) 54%, transparent); }
 
 @media (prefers-reduced-motion: reduce) {
-  .why-inst__live, .why-flow__link i { animation: none; }
+  .why-inst__live { animation: none; }
   .why-reveal-rect { width: 720px; transition: none; }
   .why-convarea, .why-beyarea { opacity: 1; transition: none; }
 }
@@ -1374,7 +1337,7 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 /* grounds — drop the shared dot, keep each gradient, add a soft light */
 .wyg  { background: radial-gradient(88% 70% at 16% -6%, rgba(255, 251, 243, 0.55), transparent 60%), linear-gradient(180deg, #f5efe3, #efe6d6); }
 .bench { background: radial-gradient(80% 60% at 50% -12%, rgba(255, 251, 243, 0.5), transparent 64%), linear-gradient(180deg, #f2ece0, #ece4d3); }
-.warm { background: radial-gradient(66% 60% at 86% -4%, rgba(20, 132, 97, 0.07), transparent 60%), linear-gradient(180deg, #f2ece0, #ece4d3); }
+.warm { background: radial-gradient(72% 62% at 84% -6%, rgba(20, 132, 97, 0.2), transparent 62%), linear-gradient(180deg, #04271c 0%, #021712 58%, #05301f 100%); }
 .how  { background: radial-gradient(70% 50% at 20% 0%, rgba(255, 251, 243, 0.5), transparent 62%), linear-gradient(180deg, #ece4d3, #f2ece0); }
 .pvc  { background: radial-gradient(66% 60% at 90% 12%, rgba(20, 132, 97, 0.07), transparent 62%), linear-gradient(180deg, #efe6d6, #f5efe3); }
 
@@ -1383,7 +1346,7 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
   content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
 }
 /* keep content above the texture + grain layers */
-.wyg > .measure, .pvc > .measure { position: relative; z-index: 1; }
+.wyg > .measure, .warm > .measure, .pvc > .measure { position: relative; z-index: 1; }
 .how-viewport { z-index: 1; }
 .footer__inner, .footer__base { position: relative; z-index: 1; }
 
@@ -1409,8 +1372,8 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
    into a subtle elevation map (distinct from Prevention's single-center radar) */
 .warm::before {
   background-image:
-    repeating-radial-gradient(circle at 20% 24%, transparent 0 25px, rgba(14, 38, 28, 0.06) 25px 26px, transparent 26px 27px),
-    repeating-radial-gradient(circle at 82% 72%, transparent 0 29px, rgba(20, 132, 97, 0.055) 29px 30px, transparent 30px 31px);
+    repeating-radial-gradient(circle at 20% 24%, transparent 0 25px, rgba(217, 184, 108, 0.05) 25px 26px, transparent 26px 27px),
+    repeating-radial-gradient(circle at 82% 72%, transparent 0 29px, rgba(20, 132, 97, 0.14) 29px 30px, transparent 30px 31px);
   -webkit-mask-image: radial-gradient(130% 112% at 50% 40%, #000 30%, transparent 88%);
   mask-image: radial-gradient(130% 112% at 50% 40%, #000 30%, transparent 88%);
 }
@@ -1437,7 +1400,7 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 }
 
 /* extend the film-grain through-line to the remaining sections */
-.wyg::after, .how::after, .pvc::after, .footer::after {
+.wyg::after, .warm::after, .how::after, .pvc::after, .footer::after {
   content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0.05; mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
@@ -1583,6 +1546,16 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 .pp-portrait__ticks i:nth-child(3) { bottom: 9px; left: 9px; border-right: 0; border-top: 0; }
 .pp-portrait__ticks i:nth-child(4) { bottom: 9px; right: 9px; border-left: 0; border-top: 0; }
 @media (max-width: 900px) { .pp-portrait { max-width: 24rem; } }
+
+/* Profile body is light. The .warm class is now the homepage's DARK journeys
+   section; these pages reuse it only for layout/texture, so restore a legible
+   light ground — otherwise the dark-ink bio, sidebar and chips sit on green. */
+.pp-about, .pp-related {
+  background:
+    radial-gradient(70% 58% at 84% -4%, rgba(20, 132, 97, 0.06), transparent 60%),
+    linear-gradient(180deg, #f2ece0, #ece4d3);
+}
+.pp-about .chapter-eyebrow, .pp-related .chapter-eyebrow { color: color-mix(in oklab, var(--gold) 78%, var(--ink)); }
 
 /* profile body — bio + sidebar */
 .pp-about__wrap { display: grid; grid-template-columns: 1.55fr 0.95fr; gap: clamp(2rem, 5vw, 4.5rem); align-items: start; }

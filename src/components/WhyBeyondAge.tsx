@@ -38,7 +38,6 @@ export default function WhyBeyondAge() {
                 </blockquote>
                 <p className="why-founder__name">
                   Dr. Arvinder Soin, Founder and Chairman, Padma Shri.
-                  <span>5000 transplants.</span>
                 </p>
               </div>
             </div>

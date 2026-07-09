@@ -37,7 +37,15 @@ export default function WhyBeyondAge() {
                   harder fight is making sure <em>they never arrive.</em>&rdquo;
                 </blockquote>
                 <p className="why-founder__name">
-                  Dr. Arvinder Soin, Founder and Chairman, Padma Shri.
+                  <span className="why-founder__name-line">
+                    Dr. Arvinder Soin, Founder and Chairman,
+                  </span>
+                  <span className="why-founder__name-awards">
+                    Padma Shri.{" "}
+                    <span className="why-founder__name-divider" aria-hidden="true" />
+                    {" "}
+                    <span className="why-founder__name-metric">≈5000 transplants.</span>
+                  </span>
                 </p>
               </div>
             </div>

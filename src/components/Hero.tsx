@@ -36,12 +36,6 @@ export default function Hero() {
           </div>
         </div>
       </div>
-
-      <p className="hero-byline">
-        <span aria-hidden="true" className="hero-byline__rule" />
-        Built by India&rsquo;s most respected physicians
-        <span aria-hidden="true" className="hero-byline__rule" />
-      </p>
     </section>
   );
 }

@@ -333,24 +333,6 @@ body::after {
 }
 .hero-actions { margin-top: clamp(1.8rem, 3.4vh, 2.5rem); animation: fade-rise 1000ms var(--ease-quiet) 600ms both; }
 
-/* bottom-centre credit — a quiet, letter-pressed byline flanked by fading rules */
-.hero-byline {
-  position: absolute; z-index: 4; left: 50%; bottom: clamp(1rem, 2.6vh, 2rem);
-  transform: translateX(-50%); margin: 0; max-width: calc(100% - 2rem);
-  display: inline-flex; align-items: center; gap: clamp(0.55rem, 1.6vw, 0.95rem);
-  font-family: var(--ff-text); font-size: 0.64rem; font-weight: 500;
-  letter-spacing: 0.22em; text-transform: uppercase; white-space: nowrap;
-  color: color-mix(in oklab, var(--em-base) 78%, transparent);
-  animation: fade-in 1000ms var(--ease-quiet) 880ms both;
-}
-.hero-byline__rule { width: clamp(16px, 4vw, 34px); height: 1px; flex: none;
-  background: linear-gradient(90deg, transparent, color-mix(in oklab, var(--em-base) 40%, transparent)); }
-.hero-byline__rule:last-child { background: linear-gradient(90deg, color-mix(in oklab, var(--em-base) 40%, transparent), transparent); }
-@media (max-width: 560px) {
-  .hero-byline { display: block; text-align: center; white-space: normal; max-width: 20rem;
-    font-size: 0.58rem; letter-spacing: 0.15em; line-height: 1.5; }
-  .hero-byline__rule { display: none; }
-}
 .hero-cred {
   margin-top: clamp(2rem, 4vh, 2.8rem); padding-top: 1.4rem; border-top: 1px solid var(--line);
   display: flex; align-items: center; gap: 0.75rem; font-size: 0.82rem; line-height: 1.4;
@@ -1672,7 +1654,14 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
   background: linear-gradient(90deg,
     color-mix(in oklab, var(--gold) 44%, transparent),
     color-mix(in oklab, var(--gold) 14%, transparent) 60%, transparent); }
-.why-founder__name span { display: block; margin-top: 0.15rem; color: color-mix(in oklab, var(--gold) 72%, var(--ivory)); }
+.why-founder__name-line { display: block; white-space: nowrap; }
+.why-founder__name-awards { display: block; margin-top: 0.15rem; color: color-mix(in oklab, var(--gold) 72%, var(--ivory)); }
+.why-founder__name-divider { display: inline-block; width: 1px; height: 0.86em; margin-inline: 0.72rem;
+  vertical-align: -0.12em; background: color-mix(in oklab, var(--gold) 36%, transparent); }
+.why-founder__name-metric { color: inherit; }
+@media (max-width: 520px) {
+  .why-founder__name-line { white-space: normal; }
+}
 
 @media (prefers-reduced-motion: reduce) {
   .why-inst__live { animation: none; }
@@ -2104,13 +2093,6 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
   .cfp, .why, .wyg, #journeys.section, .pvc, .how {
     padding-top: clamp(6.15rem, 21vw, 7rem);
   }
-
-  .hero-byline {
-    font-size: 0.62rem;
-    letter-spacing: 0.13em;
-    max-width: 17rem;
-  }
-
   .film, .why-split__media, .hero-media__housing {
     min-width: 0;
     max-width: 100%;

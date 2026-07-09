@@ -1,8 +1,8 @@
 import Hero from "@/components/Hero";
 import SiteHeader from "@/components/SiteHeader";
+import CaseForPrevention from "@/components/CaseForPrevention";
 import HowItWorks from "@/components/HowItWorks";
 import WhatYouGet from "@/components/WhatYouGet";
-import HealthspanDashboard from "@/components/HealthspanDashboard";
 import PreventionVsCure from "@/components/PreventionVsCure";
 import WhyBeyondAge from "@/components/WhyBeyondAge";
 import HealthJourneys from "@/components/HealthJourneys";
@@ -18,7 +18,8 @@ const FOUNDERS: Founder[] = [
   {
     name: "Dr Arvinder Soin",
     role: "Founder & Chairman",
-    cred: "Padma Shri. India's liver-transplant pioneer, close to 5,000 transplants.",
+    honor: "Padma Shri",
+    cred: "India's liver-transplant pioneer, close to 5,000 transplants.",
     href: `${TEAM_BASE}/dr-arvind-soin`,
     video: "/assets/soin-interview.mp4",
     poster: "/assets/soin-poster.jpg",
@@ -78,17 +79,33 @@ export default function Home() {
       <main>
         <Hero />
 
-        {/* Why BeyondAge — the thesis: silent disease, caught early, by the bench */}
+        {/* The case for prevention — the thesis stated in numbers */}
+        <CaseForPrevention />
+
+        {/* Why BeyondAge — the founder's film and his defining statement */}
         <WhyBeyondAge />
+
+        {/* What you get — concrete deliverables (real site content) */}
+        <WhatYouGet />
+
+        {/* Health Journeys — bespoke medical instruments per programme */}
+        <HealthJourneys />
+
+        {/* Why not a normal check-up — the comparison + the 5 P's framework */}
+        <PreventionVsCure />
+
+        {/* How it works — Mederva-style pinned scroll reveal */}
+        <HowItWorks />
 
         {/* The bench — founders featured, then the specialist roster */}
         <section className="section bench" id="team">
           <div className="measure">
             <div className="reveal bench-head">
               <h2 className="bench-title">
-                <span className="bench-title__line">Some of the country&rsquo;s most respected specialists.</span>
-                <span className="bench-title__line"><em>On one bench.</em></span>
+                <span className="bench-title__line">Shaped by the country&rsquo;s</span>
+                <span className="bench-title__line"><em>most respected specialists</em>.</span>
               </h2>
+              <span className="mark-divider mark-divider--warm" aria-hidden="true" />
             </div>
 
             <div className="founders-row">
@@ -109,21 +126,6 @@ export default function Home() {
             </div>
           </div>
         </section>
-
-        {/* Health Journeys — bespoke medical instruments per programme */}
-        <HealthJourneys />
-
-        {/* What you get — concrete deliverables (real site content) */}
-        <WhatYouGet />
-
-        {/* How it works — Mederva-style pinned scroll reveal */}
-        <HowItWorks />
-
-        {/* See the product — real member dashboard, rebuilt native */}
-        <HealthspanDashboard />
-
-        {/* Why not a normal check-up — the comparison + the 5 P's framework */}
-        <PreventionVsCure />
 
         {/* Invitation */}
         <section className="section invitation" id="invitation">

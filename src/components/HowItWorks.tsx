@@ -122,8 +122,11 @@ export default function HowItWorks() {
     <section ref={secRef} className="section how" id="how">
       <div className="how-viewport">
         <div className="measure how-inner">
-          <div className="reveal">
-            <h2 className="chapter-title how-title">How it Works</h2>
+          <div className="reveal how-head">
+            <h2 className="chapter-title how-title">
+              From first call to <em>continuous care</em>
+            </h2>
+            <span className="mark-divider" aria-hidden="true" />
           </div>
 
           <div className="how-grid">
@@ -140,8 +143,8 @@ export default function HowItWorks() {
                     aria-current={i === active}
                     onClick={() => jump(i)}
                   >
-                    <span className="how-tab__label">{s.tab}</span>
                     <span className="how-tab__num">{s.n}</span>
+                    <span className="how-tab__label">{s.tab}</span>
                   </button>
                 </li>
               ))}

@@ -15,7 +15,7 @@ const ITEMS: { variant: InstrumentVariant; title: string; text: string }[] = [
   {
     variant: "network",
     title: "A longevity specialist bench",
-    text: "A dedicated longevity physician, backed by internationally renowned specialists across every system.",
+    text: "A dedicated longevity physician, backed by internationally renowned specialists.",
   },
   {
     variant: "signal",
@@ -45,13 +45,13 @@ export default function WhatYouGet() {
       <div className="measure">
         <div className="reveal wyg-head">
           <h2 className="chapter-title wyg-title">
-            <span className="wyg-title__line">A new era of healthy ageing,</span>
-            <span className="wyg-title__line"><em>tailored to you</em>.</span>
+            A system, <em>tailored to you</em>.
           </h2>
           <p className="lede">
-            Not a one-time report, but a physician-led system: diagnostics, a plan,
-            and a team that understands your health in depth and keeps optimising it.
+            A physician-led system: diagnostics, a plan, and a team that
+            understands your health in depth and keeps optimising it.
           </p>
+          <span className="mark-divider mark-divider--warm" aria-hidden="true" />
         </div>
         <div className="wyg-grid">
           {ITEMS.map((it) => (

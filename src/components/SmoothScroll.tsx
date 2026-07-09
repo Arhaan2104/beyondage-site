@@ -8,13 +8,16 @@ export default function SmoothScroll() {
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
+    const anchorTarget = (el: Element) =>
+      window.scrollY + el.getBoundingClientRect().top - 16;
+
     const lenis = new Lenis({
       duration: 1.15,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
       wheelMultiplier: 0.95,
       touchMultiplier: 1.4,
-      anchors: { offset: -20 },
+      anchors: false,
     });
     // expose for debugging / programmatic scroll
     (window as unknown as { lenis?: unknown }).lenis = lenis;
@@ -37,7 +40,7 @@ export default function SmoothScroll() {
       const el = document.querySelector(href);
       if (!el) return;
       e.preventDefault();
-      lenis.scrollTo(el as HTMLElement, { offset: -10 });
+      lenis.scrollTo(anchorTarget(el));
       history.replaceState(null, "", href);
     };
     document.addEventListener("click", onClick);

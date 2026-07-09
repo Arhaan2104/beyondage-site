@@ -11,13 +11,15 @@ import { useRef, useState } from "react";
 export type Founder = {
   name: string;
   role: string;
+  /** National honour written after the name (e.g. "Padma Shri"); shown as a gold badge. */
+  honor?: string | null;
   cred: string | null;
   href: string | null;
   video: string;
   poster: string;
 };
 
-export default function FounderCard({ name, role, cred, href, video, poster }: Founder) {
+export default function FounderCard({ name, role, honor, cred, href, video, poster }: Founder) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
 
@@ -59,7 +61,14 @@ export default function FounderCard({ name, role, cred, href, video, poster }: F
         </button>
       </div>
       <div className="founder-card__meta">
-        <h3 className="founder-card__name">{name}</h3>
+        <div className="founder-card__name-row">
+          <h3 className="founder-card__name">{name}</h3>
+          {honor && (
+            <span className="founder-card__honor" title={`${honor} — national honour`}>
+              {honor}
+            </span>
+          )}
+        </div>
         <p className="founder-card__role">{role}</p>
         {cred && <p className="founder-card__cred">{cred}</p>}
         {href && (

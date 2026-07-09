@@ -10,20 +10,39 @@ import { useEffect, useRef } from "react";
  * staying on the practice's own thesis: reading the body in depth.
  *
  * Perf: a single shared rAF drives only the on-screen instruments; off-screen
- * ones are unregistered via IntersectionObserver. Reduced-motion → one static
- * frame, no loop.
+ * ones are unregistered via IntersectionObserver, and the cadence is capped
+ * (60fps desktop / 30fps touch) since the motion is slow ambient drift.
+ * Reduced-motion → one static frame, no loop. roundRect has a manual fallback
+ * for older Safari/iOS.
  */
 export type InstrumentVariant = "scan" | "network" | "signal" | "protocol" | "gauge" | "flow";
 
-/* ---- shared animation manager (one rAF for all visible instruments) ---- */
+/* ---- shared animation manager (one rAF for all visible instruments) ----
+   The motion is slow and ambient, so we cap the cadence: 60fps on desktop
+   (identical to a 60Hz reference, but halves the work on 120Hz ProMotion
+   displays) and 30fps on touch devices (imperceptible for this drift, and it
+   spares mobile CPU/GPU + battery). Frame-skipping only drops draws — the scenes
+   are time-parametrised, so motion speed is unchanged, just its refresh. */
 type Tick = (now: number) => void;
 const ticks = new Set<Tick>();
 let rafId = 0;
+let lastFrame = 0;
+let minDelta = -1; // resolved lazily, client-side, on first start
+const resolveMinDelta = () => {
+  if (typeof window === "undefined") return 1000 / 60 - 4;
+  const coarse = window.matchMedia?.("(pointer: coarse)").matches;
+  return 1000 / (coarse ? 30 : 60) - 4; // -4ms tolerance so a 60Hz display never under-runs
+};
 const runLoop = (now: number) => {
   rafId = requestAnimationFrame(runLoop);
+  if (now - lastFrame < minDelta) return; // throttle to the target cadence
+  lastFrame = now;
   for (const t of ticks) t(now);
 };
-const startLoop = () => { if (!rafId) rafId = requestAnimationFrame(runLoop); };
+const startLoop = () => {
+  if (minDelta < 0) minDelta = resolveMinDelta();
+  if (!rafId) rafId = requestAnimationFrame(runLoop);
+};
 const stopIfIdle = () => { if (rafId && ticks.size === 0) { cancelAnimationFrame(rafId); rafId = 0; } };
 
 /* ---- math ---- */
@@ -36,6 +55,22 @@ const EM = "47,174,122";       // #2fae7a
 const EM_DK = "10,138,99";     // #0a8a63
 const GOLD = "217,184,108";    // #d9b86c
 const GOLD_BR = "241,221,166"; // #f1dda6
+
+/* ctx.roundRect is absent on Safari < 16 / iOS < 16, where calling it throws and
+   would break every node. Feature-detect once and fall back to a manual path —
+   pixel-identical where native exists, correct everywhere else. */
+const HAS_ROUND_RECT =
+  typeof CanvasRenderingContext2D !== "undefined" &&
+  typeof CanvasRenderingContext2D.prototype.roundRect === "function";
+function roundRectPath(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
+  if (HAS_ROUND_RECT) { ctx.roundRect(x, y, w, h, r); return; }
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
 
 type Draw = (ctx: CanvasRenderingContext2D, W: number, H: number, t: number) => void;
 
@@ -76,7 +111,7 @@ function node(ctx: CanvasRenderingContext2D, x: number, y: number, s: number, rg
   ctx.fillStyle = `rgba(${rgb},${a})`;
   ctx.beginPath();
   const r = s * 0.32;
-  ctx.roundRect(x - s / 2, y - s / 2, s, s, r);
+  roundRectPath(ctx, x - s / 2, y - s / 2, s, s, r);
   ctx.fill();
   ctx.restore();
 }

@@ -22,7 +22,11 @@ function useInView<T extends Element>(threshold = 0.3) {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { setInView(true); return; }
+    let raf = 0;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      raf = requestAnimationFrame(() => setInView(true));
+      return () => cancelAnimationFrame(raf);
+    }
     const io = new IntersectionObserver(
       (es) => { if (es[0].isIntersecting) { setInView(true); io.disconnect(); } },
       { threshold }
@@ -38,8 +42,11 @@ function useCountUp(target: number, run: boolean, decimals = 0, duration = 1150)
   const [val, setVal] = useState(0);
   useEffect(() => {
     if (!run) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { setVal(target); return; }
     let raf = 0, start = 0;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      raf = requestAnimationFrame(() => setVal(target));
+      return () => cancelAnimationFrame(raf);
+    }
     const step = (t: number) => {
       if (!start) start = t;
       const p = Math.min(1, (t - start) / duration);

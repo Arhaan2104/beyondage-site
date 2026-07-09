@@ -19,8 +19,10 @@ const MENU: [string, string][] = [
   ["#dashboard", "The Product"],
 ];
 
-type Lenis = { stop?: () => void; start?: () => void; scrollTo?: (t: Element, o?: { offset?: number }) => void };
+type Lenis = { stop?: () => void; start?: () => void; scrollTo?: (t: Element | number, o?: { offset?: number }) => void };
 const getLenis = () => (window as unknown as { lenis?: Lenis }).lenis;
+const anchorTarget = (el: Element) =>
+  window.scrollY + el.getBoundingClientRect().top - 16;
 
 export default function SiteHeader() {
   const pathname = usePathname();
@@ -73,8 +75,8 @@ export default function SiteHeader() {
     const el = document.getElementById(hash.slice(1));
     if (!el) return;
     requestAnimationFrame(() => {
-      if (lenis?.scrollTo) lenis.scrollTo(el, { offset: -76 });
-      else el.scrollIntoView({ behavior: "smooth" });
+      if (lenis?.scrollTo) lenis.scrollTo(anchorTarget(el));
+      else window.scrollTo({ top: anchorTarget(el), behavior: "smooth" });
     });
     history.replaceState(null, "", hash);
   };

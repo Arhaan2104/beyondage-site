@@ -59,6 +59,7 @@ export default function ProfilePage({ data }: { data: TeamMember }) {
         <section className="section warm pp-about">
           <div className="measure pp-about__wrap">
             <div className="pp-about__main reveal">
+              <h2 className="pp-about__title">About</h2>
               {data.bio.map((p, i) => (
                 <p key={i} className="pp-about__p">{p}</p>
               ))}

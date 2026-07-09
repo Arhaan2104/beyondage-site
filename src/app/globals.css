@@ -304,12 +304,13 @@ body::after {
 
 .hero-inner {
   position: relative; z-index: 1; width: 100%; max-width: 1380px; margin-inline: auto;
-  display: grid; grid-template-columns: 0.92fr 1.08fr; align-items: start;
+  /* Media slot is empty for now — single column, headline holds the frame. */
+  display: grid; grid-template-columns: 1fr; align-items: start;
   gap: clamp(2rem, 5vw, 5.5rem);
   padding: clamp(6rem, 12vh, 8.5rem) clamp(1.5rem, 5vw, 5rem) clamp(3rem, 6vh, 4.5rem);
 }
 @media (max-width: 940px) {
-  .hero-inner { grid-template-columns: 1fr; gap: clamp(2.4rem, 7vw, 3.4rem);
+  .hero-inner { gap: clamp(2.4rem, 7vw, 3.4rem);
     padding-top: clamp(8.5rem, 17vh, 10.5rem); } /* clear the taller stacked navbar */
 }
 
@@ -363,13 +364,11 @@ body::after {
 .hero-cred__faces img { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; object-position: top; border: 1px solid var(--em-base); }
 .hero-cred__faces img:nth-child(2) { margin-left: -11px; }
 
-/* Playable founder film */
-.hero-media { position: relative; margin: 0; isolation: isolate; animation: fade-rise 1200ms var(--ease-quiet) 420ms both; }
-/* desktop: 10% larger film, grown from its top so its top edge stays put and
-   lines up with the eyebrow (columns are top-aligned) */
-@media (min-width: 941px) {
-  .hero-media__housing { transform: scale(1.1); transform-origin: center top; }
-}
+/* Playable founder film.
+   The housing + telemetry chrome live under the .hero-media__* namespace (kept
+   for continuity); .film is the centred wrapper it now sits in, wherever the
+   founder's story is told. */
+.film { position: relative; margin: 0 auto; isolation: isolate; max-width: 61rem; }
 /* halo so the panel floats off the field */
 .hero-media__halo {
   position: absolute; inset: -12% -9% -16% -9%; z-index: 0; pointer-events: none;
@@ -596,7 +595,6 @@ body::after {
 .warm .chapter-eyebrow { color: var(--gold); }
 .warm .chapter-title em { color: var(--gold); }
 .warm .lede { color: color-mix(in oklab, var(--ivory) 74%, transparent); }
-.warm .jrny-note { color: color-mix(in oklab, var(--ivory) 46%, transparent); }
 /* eyebrows read in emerald on light grounds (gold is low-contrast on cream);
    the DARK homepage Journeys keeps gold via `.warm .chapter-eyebrow` above. */
 .chapter-eyebrow { display: inline-flex; align-items: center; gap: 0.6rem; margin-bottom: 1.4rem; color: var(--em-base); }
@@ -610,11 +608,20 @@ body::after {
 /* Health Journeys — three bespoke medical instruments (ECG / CGM / hypnogram).
    Each card is a precision readout: mono channel strip, hairline instrument on a
    domain grid, then the programme copy and the real markers it measures. */
+/* a touch tighter than the default section rhythm — the grid of cards already
+   carries visual weight, so the surrounding air is eased in, not slashed. */
+#journeys.section { padding-block: clamp(4.5rem, 10vw, 9rem); }
+
 /* centred section heading (eyebrow is inline-flex, so text-align centres it) */
 .jrny-head { text-align: center; }
 .jrny-head .chapter-title, .jrny-head .lede { margin-inline: auto; }
-.jrny-title { max-width: none; }
+/* sized up into the display-title tier (What You Get / How It Works); the longer
+   two-line phrasing still holds one line per clause at this size */
+.jrny-title { max-width: none; font-size: clamp(2.4rem, 4.8vw, 4.3rem);
+  line-height: 1.08; letter-spacing: -0.016em; }
 .jrny-title__line { display: block; }
+/* the BeyondAge logo divider, centred in the gap between the subhead and the cards */
+.jrny-head .mark-divider { margin-top: clamp(2.6rem, 5vw, 4rem); }
 /* Health Journeys lede — three stacked statements: the credibility claim, the
    programmes sentence, then the payoff isolated on its own line. */
 .jrny-lede { display: flex; flex-direction: column; text-wrap: balance; }
@@ -687,8 +694,6 @@ body::after {
 .jrny:hover .jrny__more { color: color-mix(in oklab, var(--gold) 78%, var(--ink)); }
 .jrny:hover .jrny__more span { transform: translateX(3px); }
 
-.jrny-note { margin-top: clamp(1.5rem, 2.6vw, 2.1rem); font-family: var(--ff-text); font-size: 0.62rem; letter-spacing: 0.08em; color: color-mix(in oklab, var(--ink) 42%, transparent); max-width: 46ch; }
-
 @media (prefers-reduced-motion: reduce) {
   .j-trace { stroke-dashoffset: 0; transition: none; }
   .j-rem { opacity: 0.9; transition: none; }
@@ -699,23 +704,30 @@ body::after {
    The bench — full specialist roster, real portraits (dark)
    ========================================================================== */
 .bench {
+  --bench-head-gap: clamp(1.9rem, 3.8vw, 3.1rem);
   position: relative; color: var(--ink);
   background:
     radial-gradient(rgba(14, 38, 28, 0.05) 1px, transparent 1.5px) 0 0 / 26px 26px,
     linear-gradient(180deg, #f2ece0, #ece4d3);
 }
-.bench-head { text-align: center; max-width: 44rem; margin-inline: auto; }
+/* The roster sits ~11% smaller — one even, true zoom across the title, founder
+   cards and specialist photos — so it reads more comfortably. A zoom (not a
+   transform) reflows the layout, keeping type and images crisp with no gap. */
+.bench > .measure { zoom: 0.89; }
+.bench-head { text-align: center; max-width: 72rem; margin-inline: auto; }
 .bench-eyebrow { color: var(--em-base); }
 .bench-title {
+  /* sized to match the Case-for-Prevention display title; broken to two lines */
   font-family: var(--ff-display); font-weight: 600; color: var(--em-base);
-  font-size: clamp(1.9rem, 3.8vw, 3rem); line-height: 1.14; letter-spacing: -0.006em;
-  margin: 1.3rem auto 0; text-wrap: balance;
+  font-size: clamp(2.4rem, 6.1vw, 5rem); line-height: 1.04; letter-spacing: -0.02em;
+  margin: 0.4rem auto 0; text-wrap: balance;
 }
 .bench-title__line { display: block; text-wrap: balance; }
 .bench-title em { font-style: normal; font-weight: 700; color: color-mix(in oklab, var(--gold) 74%, var(--ink)); }
+.bench-head .mark-divider { margin-top: var(--bench-head-gap); }
 
 /* Founders — featured feature cards */
-.founders-row { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1rem, 2.4vw, 2rem); margin-top: clamp(2.8rem, 5vw, 4.2rem); }
+.founders-row { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1rem, 2.4vw, 2rem); margin-top: var(--bench-head-gap); }
 @media (max-width: 720px) { .founders-row { grid-template-columns: 1fr; } }
 .founder-card { display: flex; flex-direction: column; background: #fbf7ec; border: 1px solid var(--line);
   border-radius: 18px; overflow: hidden; text-decoration: none; color: inherit;
@@ -730,7 +742,23 @@ body::after {
   font-size: 0.58rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-bright);
   background: rgba(2, 22, 15, 0.46); backdrop-filter: blur(6px); padding: 4px 10px; border-radius: 999px; border: 1px solid rgba(217, 184, 108, 0.32); }
 .founder-card__meta { padding: clamp(1.2rem, 2vw, 1.7rem); }
+/* name + national-honour badge on one baseline; wraps under on narrow cards */
+.founder-card__name-row { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
 .founder-card__name { font-family: var(--ff-display); font-weight: 700; font-size: clamp(1.3rem, 2vw, 1.7rem); color: var(--em-base); }
+/* Padma Shri — a precious honour ribbon: emerald small-caps in a gold-kissed
+   capsule, prefixed by a small gold lozenge (echoes the nav crosshair marks) */
+.founder-card__honor {
+  display: inline-flex; align-items: center; gap: 0.4rem; white-space: nowrap;
+  font-family: var(--ff-text); font-size: 0.6rem; font-weight: 600;
+  letter-spacing: 0.16em; text-transform: uppercase; color: var(--em-base);
+  padding: 3px 9px 3px 8px; border-radius: 999px;
+  background: rgba(217, 184, 108, 0.16);
+  border: 1px solid rgba(184, 148, 84, 0.45);
+}
+.founder-card__honor::before {
+  content: ""; flex: none; width: 5px; height: 5px; transform: rotate(45deg);
+  background: var(--gold); box-shadow: 0 0 8px rgba(217, 184, 108, 0.5);
+}
 .founder-card__role { font-size: 0.76rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--em-base); margin-top: 0.4rem; }
 .founder-card__cred { font-size: 0.9rem; line-height: 1.5; color: color-mix(in oklab, var(--ink) 66%, transparent); margin-top: 0.75rem; max-width: 42ch; }
 .founder-card__more { display: inline-block; margin-top: 1rem; font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: color-mix(in oklab, var(--ink) 52%, transparent); text-decoration: none; transition: color 320ms var(--ease-quiet); }
@@ -824,13 +852,13 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
    emerald pill down the numbered list and crossfades the right panel.
    ========================================================================== */
 .how {
-  position: relative; color: var(--ink);
-  /* a calm cream tail below the pinned content before the dark next section —
-     border-box keeps offsetHeight at 440vh so the scroll-step timing is unchanged */
+  position: relative; color: var(--ivory);
+  /* a deep-emerald tail below the pinned content that flows into the dark
+     Dashboard section — border-box keeps offsetHeight at 440vh so the
+     scroll-step timing is unchanged. The effective ground (with its emerald
+     top-light) is set in the section-texture block below; this is the base. */
   padding: 0 0 clamp(4rem, 8vh, 8rem); height: 440vh;
-  background:
-    radial-gradient(rgba(14, 38, 28, 0.05) 1px, transparent 1.5px) 0 0 / 30px 30px,
-    linear-gradient(180deg, #ece4d3, #f2ece0);
+  background: linear-gradient(180deg, #04271c 0%, #021712 58%, #02150e 100%);
 }
 .how-viewport {
   position: sticky; top: 0; height: 100vh; overflow: hidden;
@@ -841,46 +869,108 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
      full clearance on normal displays and gracefully shrinks toward zero on very
      short viewports — keeping the content visible instead of clipping the last
      step. */
-  padding-top: clamp(0px, calc(100vh - 790px), 7rem);
+  padding-top: clamp(0px, calc(100vh - 756px), 7rem);
 }
 .how-inner { width: 100%; padding-inline: clamp(1.5rem, 5vw, 6rem); }
-.how-title { max-width: 26ch; }
+/* centred header: eyebrow, title, and one-line subhead all stacked centre.
+   Title scaled up to the display-title family (hero / prevention / bench). */
+.how-head { text-align: center; }
+.how-title { max-width: 18ch; margin-inline: auto;
+  font-size: clamp(2.11rem, 5.37vw, 4.4rem); line-height: 1.02; letter-spacing: -0.02em; }
+/* a tapered gold hairline resolving on a small diamond node — echoes the nav's
+   diamond mark. The line fades to nothing at both ends and appears to pass
+   behind the node (a ground-coloured ring), so it reads as a struck detail,
+   not a drawn-on rule. */
+/* Reusable gold divider crowned with the BeyondAge logomark. --rule-gold lets a
+   ground tune the gold: luminous on dark, deepened for contrast on light cream. */
+.mark-divider { --rule-gold: var(--gold);
+  display: block; position: relative;
+  margin: clamp(0.7rem, 1.4vw, 1.05rem) auto 0;
+  width: clamp(8rem, 16vw, 11.5rem); height: 1px;
+  /* two gold segments that peak either side and fade to nothing at the centre,
+     leaving a clear gap for the BeyondAge mark to rest in */
+  background: linear-gradient(90deg,
+    transparent 0%,
+    color-mix(in oklab, var(--rule-gold) 55%, transparent) 16%,
+    var(--rule-gold) 34%,
+    color-mix(in oklab, var(--rule-gold) 40%, transparent) 42%,
+    transparent 43%,
+    transparent 57%,
+    color-mix(in oklab, var(--rule-gold) 40%, transparent) 58%,
+    var(--rule-gold) 66%,
+    color-mix(in oklab, var(--rule-gold) 55%, transparent) 84%,
+    transparent 100%); }
+/* centre node — the exact BeyondAge logomark. The mark is the left 96×96 square
+   of the logo lockup; a gold chip is masked by the logo and cropped to that
+   square via mask-size/position, so no separate asset is needed. */
+.mark-divider::after { content: ""; position: absolute; left: 50%; top: 50%;
+  width: clamp(16px, 1.6vw, 20px); aspect-ratio: 1; transform: translate(-50%, -50%);
+  background: var(--rule-gold);
+  -webkit-mask: url("/assets/logo.png") left center / auto 100% no-repeat;
+  mask: url("/assets/logo.png") left center / auto 100% no-repeat;
+  filter: drop-shadow(0 0 5px color-mix(in oklab, var(--rule-gold) 38%, transparent)); }
+/* light/warm grounds: deepen the gold for legible contrast, drop the glow */
+.mark-divider--warm { --rule-gold: color-mix(in oklab, var(--gold) 70%, var(--ink)); }
+.mark-divider--warm::after { filter: none; }
+/* Dark-ground chrome — flip the section heading to ivory/gold (mirrors .warm) */
+.how .chapter-eyebrow { color: var(--gold); }
+.how .chapter-title { color: var(--ivory); }
+.how .chapter-title em { color: var(--gold); }
 
 .how-grid {
   margin-top: clamp(2.2rem, 4.5vw, 3.6rem);
   display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
   gap: clamp(1.8rem, 4.5vw, 4.5rem); align-items: stretch;
 }
+/* Pinned desktop view: scale the whole five-step grid (tabs, text, images) down
+   ~11% — evenly, one uniform transform — so it and the larger title both sit
+   comfortably in the pinned frame. */
+@media (min-width: 861px) {
+  .how-grid { transform: scale(0.89); transform-origin: top center; }
+}
 
 /* Left — the numbered list with a sliding emerald pill */
 .how-tabs {
   position: relative; list-style: none; margin: 0; padding: 0;
   display: grid; grid-template-rows: repeat(5, 1fr); min-height: 27rem;
+  /* hug the widest step so the lit pill wraps the labels rather than stretching
+     the full column — the dead space to its right is reclaimed as breathing room */
+  width: fit-content; justify-self: start;
 }
 .how-pill {
   position: absolute; left: 0; right: 0; top: 0; height: 20%; z-index: 0;
   border-radius: 22px;
-  background: linear-gradient(158deg, var(--em-rich), var(--em-base) 56%, var(--em-deep));
-  box-shadow: 0 34px 66px -34px rgba(6, 77, 57, 0.62), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  /* the selected step lifts as a lit emerald facet on the deep field: a brighter
+     emerald gradient, a precious gold hairline, a soft emerald bloom and a fine
+     glass gloss along the top edge (echoes the hero's instrument housing) */
+  background: linear-gradient(158deg, #0e8663 0%, #0a6b4e 52%, #06503b 100%);
+  box-shadow:
+    0 30px 60px -30px rgba(2, 20, 14, 0.72),
+    0 0 44px -10px rgba(14, 110, 80, 0.5),
+    inset 0 0 0 1px rgba(217, 184, 108, 0.38),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
   transform: translateY(calc(var(--active, 0) * 100%));
   transition: transform 640ms var(--ease-quiet);
 }
 .how-tab-row { display: flex; }
 .how-tab {
   position: relative; z-index: 1; width: 100%; height: 100%;
-  display: flex; align-items: center; gap: 0.5rem;
+  display: flex; align-items: center; gap: clamp(0.85rem, 1.5vw, 1.25rem);
   padding: 0.6rem clamp(1.4rem, 2.4vw, 2rem);
   background: transparent; border: 0; cursor: pointer; text-align: left;
   font-family: var(--ff-display); font-weight: 700;
   font-size: clamp(1.9rem, 4.4vw, 3.1rem); line-height: 1; letter-spacing: -0.03em;
-  color: color-mix(in oklab, var(--ink) 40%, transparent);
+  color: color-mix(in oklab, var(--ivory) 44%, transparent);
   transition: color 520ms var(--ease-quiet);
 }
 .how-tab.is-active { color: var(--ivory); }
+/* leading index — a small tabular numeral in its own gutter, set above the
+   label's baseline like an editorial marginal note, muted until its step is lit */
 .how-tab__num {
-  align-self: flex-start; margin-top: 0.35em;
-  font-family: var(--ff-text); font-size: 0.78rem; font-weight: 500; letter-spacing: 0.03em;
-  color: color-mix(in oklab, var(--ink) 32%, transparent);
+  flex: 0 0 auto; align-self: center; transform: translateY(-0.55em);
+  font-family: var(--ff-text); font-variant-numeric: tabular-nums;
+  font-size: clamp(0.72rem, 0.9vw, 0.86rem); font-weight: 500; letter-spacing: 0.14em;
+  color: color-mix(in oklab, var(--ivory) 30%, transparent);
   transition: color 520ms var(--ease-quiet);
 }
 .how-tab.is-active .how-tab__num { color: var(--gold); }
@@ -896,9 +986,9 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 
 .how-viz {
   position: relative; aspect-ratio: 1.4 / 1; border-radius: 22px; overflow: hidden;
-  border: 1px solid var(--line);
-  box-shadow: 0 44px 96px -52px rgba(6, 77, 57, 0.5);
-  background: var(--em-deep);
+  border: 1px solid rgba(217, 184, 108, 0.18);
+  box-shadow: 0 44px 96px -52px rgba(2, 20, 14, 0.66), inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+  background: var(--em-black);
   animation: how-breathe 12s ease-in-out infinite;
 }
 /* The original beyondage.health step photograph, held in our emerald frame */
@@ -924,21 +1014,21 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 .how-panel__heading {
   font-family: var(--ff-display); font-weight: 700;
   font-size: clamp(1.35rem, 2.2vw, 1.8rem); line-height: 1.18; letter-spacing: -0.012em;
-  color: var(--em-base); margin: clamp(1.2rem, 2vw, 1.7rem) 0 0.7rem;
+  color: var(--ivory); margin: clamp(1.2rem, 2vw, 1.7rem) 0 0.7rem;
 }
 .how-panel__body {
   font-size: clamp(0.95rem, 1.1vw, 1.05rem); line-height: 1.62; max-width: 46ch;
-  color: color-mix(in oklab, var(--ink) 68%, transparent);
+  color: color-mix(in oklab, var(--ivory) 72%, transparent);
 }
 .how-panel__cta {
   display: inline-flex; align-items: center; gap: 0.55rem; margin-top: clamp(1.1rem, 2vw, 1.5rem);
   font-family: var(--ff-text); font-size: 0.78rem; font-weight: 500;
   letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none;
-  color: color-mix(in oklab, var(--ink) 54%, transparent);
+  color: color-mix(in oklab, var(--ivory) 60%, transparent);
   transition: color 320ms var(--ease-quiet);
 }
 .how-panel__cta span { color: var(--gold); font-size: 0.95rem; }
-.how-panel__cta:hover { color: color-mix(in oklab, var(--gold) 82%, var(--ink)); }
+.how-panel__cta:hover { color: var(--gold-bright); }
 
 @keyframes how-breathe { 0%, 100% { filter: saturate(1) brightness(1); } 50% { filter: saturate(1.06) brightness(1.05); } }
 
@@ -963,7 +1053,7 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
     content: "Step 0" counter(how-step);
     display: block; margin-bottom: 0.55rem;
     font-family: var(--ff-text); font-size: 0.68rem; font-weight: 600;
-    letter-spacing: 0.16em; text-transform: uppercase; color: var(--em-base);
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold);
   }
   .how-panel__cta { padding-block: 0.5rem; margin-top: clamp(0.8rem, 2vw, 1.1rem); }
 }
@@ -985,22 +1075,40 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 /* a slightly tighter lead-in above the title (bottom padding unchanged) */
 .wyg { padding-top: clamp(4.5rem, 9.5vw, 8.5rem); }
 .wyg-head { max-width: 60rem; margin-inline: auto; text-align: center; }
-.wyg-title { max-width: none; margin-inline: auto; }
-.wyg-title__line { display: block; }
+.wyg-title { max-width: none; margin-inline: auto;
+  font-size: clamp(2.4rem, 5.6vw, 4.5rem); line-height: 1.05; letter-spacing: -0.018em; }
 .wyg-head .lede { margin-inline: auto; }
+/* the logomark divider is centred in the band between the subhead and the card
+   grid: equal space above (its margin-top) and below (the grid's margin-top). */
+.wyg-head .mark-divider { margin-top: clamp(2.6rem, 5vw, 4rem); }
 .wyg-grid { margin-top: clamp(2.6rem, 5vw, 4rem); display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1rem, 2vw, 1.5rem); }
 @media (max-width: 900px) { .wyg-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 560px) { .wyg-grid { grid-template-columns: 1fr; } }
-.wyg-card { display: flex; flex-direction: column; background: #fbf7ec; border: 1px solid var(--line); border-radius: 16px; overflow: hidden;
-  transition: transform 400ms var(--ease-quiet), border-color 400ms var(--ease-quiet), box-shadow 400ms var(--ease-quiet); }
-.wyg-card:hover { transform: translateY(-4px); border-color: color-mix(in oklab, var(--gold) 55%, var(--line)); box-shadow: 0 40px 80px -50px rgba(6, 77, 57, 0.6); }
+.wyg-card { display: flex; flex-direction: column; background: #fbf7ec; border-radius: 16px; overflow: hidden;
+  /* premium stroke: a warm brass hairline, not a flat default border */
+  border: 1px solid color-mix(in oklab, var(--gold) 26%, var(--line));
+  /* slight, professional lift: a lit top rim + a tight contact shadow + a wide ambient one, both low-alpha */
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    0 1px 1px rgba(6, 77, 57, 0.04),
+    0 12px 26px -18px rgba(6, 77, 57, 0.26),
+    0 34px 54px -44px rgba(2, 22, 15, 0.34);
+  transition: transform 420ms var(--ease-quiet), border-color 420ms var(--ease-quiet), box-shadow 420ms var(--ease-quiet); }
+.wyg-card:hover { transform: translateY(-4px);
+  border-color: color-mix(in oklab, var(--gold) 48%, var(--line));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 2px 4px rgba(6, 77, 57, 0.06),
+    0 26px 46px -26px rgba(6, 77, 57, 0.4),
+    0 56px 84px -52px rgba(2, 22, 15, 0.4); }
 .wyg-viz { position: relative; aspect-ratio: 16 / 10; overflow: hidden;
   --glow: 47, 174, 122;
   background:
     radial-gradient(58% 66% at 50% 44%, rgba(var(--glow), 0.18), transparent 70%),
     radial-gradient(130% 100% at 50% 122%, rgba(6, 77, 57, 0.5), transparent 66%),
     linear-gradient(158deg, #063a2a, #02160f 74%, #010b08);
-  border-bottom: 1px solid var(--line);
+  /* gold seam where the dark instrument meets the ivory body */
+  border-bottom: 1px solid color-mix(in oklab, var(--gold) 32%, transparent);
   box-shadow: inset 0 0 0 1px rgba(217, 184, 108, 0.05), inset 0 0 60px -20px rgba(0, 0, 0, 0.7); }
 .wyg-viz--scan { --glow: 47, 174, 122; } .wyg-viz--network { --glow: 217, 184, 108; }
 .wyg-viz--signal { --glow: 47, 174, 122; } .wyg-viz--protocol { --glow: 217, 184, 108; }
@@ -1154,10 +1262,16 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
    ========================================================================== */
 .pvc { position: relative; color: var(--ink); background:
   radial-gradient(rgba(14, 38, 28, 0.05) 1.1px, transparent 1.4px) 0 0 / 30px 30px,
-  linear-gradient(180deg, #efe6d6, #f5efe3); }
+  linear-gradient(180deg, #efe6d6, #f5efe3);
+  /* trimmed top padding: the preceding "How it works" section already leaves a
+     cream tail, so the default section padding read as too much dead space */
+  padding-top: clamp(2.75rem, 5vw, 5rem); }
 .pvc-head { max-width: 54rem; margin-inline: auto; text-align: center; }
-.pvc-title { max-width: 24ch; margin: clamp(1rem, 2vw, 1.4rem) auto 0; }
+/* no eyebrow: the title leads, slightly larger, sitting high in the section */
+.pvc-title { max-width: 28ch; margin: 0 auto;
+  font-size: clamp(2.2rem, 4.7vw, 3.7rem); line-height: 1.07; letter-spacing: -0.02em; }
 .pvc-title__line { display: block; }
+.pvc-head .mark-divider { margin-top: clamp(1.8rem, 3.5vw, 2.6rem); }
 .pvc-title em { font-style: normal; font-weight: 700; color: color-mix(in oklab, var(--gold) 80%, var(--ink)); }
 
 /* --- Contrast, drawn as two signals: reactive flat trace vs BeyondAge live --- */
@@ -1223,56 +1337,166 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
   .pvc-vs.is-in .pvc-vs__new .pvc-vs__list li { opacity: 1; transform: none; transition-delay: calc(var(--i) * 110ms + 520ms); }
 }
 
-/* --- The five P's: a living spine — stations light in sequence, a gold pulse flows --- */
-.pvc-5p { margin: clamp(3.6rem, 7vw, 6rem) auto 0; max-width: 50rem; }
-.pvc-5p__title { text-align: center; font-family: var(--ff-text); font-size: 0.66rem;
-  font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase;
-  color: color-mix(in oklab, var(--ink) 44%, transparent); margin: 0 0 clamp(1.8rem, 3.5vw, 2.8rem); }
-.pvc-spine { position: relative; list-style: none; margin: 0; padding: 0; }
-.pvc-spine__rail { position: absolute; left: 6px; width: 2px; top: 0.8rem; bottom: 0.8rem; border-radius: 2px; transform-origin: top;
-  background: linear-gradient(180deg, rgba(217,184,108,0.12), rgba(217,184,108,0.72) 12%, rgba(217,184,108,0.72) 88%, rgba(217,184,108,0.12)); }
-.pvc-spine__pulse { position: absolute; left: 7px; top: 0; width: 8px; height: 8px; border-radius: 50%; z-index: 3; pointer-events: none;
-  transform: translate(-50%, -50%); background: var(--gold-bright); box-shadow: 0 0 12px 3px rgba(217,184,108,0.6); opacity: 0; }
-@media (prefers-reduced-motion: no-preference) {
-  .pvc-spine__rail { transform: scaleY(0); }
-  .pvc-5p.is-in .pvc-spine__rail { transform: scaleY(1); transition: transform 1300ms var(--ease-quiet); }
-  .pvc-5p.is-in .pvc-spine__pulse { animation: pvc-flow 4.8s var(--ease-quiet) 2s infinite; }
-}
-@keyframes pvc-flow { 0% { top: 0%; opacity: 0; } 10% { opacity: 1; } 88% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
+/* --- The five P's: a horizontal process rail — stations light in sequence,
+   a gold pulse travels the line, each station lifts on hover --- */
+.pvc-5p { margin: clamp(2.2rem, 4.5vw, 3.4rem) auto 0; max-width: 74rem; }
+.pvc-5p__title { text-align: center; font-family: var(--ff-text); font-size: 0.8rem;
+  font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase;
+  color: color-mix(in oklab, var(--ink) 58%, transparent); margin: 0 0 clamp(2rem, 4vw, 3rem); }
 
-.pvc-p { position: relative; display: grid; grid-template-columns: minmax(8.5rem, 0.8fr) 1.5fr;
-  gap: 0.3rem clamp(1.5rem, 3vw, 2.6rem); align-items: baseline;
-  padding: clamp(1.2rem, 2.4vw, 1.9rem) 0 clamp(1.2rem, 2.4vw, 1.9rem) clamp(2.2rem, 4vw, 3rem); }
-.pvc-p + .pvc-p { border-top: 1px solid rgba(14,38,28,0.09); }
-@media (max-width: 620px) { .pvc-p { grid-template-columns: 1fr; gap: 0.45rem; } }
-.pvc-p__node { position: absolute; left: 0.5px; top: clamp(1.55rem, 2.9vw, 2.25rem); z-index: 2;
-  width: 13px; height: 13px; border-radius: 50%; background: #f5efe3;
-  border: 1.5px solid color-mix(in oklab, var(--gold) 60%, var(--ink)); box-shadow: 0 0 0 4px #f2ebdd; }
-.pvc-5p.is-in .pvc-p__node { background: var(--gold); border-color: var(--gold);
-  box-shadow: 0 0 0 4px #f2ebdd, 0 0 12px rgba(217,184,108,0.6); }
+.pvc-track { position: relative; list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: clamp(1rem, 2.1vw, 2rem); }
+/* the rail runs horizontally through the node row near the top */
+.pvc-track__rail { position: absolute; top: 6px; left: 0; right: 0; height: 2px; border-radius: 2px; transform-origin: left center;
+  background: linear-gradient(90deg, rgba(217,184,108,0.12), rgba(217,184,108,0.7) 7%, rgba(217,184,108,0.7) 93%, rgba(217,184,108,0.12)); }
 @media (prefers-reduced-motion: no-preference) {
-  .pvc-p__node { transition: background 420ms var(--ease-quiet), border-color 420ms var(--ease-quiet), box-shadow 420ms var(--ease-quiet);
-    transition-delay: calc(var(--i) * 200ms + 360ms); }
+  .pvc-track__rail { transform: scaleX(0); }
+  .pvc-5p.is-in .pvc-track__rail { transform: scaleX(1); transition: transform 1300ms var(--ease-quiet); }
 }
-.pvc-p__head { display: flex; flex-direction: column; gap: 0.32rem; }
-.pvc-p__n { font-family: ui-monospace, Menlo, monospace; font-size: 0.62rem; letter-spacing: 0.16em;
+
+.pvc-pp { position: relative; display: flex; flex-direction: column; gap: 0.55rem;
+  padding-top: clamp(1.7rem, 3vw, 2.3rem); }
+.pvc-pp__node { position: absolute; top: 6px; left: 0; z-index: 2;
+  width: 13px; height: 13px; border-radius: 50%; background: #f5efe3; transform: translateY(-50%);
+  border: 1.5px solid color-mix(in oklab, var(--gold) 60%, var(--ink)); box-shadow: 0 0 0 4px #f1e8d9; }
+.pvc-5p.is-in .pvc-pp__node { background: var(--gold); border-color: var(--gold);
+  box-shadow: 0 0 0 4px #f1e8d9, 0 0 12px rgba(217,184,108,0.6); }
+.pvc-pp__n { font-family: ui-monospace, Menlo, monospace; font-size: 0.62rem; letter-spacing: 0.16em;
   color: color-mix(in oklab, var(--gold) 70%, var(--ink)); }
-.pvc-p__word { font-family: var(--ff-display); font-weight: 700; font-size: clamp(1.4rem, 2.4vw, 1.9rem);
-  line-height: 1; letter-spacing: -0.01em; color: var(--em-base); }
-.pvc-p__body { font-size: clamp(0.9rem, 1.15vw, 1rem); line-height: 1.55;
+.pvc-pp__word { font-family: var(--ff-display); font-weight: 700; font-size: clamp(1.2rem, 1.9vw, 1.7rem);
+  line-height: 1; letter-spacing: -0.01em; color: var(--em-base); transition: color 320ms var(--ease-quiet); }
+.pvc-pp__body { font-size: clamp(0.86rem, 1.02vw, 0.98rem); line-height: 1.5;
   color: color-mix(in oklab, var(--ink) 62%, transparent); }
-@media (prefers-reduced-motion: no-preference) {
-  .pvc-p { opacity: 0; transform: translateY(14px);
-    transition: opacity 700ms var(--ease-quiet), transform 700ms var(--ease-quiet); }
-  .pvc-5p.is-in .pvc-p { opacity: 1; transform: none; transition-delay: calc(var(--i) * 180ms + 300ms); }
+@media (hover: hover) {
+  .pvc-pp:hover .pvc-pp__word { color: color-mix(in oklab, var(--em-base) 76%, var(--gold)); }
+  .pvc-pp:hover .pvc-pp__node { transform: translateY(-50%) scale(1.18);
+    box-shadow: 0 0 0 4px #f1e8d9, 0 0 16px rgba(217,184,108,0.85); }
 }
+@media (prefers-reduced-motion: no-preference) {
+  .pvc-pp__node { transition: transform 320ms var(--ease-quiet), background 420ms var(--ease-quiet),
+    border-color 420ms var(--ease-quiet), box-shadow 420ms var(--ease-quiet);
+    transition-delay: 0ms, calc(var(--i) * 200ms + 360ms), calc(var(--i) * 200ms + 360ms), calc(var(--i) * 200ms + 360ms); }
+  .pvc-pp { opacity: 0; transform: translateY(14px);
+    transition: opacity 700ms var(--ease-quiet), transform 700ms var(--ease-quiet); }
+  .pvc-5p.is-in .pvc-pp { opacity: 1; transform: none; transition-delay: calc(var(--i) * 140ms + 300ms); }
+}
+/* two rows, then a single column — the rail belongs to the wide layout only */
+@media (max-width: 860px) {
+  .pvc-track { grid-template-columns: repeat(2, 1fr); gap: clamp(1.6rem, 4vw, 2.2rem); }
+  .pvc-track__rail { display: none; }
+  .pvc-pp { padding-top: 0; padding-left: 1.4rem; }
+  .pvc-pp__node { top: 0.35rem; transform: none; }
+  @media (hover: hover) { .pvc-pp:hover .pvc-pp__node { transform: scale(1.18); } }
+}
+@media (max-width: 480px) { .pvc-track { grid-template-columns: 1fr; } }
+
+/* the instrument sits below the framework, rendered 20% smaller */
+.pvc-inst { margin-top: clamp(2.6rem, 5vw, 4.2rem); }
+.pvc-inst .why-inst { margin-top: 0; max-width: 48.8rem; }
 
 /* =============================================================================
    Why BeyondAge — the thesis chapter (dark). A cinematic manifesto: the premise
    told once, plainly, with a single operable diagnostic instrument as proof,
    then the method (signal → the bench → your life) and the three programmes.
    ========================================================================== */
+/* =============================================================================
+   The case for prevention — the thesis stated in numbers (warm, light).
+   Editorial header, then three readouts that tally up on scroll.
+   ========================================================================== */
+.cfp { position: relative; overflow: hidden; color: var(--ink);
+  background: linear-gradient(180deg, #f6f0e4 0%, #f1e8d9 100%); }
+
+/* felt technical texture — an instrument grid cohesive with the hero's engraved
+   dots but its own motif: a fine X marks every cell, a dot every vertex. Held
+   richer toward the header and softened over the readouts, and feathered on the
+   diagonal (echoing the hero mask) so it's sensed rather than seen. */
+.cfp::before {
+  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    radial-gradient(74% 58% at 80% 6%, rgba(10, 107, 78, 0.045), transparent 62%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='42' height='42'%3E%3Ccircle cx='0' cy='0' r='1.15' fill='%23064d39' fill-opacity='0.17'/%3E%3Cg stroke='%23064d39' stroke-opacity='0.14' stroke-width='1' stroke-linecap='round'%3E%3Cpath d='M16.5 16.5 L25.5 25.5 M25.5 16.5 L16.5 25.5'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: auto, 42px 42px;
+  -webkit-mask-image: linear-gradient(156deg, #000 0%, rgba(0,0,0,0.6) 46%, rgba(0,0,0,0.3) 100%);
+  mask-image: linear-gradient(156deg, #000 0%, rgba(0,0,0,0.6) 46%, rgba(0,0,0,0.3) 100%);
+}
+.cfp-wrap { position: relative; z-index: 1; max-width: 74rem; margin-inline: auto; }
+
+/* header sits higher — trim the section's default top padding */
+.cfp {
+  padding-top: clamp(2.2rem, 4.4vw, 4.2rem);
+  padding-bottom: clamp(3.8rem, 6.5vw, 6rem);
+}
+
+/* centred editorial lead: no supporting chart, so the title and subhead carry
+   the section as a single calm thesis before the three readouts. */
+.cfp-top { max-width: 58rem; margin-inline: auto; text-align: center; }
+.cfp-lead { min-width: 0; }
+.cfp-title { font-family: var(--ff-display); font-weight: 600; color: var(--em-base);
+  font-size: clamp(2.45rem, 4.65vw, 3.85rem); line-height: 1.02; letter-spacing: -0.024em;
+  margin: 0 auto; max-width: 12.5ch; }
+/* each thesis clause holds its own line; on the wide layout they never break
+   mid-phrase. Below 940px the section stacks and the clauses may wrap. */
+.cfp-title__line { display: block; white-space: nowrap; }
+@media (max-width: 940px) { .cfp-title__line { white-space: normal; } }
+.cfp-title em { font-style: normal; font-weight: 700;
+  color: color-mix(in oklab, var(--gold) 74%, var(--ink)); }
+/* subhead runs on a single line across the wide lead column; it wraps only once
+   the layout stacks below 940px */
+.cfp-sub { margin: clamp(1.15rem, 2vw, 1.55rem) 0 0; white-space: normal;
+  font-family: var(--ff-text); font-size: clamp(1rem, 1.35vw, 1.18rem); line-height: 1.5;
+  color: color-mix(in oklab, var(--ink) 60%, transparent); max-width: 48ch; margin-inline: auto; }
+.cfp-sub em { font-style: italic; color: color-mix(in oklab, var(--em-base) 84%, transparent); }
+@media (max-width: 940px) { .cfp-sub { white-space: normal; max-width: 40ch; } }
+
+/* readouts — a three-figure ribbon under a drawn hairline, close enough to the
+   centred thesis that the numbers feel like its proof, not a separate section. */
+.cfp-stats { position: relative; margin-top: clamp(2.4rem, 4.5vw, 3.8rem);
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.cfp-stats__rule { position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: color-mix(in oklab, var(--ink) 16%, transparent);
+  transform: scaleX(0); transform-origin: left center; }
+.cfp-stats.is-in .cfp-stats__rule { transform: scaleX(1); transition: transform 1300ms var(--ease-quiet); }
+
+.cfp-stat { padding: clamp(1.35rem, 2.4vw, 2rem) clamp(1.1rem, 2.5vw, 2rem) 0 0; }
+.cfp-stat + .cfp-stat { padding-left: clamp(1.4rem, 3vw, 2.8rem); border-left: 1px solid transparent; }
+.cfp-stats.is-in .cfp-stat + .cfp-stat { border-left-color: color-mix(in oklab, var(--ink) 13%, transparent);
+  transition: border-color 1000ms var(--ease-quiet) 320ms; }
+
+.cfp-stat__num { display: flex; align-items: flex-start; gap: 0.04em; margin: 0;
+  font-family: var(--ff-display); font-weight: 600; color: var(--em-base);
+  font-size: clamp(2.6rem, 5vw, 4.2rem); line-height: 0.88; letter-spacing: -0.028em;
+  font-variant-numeric: tabular-nums; }
+.cfp-stat__unit { font-size: 0.32em; font-weight: 600; letter-spacing: 0; margin-top: 0.15em;
+  color: color-mix(in oklab, var(--em-rich) 74%, #ffffff); }
+.cfp-stat__cap { margin: clamp(0.85rem, 1.7vw, 1.3rem) 0 0; max-width: 26ch;
+  font-family: var(--ff-text); font-size: clamp(0.92rem, 1.1vw, 1.02rem); line-height: 1.5;
+  color: color-mix(in oklab, var(--ink) 66%, transparent); text-wrap: pretty; }
+
+/* the figures + captions rise in, staggered, as the counter runs */
+.cfp-stat__num, .cfp-stat__cap { opacity: 0; transform: translateY(12px); }
+.cfp-stats.is-in .cfp-stat__num {
+  opacity: 1; transform: none;
+  transition: opacity 820ms var(--ease-quiet) calc(var(--i) * 150ms + 180ms),
+    transform 820ms var(--ease-quiet) calc(var(--i) * 150ms + 180ms); }
+.cfp-stats.is-in .cfp-stat__cap {
+  opacity: 1; transform: none;
+  transition: opacity 820ms var(--ease-quiet) calc(var(--i) * 150ms + 320ms),
+    transform 820ms var(--ease-quiet) calc(var(--i) * 150ms + 320ms); }
+
+@media (max-width: 680px) {
+  .cfp-stats { grid-template-columns: 1fr; }
+  .cfp-stat { padding: clamp(1.6rem, 5vw, 2rem) 0 0; }
+  .cfp-stat + .cfp-stat { padding-left: 0; border-left: none; border-top: 1px solid transparent; }
+  .cfp-stats.is-in .cfp-stat + .cfp-stat { border-top-color: color-mix(in oklab, var(--ink) 13%, transparent); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cfp-stats__rule { transform: none; transition: none; }
+  .cfp-stat + .cfp-stat { border-left-color: color-mix(in oklab, var(--ink) 13%, transparent); }
+  .cfp-stat__num, .cfp-stat__cap { opacity: 1; transform: none; transition: none; }
+}
+
 .why { position: relative; overflow: hidden; color: var(--ivory);
+  padding-block: clamp(4.5rem, 9vw, 8.5rem);
   background: linear-gradient(180deg, #04271c 0%, #021712 56%, #03231a 100%); }
 .why-field { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
 /* signal-baseline field — horizontal readout lines with sparse time ticks,
@@ -1287,16 +1511,41 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
 .why-inner { position: relative; z-index: 1; }
 
+.why-section-head { text-align: center; max-width: 56rem; margin-inline: auto; }
+.why-title {
+  max-width: none;
+  margin-inline: auto;
+  font-size: clamp(2.35rem, 5.1vw, 4.35rem);
+  line-height: 1.04;
+  letter-spacing: -0.018em;
+}
+.why-section-head .mark-divider { margin-top: clamp(1.8rem, 3.4vw, 2.7rem); }
+
 .why-head { text-align: center; max-width: 66rem; margin-inline: auto; }
-.why-eyebrow { display: inline-flex; align-items: center; gap: 0.55rem; color: var(--gold); }
+.why-eyebrow { display: inline-flex; align-items: center; gap: 0.55rem; color: var(--gold); margin-bottom: 1.4rem; }
 .why-eyebrow__mark { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 8px rgba(217,184,108,0.6); }
 .why-thesis { font-family: var(--ff-display); font-weight: 700; color: var(--ivory);
   font-size: clamp(2rem, 4.2vw, 3.2rem); line-height: 1.08; letter-spacing: -0.018em; margin: 0 auto; text-wrap: balance; }
+.why-thesis em { font-style: normal; font-weight: 700; color: var(--gold); }
 /* subhead — the thesis, each sentence on its own line */
 .why-lede { margin: clamp(1.1rem, 2.2vw, 1.6rem) auto 0; max-width: 46rem;
   font-size: clamp(1.05rem, 1.55vw, 1.32rem); line-height: 1.5; color: color-mix(in oklab, var(--ivory) 74%, transparent); }
 .why-lede__line { display: block; text-wrap: balance; }
 .why-lede em { font-style: normal; font-weight: 600; color: var(--gold); }
+
+/* Section 2 splits editorial: the words flush-left, the founder's film right,
+   both centred against each other. Stacks (text over film) on narrow screens. */
+.why-split { display: grid; grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+  gap: clamp(2.8rem, 5.8vw, 5.4rem); align-items: center; margin-top: clamp(2.8rem, 5.6vw, 4.5rem); }
+@media (max-width: 880px) {
+  .why-split { grid-template-columns: 1fr; gap: clamp(2.2rem, 6vw, 3.2rem); }
+}
+/* left column — everything reads flush-left, not centred */
+.why-split__text .why-head { text-align: left; max-width: none; margin-inline: 0; }
+.why-split__text .why-thesis { margin-inline: 0; }
+.why-split__text .why-lede { margin-inline: 0; }
+.why-split__media { min-width: 0; align-self: center; }
+.why-split__media .film { max-width: none; width: 100%; }
 
 /* --- the instrument — a classy cream "device screen" floating on the field --- */
 .why-inst { position: relative; margin: clamp(2.6rem, 5vw, 4rem) auto 0; max-width: 61rem;
@@ -1332,23 +1581,35 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 
 .why-inst__svg { width: 100%; height: auto; display: block; overflow: visible;
   cursor: ew-resize; touch-action: pan-y; outline: none; }
+.why-inst__svg--static { cursor: default; }
 .why-inst__svg:focus-visible { outline: 2px solid var(--em-base); outline-offset: 4px; border-radius: 12px; }
 .why-g { stroke: rgba(6,77,57,0.07); stroke-width: 1; }
 .why-base { stroke: rgba(14,38,28,0.18); stroke-width: 1; }
-.why-ax { fill: color-mix(in oklab, var(--ink) 50%, transparent); font-family: var(--ff-text); font-size: 10.5px; letter-spacing: 0.1em; }
+.why-ax { fill: color-mix(in oklab, var(--ink) 50%, transparent); font-family: var(--ff-text); font-size: 13px; letter-spacing: 0.1em; }
 .why-note { fill: color-mix(in oklab, var(--ink) 38%, transparent); font-family: var(--ff-text); font-size: 8.5px; letter-spacing: 0.18em; }
+/* the metric, named on the chart so the % has meaning */
+.why-ylab { fill: color-mix(in oklab, var(--ink) 52%, transparent); font-family: var(--ff-text); font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
+/* the two paths, labelled directly at their right ends */
+.why-linelab { font-family: var(--ff-text); font-size: 14px; font-weight: 600; letter-spacing: 0.01em; }
+.why-linelab--conv { fill: #b85f3c; }
+.why-linelab--bey { fill: #0a8a63; }
 .why-thr { stroke: rgba(201,114,79,0.5); stroke-width: 1; stroke-dasharray: 0.5 5; stroke-linecap: round; }
-.why-thrlab { fill: #b85f3c; font-family: var(--ff-text); font-size: 9px; letter-spacing: 0.16em; }
+.why-thrlab { fill: #b85f3c; font-family: var(--ff-text); font-size: 12px; letter-spacing: 0.14em; }
 .why-convarea { fill: url(#whyConv); opacity: 0; transition: opacity 1000ms var(--ease-quiet) 750ms; }
 .why-beyarea { fill: url(#whyBey); opacity: 0; transition: opacity 1000ms var(--ease-quiet) 850ms; }
 .is-drawn .why-convarea, .is-drawn .why-beyarea { opacity: 1; }
 .why-conv, .why-bey { fill: none; stroke-linecap: round; stroke-linejoin: round; }
-.why-conv { stroke: #c9724f; stroke-width: 2; }
-.why-bey { stroke: #0a8a63; stroke-width: 2.2; }
+.why-conv { stroke: #c9724f; stroke-width: 2.4; }
+.why-bey { stroke: #0a8a63; stroke-width: 2.8; }
 .why-catch { stroke: rgba(6,77,57,0.3); stroke-width: 1; }
-.why-catchdot { fill: var(--em-base); }
-.why-catchlab, .why-diaglab { font-family: var(--ff-text); font-size: 9px; letter-spacing: 0.14em; }
-.why-catchlab { fill: color-mix(in oklab, var(--em-base) 82%, transparent); }
+/* the "caught at 40" intervention marker — a clear dashed emerald guide, a
+   haloed node where the paths part, and a label held at the top */
+.why-catchline { stroke: color-mix(in oklab, var(--em-base) 46%, transparent); stroke-width: 1.5;
+  stroke-dasharray: 4 5; stroke-linecap: round; }
+.why-catchdot { fill: var(--em-base); stroke: #f7f0e0; stroke-width: 1.5; }
+.why-catchdot--halo { fill: color-mix(in oklab, var(--em-base) 18%, transparent); stroke: none; }
+.why-catchlab, .why-diaglab { font-family: var(--ff-text); font-size: 12px; font-weight: 600; letter-spacing: 0.12em; }
+.why-catchlab { fill: var(--em-base); }
 .why-diag { fill: #c9724f; }
 .why-diaglab { fill: #b85f3c; }
 /* scan-open reveal */
@@ -1376,6 +1637,13 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 @media (max-width: 860px) {
   .why-founder { grid-template-columns: 1fr; gap: clamp(1.9rem, 5vw, 2.6rem); max-width: 34rem; }
 }
+/* Solo (no portrait): the film already shows the founder, so his statement reads
+   as a single flush-left testimonial in the text column, under the thesis. */
+.why-founder--solo { grid-template-columns: 1fr; max-width: none; text-align: left;
+  margin: 0; }
+.why-founder--solo .why-founder__name::before {
+  left: 0; right: auto; width: clamp(3rem, 10vw, 5rem); transform: none;
+}
 .why-founder__photo {
   margin: 0; width: 100%; aspect-ratio: 4 / 3; border-radius: 16px; overflow: hidden; position: relative;
   border: 1px solid var(--line-lt); box-shadow: 0 46px 92px -54px rgba(0, 0, 0, 0.8);
@@ -1384,19 +1652,21 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 .why-founder__photo::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), inset 0 0 0 1px rgba(255, 255, 255, 0.04); }
 .why-founder__eyebrow { display: block; margin-bottom: clamp(1.1rem, 2.2vw, 1.5rem); color: color-mix(in oklab, var(--gold) 72%, var(--ivory)); }
-.why-founder__quote { margin: 0; font-family: var(--ff-display); font-weight: 700; color: var(--ivory);
-  font-size: clamp(1.55rem, 2.7vw, 2.2rem); line-height: 1.2; letter-spacing: -0.015em; text-wrap: balance; }
+/* this statement is the section title — sits at near chapter-title scale */
+.why-founder__quote { margin: 0; font-family: var(--ff-display); font-weight: 600; color: var(--ivory);
+  font-size: clamp(1.7rem, 2.85vw, 2.45rem); line-height: 1.16; letter-spacing: -0.012em; text-wrap: balance; }
 .why-founder__quote em { font-style: normal; font-weight: 700; color: var(--gold); }
 .why-founder__bio { margin: clamp(1.3rem, 2.4vw, 1.7rem) 0 0;
   font-size: clamp(1rem, 1.15vw, 1.08rem); line-height: 1.62; color: color-mix(in oklab, var(--ivory) 70%, transparent); }
-.why-founder__name { position: relative; margin-top: clamp(1.6rem, 2.8vw, 2.1rem); padding-top: clamp(1.6rem, 2.8vw, 2.1rem);
-  font-size: 0.9rem; letter-spacing: 0.04em; color: var(--ivory); }
+.why-founder__name { position: relative; margin-top: clamp(1.3rem, 2.1vw, 1.6rem); padding-top: clamp(1.3rem, 2.1vw, 1.6rem);
+  font-size: clamp(0.72rem, 0.8vw, 0.84rem); line-height: 1.55; letter-spacing: 0.11em;
+  text-transform: uppercase; color: color-mix(in oklab, var(--ivory) 82%, transparent); }
 /* thin, subtle gold separator: starts at the text's left edge, fades to the right */
 .why-founder__name::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px;
   background: linear-gradient(90deg,
     color-mix(in oklab, var(--gold) 44%, transparent),
     color-mix(in oklab, var(--gold) 14%, transparent) 60%, transparent); }
-.why-founder__name span { color: color-mix(in oklab, var(--ivory) 54%, transparent); }
+.why-founder__name span { display: block; margin-top: 0.15rem; color: color-mix(in oklab, var(--gold) 72%, var(--ivory)); }
 
 @media (prefers-reduced-motion: reduce) {
   .why-inst__live { animation: none; }
@@ -1514,7 +1784,7 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 .wyg  { background: radial-gradient(88% 70% at 16% -6%, rgba(255, 251, 243, 0.55), transparent 60%), linear-gradient(180deg, #f5efe3, #efe6d6); }
 .bench { background: radial-gradient(80% 60% at 50% -12%, rgba(255, 251, 243, 0.5), transparent 64%), linear-gradient(180deg, #f2ece0, #ece4d3); }
 .warm { background: radial-gradient(72% 62% at 84% -6%, rgba(20, 132, 97, 0.2), transparent 62%), linear-gradient(180deg, #04271c 0%, #021712 58%, #05301f 100%); }
-.how  { background: radial-gradient(70% 50% at 20% 0%, rgba(255, 251, 243, 0.5), transparent 62%), linear-gradient(180deg, #ece4d3, #f2ece0); }
+.how  { background: radial-gradient(74% 60% at 20% 3%, rgba(20, 132, 97, 0.20), transparent 62%), linear-gradient(180deg, #04271c 0%, #021712 58%, #02150e 100%); }
 .pvc  { background: radial-gradient(66% 60% at 90% 12%, rgba(20, 132, 97, 0.07), transparent 62%), linear-gradient(180deg, #efe6d6, #f5efe3); }
 
 .wyg, .bench, .warm, .how, .pvc, .footer { position: relative; }
@@ -1553,9 +1823,9 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
   -webkit-mask-image: radial-gradient(130% 112% at 50% 40%, #000 30%, transparent 88%);
   mask-image: radial-gradient(130% 112% at 50% 40%, #000 30%, transparent 88%);
 }
-/* 4 · How it works — fine diagonal engraving */
+/* 4 · How it works — fine diagonal engraving, warm gold on the emerald ground */
 .how::before {
-  background-image: repeating-linear-gradient(-45deg, rgba(14, 38, 28, 0.05) 0 1px, transparent 1px 9px);
+  background-image: repeating-linear-gradient(-45deg, rgba(201, 170, 110, 0.05) 0 1px, transparent 1px 9px);
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
   mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
 }
@@ -1822,6 +2092,79 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 }
 /* comfortable footer tap targets on phones (secondary text links) */
 @media (max-width: 640px) {
+  html { scroll-padding-top: 7rem; }
+  .section { scroll-margin-top: 7rem; }
+
+  .cfp, .why, .wyg, #journeys.section, .pvc, .how {
+    padding-top: clamp(6.15rem, 21vw, 7rem);
+  }
+
+  .hero-byline {
+    font-size: 0.62rem;
+    letter-spacing: 0.13em;
+    max-width: 17rem;
+  }
+
+  .film, .why-split__media, .hero-media__housing {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .hero-media__halo { inset: -7% -3% -9%; filter: blur(38px); }
+  .hero-media__housing { border-radius: 16px; }
+  .hero-media__housing::after { border-radius: 16px; }
+  .hero-media__chrome { padding-inline: 0.78rem; }
+  .hero-media__play {
+    width: clamp(68px, 20vw, 82px);
+    height: clamp(68px, 20vw, 82px);
+  }
+
+  .why-inst {
+    border-radius: 18px;
+    padding: clamp(1rem, 4vw, 1.2rem);
+  }
+  .why-inst__top {
+    align-items: flex-start;
+    gap: 0.65rem 1rem;
+  }
+
+  .jrny {
+    padding: clamp(1.2rem, 4.2vw, 1.4rem);
+  }
+  .jrny__body,
+  .wyg-card__text,
+  .bench-card__role {
+    font-size: 0.95rem;
+  }
+  .jrny__k,
+  .jrny__idx,
+  .jrny__chan,
+  .jrny__unit,
+  .wyg-viz__label,
+  .founder-card__tag,
+  .founder-card__honor,
+  .bench-card__more,
+  .pvc-vs__tag,
+  .pvc-pp__n {
+    font-size: 0.64rem;
+  }
+  .j-axis { font-size: 8px; }
+  .j-lab { font-size: 7.4px; }
+  .ig-txt { font-size: 8.8px; }
+
+  .footer__inner,
+  .footer__brand,
+  .footer__news,
+  .footer__cols {
+    min-width: 0;
+  }
+  .footer__news-field {
+    width: 100%;
+    padding-left: 0.9rem;
+  }
+  .footer__news-field button {
+    padding-inline: 0.95rem;
+  }
+
   .footer__col { gap: 0.1rem; }
   .footer__col a { padding-block: 0.72rem; }
   .footer__col span { padding-block: 0.28rem; }
@@ -1831,6 +2174,18 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
   .footer__news-field { min-height: 46px; }
   .footer__news-field button { min-height: 44px; }
   .how-panel__cta { padding-block: 0.7rem; }
+}
+@media (max-width: 360px) {
+  .bench-card {
+    flex-basis: 100%;
+    max-width: 100%;
+  }
+  .bench-card__photo {
+    aspect-ratio: 4 / 4.6;
+  }
+  .footer__cols {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* =============================================================================
@@ -1869,19 +2224,27 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 }
 .pp-about .chapter-eyebrow, .pp-related .chapter-eyebrow { color: var(--em-base); }
 
-/* profile body — bio + sidebar */
-.pp-about__wrap { display: grid; grid-template-columns: 1.55fr 0.95fr; gap: clamp(2rem, 5vw, 4.5rem); align-items: start; }
-@media (max-width: 900px) { .pp-about__wrap { grid-template-columns: 1fr; gap: clamp(2.2rem, 6vw, 2.8rem); } }
+/* profile body — bio + right-hand sidebar */
+.pp-about__wrap { display: grid; grid-template-columns: 1.5fr 0.95fr; gap: clamp(2.2rem, 5vw, 4.5rem); align-items: start; }
+@media (max-width: 900px) { .pp-about__wrap { grid-template-columns: 1fr; gap: clamp(2.4rem, 6vw, 3rem); } }
 .pp-about__main .eyebrow { margin-bottom: 1.4rem; }
-.pp-about__p { font-size: clamp(1rem, 1.15vw, 1.12rem); line-height: 1.72; color: color-mix(in oklab, var(--ink) 82%, transparent); margin: 0 0 1.15rem; max-width: 62ch; text-wrap: pretty; }
+/* Write-up: larger, left-aligned, set at a comfortable reading measure. */
+.pp-about__main { text-align: left; }
+.pp-about__title {
+  font-family: var(--ff-display); font-weight: 700;
+  font-size: clamp(1.9rem, 3.2vw, 2.55rem); line-height: 1.08; letter-spacing: -0.018em;
+  color: var(--em-base); margin: 0 0 clamp(1.35rem, 2.4vw, 1.9rem);
+}
+.pp-about__p { font-size: clamp(1.14rem, 1.45vw, 1.36rem); line-height: 1.78; color: color-mix(in oklab, var(--ink) 84%, transparent); margin: 0 0 1.35rem; max-width: 58ch; text-wrap: pretty; }
 .pp-about__p:last-child { margin-bottom: 0; }
 
-.pp-about__side { display: flex; flex-direction: column; gap: clamp(1.6rem, 3vw, 2.2rem); }
-.pp-side__block { padding-top: 1.2rem; border-top: 1px solid var(--line); }
-.pp-side__k { font-family: var(--ff-text); font-size: 0.64rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--em-base); margin: 0 0 0.95rem; }
-.pp-side__list li { font-size: 0.84rem; }
-.pp-chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
-.pp-chips li { font-family: var(--ff-text); font-size: 0.74rem; letter-spacing: 0.005em; color: color-mix(in oklab, var(--ink) 74%, transparent); padding: 0.4rem 0.72rem; border: 1px solid rgba(6, 77, 57, 0.18); border-radius: 999px; background: rgba(255, 251, 243, 0.5); }
+/* Right-hand dossier: focus chips, credentials, recognition — each a ruled block */
+.pp-about__side { display: flex; flex-direction: column; gap: clamp(1.7rem, 3vw, 2.3rem); }
+.pp-side__block { padding-top: 1.3rem; border-top: 1px solid var(--line); }
+.pp-side__k { font-family: var(--ff-text); font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--em-base); margin: 0 0 1rem; }
+.pp-side__list li { font-size: 0.95rem; line-height: 1.5; }
+.pp-chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.55rem; }
+.pp-chips li { font-family: var(--ff-text); font-size: 0.84rem; letter-spacing: 0.005em; color: color-mix(in oklab, var(--ink) 76%, transparent); padding: 0.46rem 0.82rem; border: 1px solid rgba(6, 77, 57, 0.18); border-radius: 999px; background: rgba(255, 251, 243, 0.5); }
 
 /* "more of the bench" — people cards */
 .pp-people__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1rem, 2vw, 1.5rem); margin-top: 1.7rem; }

@@ -1582,6 +1582,35 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
   .hsd-pills { align-items: flex-start; }
   .hsd-pills li { max-width: 100%; }
 }
+/* Mobile: each dimension card opens from the centre outward as it scrolls into
+   view — scroll-linked (view-timeline), echoing the desktop gallery's feel, with
+   a slow image settle for a comfy, premium hand. Double-guarded exactly like
+   .reveal, so reduced-motion and browsers without scroll-driven animations just
+   show the finished card. */
+@media (max-width: 920px) and (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .hsd-panel {
+      animation: hsd-card-reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 6% cover 42%;
+      will-change: clip-path;
+    }
+    .hsd-panel__img {
+      animation: hsd-card-zoom linear both;
+      animation-timeline: view();
+      animation-range: entry 6% cover 50%;
+      will-change: transform;
+    }
+  }
+}
+@keyframes hsd-card-reveal {
+  from { clip-path: inset(15% 19% round 34px); }
+  to   { clip-path: inset(0% 0% round 18px); }
+}
+@keyframes hsd-card-zoom {
+  from { transform: scale(1.12); }
+  to   { transform: scale(1); }
+}
 @media (prefers-reduced-motion: reduce) {
   .hsd-pin { height: auto; padding: clamp(1.15rem, 3vw, 1.6rem) clamp(1.1rem, 4vw, 1.6rem) clamp(4.8rem, 11vw, 6.5rem); }
   .hsd-stage { position: static; height: auto; overflow: visible; display: grid; gap: 1rem; }
@@ -2581,6 +2610,58 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 .jp-cta__title { font-family: var(--ff-display); font-weight: 700; font-size: clamp(2rem, 4.5vw, 3.3rem); line-height: 1.08; letter-spacing: -0.018em; color: var(--ivory); margin: 0.85rem 0 0; }
 .jp-cta__body { font-size: clamp(1rem, 1.3vw, 1.15rem); line-height: 1.6; color: color-mix(in oklab, var(--ivory) 72%, transparent); margin: 1.2rem auto 0; max-width: 44ch; }
 .jp-cta__btn { margin-top: clamp(1.8rem, 3vw, 2.4rem); }
+
+/* =============================================================================
+   Health Journeys index (/health-journeys/upcoming) — the catalogue: a centred
+   dark hero, a light two-part registry (Available now → In development), the CTA.
+   ========================================================================== */
+/* Centred hero — this is an index, not a single subject. Reuses the profile
+   hero's fine grid ground, re-anchored to the top-centre light. */
+.uj-hero { display: flex; align-items: center; min-height: 56vh; }
+.uj-hero__inner { position: relative; z-index: 1; display: flex; flex-direction: column;
+  align-items: center; text-align: center; max-width: 54rem; margin-inline: auto; }
+.uj-hero .pp-hero__grid {
+  -webkit-mask-image: radial-gradient(130% 122% at 50% -16%, #000 16%, transparent 82%);
+  mask-image: radial-gradient(130% 122% at 50% -16%, #000 16%, transparent 82%);
+}
+.uj-hero__eyebrow { justify-content: center; }
+.uj-hero__title { text-wrap: balance; }
+.uj-hero__lede { margin-inline: auto; max-width: 52ch; text-align: center; }
+
+/* Section heads within the catalogue */
+.uj-head { max-width: 48rem; }
+.uj-head--soon { margin-top: clamp(3.6rem, 6.5vw, 5.6rem); }
+.uj-head__k { color: var(--em-base); }
+.uj-head__title { margin-top: 0.55rem; }
+.uj-head__lede { margin-top: 0.85rem; }
+.uj-live-grid, .uj-soon-grid { margin-top: clamp(1.6rem, 3vw, 2.4rem); }
+
+/* Available now — three live programmes, clickable (reuses .jp-related__card) */
+.uj-live-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1rem, 2vw, 1.5rem); }
+@media (max-width: 820px) { .uj-live-grid { grid-template-columns: 1fr; } }
+
+/* In development — a calm, forthcoming registry: quieter than the live cards,
+   non-interactive, each with a gold "Coming soon" microtag. No neon, no images. */
+.uj-soon-grid { list-style: none; margin-block: clamp(1.6rem, 3vw, 2.4rem) 0; padding: 0;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(0.7rem, 1.4vw, 1.1rem); }
+@media (max-width: 1024px) { .uj-soon-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 680px) { .uj-soon-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 380px) { .uj-soon-grid { grid-template-columns: 1fr; } }
+.uj-soon { position: relative; display: flex; flex-direction: column; gap: 0.7rem;
+  min-height: clamp(6.2rem, 11vw, 7.4rem); padding: clamp(1.05rem, 1.8vw, 1.35rem);
+  border: 1px solid rgba(6, 77, 57, 0.14); border-radius: 13px;
+  background: color-mix(in oklab, #fbf7ec 55%, transparent); }
+/* a fine gold registry tick at the top-left — a whisper of the instrument note */
+.uj-soon::before { content: ""; position: absolute; top: 0; left: clamp(1.05rem, 1.8vw, 1.35rem);
+  width: 1.4rem; height: 1px;
+  background: linear-gradient(90deg, color-mix(in oklab, var(--gold) 60%, transparent), transparent); }
+.uj-soon__title { font-family: var(--ff-display); line-height: 1.14;
+  font-size: clamp(1.1rem, 1.6vw, 1.34rem); color: color-mix(in oklab, var(--em-base) 80%, var(--ink)); }
+.uj-soon__tag { margin-top: auto; align-self: flex-start;
+  font-family: var(--ff-text); font-size: 0.54rem; letter-spacing: 0.17em; text-transform: uppercase; font-weight: 600;
+  color: color-mix(in oklab, var(--gold) 62%, var(--ink));
+  border: 1px solid color-mix(in oklab, var(--gold) 32%, transparent); border-radius: 999px;
+  padding: 0.32rem 0.6rem; }
 
 /* --- Journey pages · mobile refinements --- */
 @media (max-width: 560px) {

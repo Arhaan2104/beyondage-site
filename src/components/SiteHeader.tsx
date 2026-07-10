@@ -25,7 +25,7 @@ const LINKS: NavLink[] = [
         { title: "Metabolic Health", sub: "Caught early, dysfunction can be reversed.", href: "/health-journeys/metabolic-health" },
         { title: "Sleep Health", sub: "Deepen the quality of your recovery.", href: "/health-journeys/sleep-health" },
       ],
-      foot: { label: "All health journeys", href: "#journeys" },
+      foot: { label: "All health journeys", href: "/health-journeys/upcoming" },
     },
   },
   {

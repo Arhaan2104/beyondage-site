@@ -546,7 +546,8 @@ function CardiacDiagramM({ motion }: { motion: boolean }) {
         <line x1={CM_CAL_X} y1={cmSupOut(CM_CAL_X)} x2={CM_CAL_X} y2={cmSup(CM_CAL_X)} />
         <line className="jd-cal-tick" x1={CM_CAL_X - 5} y1={cmSupOut(CM_CAL_X)} x2={CM_CAL_X + 5} y2={cmSupOut(CM_CAL_X)} />
         <line className="jd-cal-tick" x1={CM_CAL_X - 5} y1={cmSup(CM_CAL_X)} x2={CM_CAL_X + 5} y2={cmSup(CM_CAL_X)} />
-        <text className="jd-lab" x={CM_CAL_X - 9} y={(cmSupOut(CM_CAL_X) + cmSup(CM_CAL_X)) / 2 + 3.5} textAnchor="end">IMT</text>
+        {/* above the outer wall — the mobile wall gap is thinner than the type */}
+        <text className="jd-lab" x={CM_CAL_X} y={cmSupOut(CM_CAL_X) - 6} textAnchor="middle">IMT</text>
       </g>
 
       {/* residual-lumen caliper at the throat */}
@@ -621,7 +622,10 @@ function MetabolicDiagramM({ motion }: { motion: boolean }) {
           </g>
         ))}
       </g>
-      <text className="jd-lab" x={324} y={110} textAnchor="end">CELL MEMBRANE</text>
+      {/* stacked so the label clears the glucose descending through the
+          second GLUT4 channel (x≈246) */}
+      <text className="jd-lab" x={324} y={92} textAnchor="end">CELL</text>
+      <text className="jd-lab" x={324} y={104} textAnchor="end">MEMBRANE</text>
 
       {/* insulin receptor with a docked insulin */}
       <g className="jd-receptor">
@@ -692,9 +696,9 @@ function MetabolicDiagramM({ motion }: { motion: boolean }) {
       <path className="jd-curve-ghost" d={BEFORE} pathLength={1} />
       <path className="jd-curve" d={AFTER} pathLength={1} />
       <text className="jd-lab jd-lab--em" x={26} y={MM_GY(70) - 8} textAnchor="start">TIME IN RANGE</text>
-      <text className="jd-ax" x={20} y={458}>0h</text>
-      <text className="jd-ax" x={MM_GX(1.5)} y={458} textAnchor="middle">1.5h</text>
-      <text className="jd-ax" x={320} y={458} textAnchor="end">3h</text>
+      <text className="jd-ax" x={24} y={454}>0h</text>
+      <text className="jd-ax" x={MM_GX(1.5)} y={454} textAnchor="middle">1.5h</text>
+      <text className="jd-ax" x={316} y={454} textAnchor="end">3h</text>
     </>
   );
 }

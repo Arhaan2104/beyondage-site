@@ -38,7 +38,7 @@ export default function ProfilePage({ data }: { data: TeamMember }) {
                 ))}
               </ul>
               <div className="jp-hero__actions">
-                <Link href={INVITE} className="cta cta--gold">Begin your journey</Link>
+                <Link href={INVITE} className="cta cta--chevron">Begin your journey</Link>
               </div>
             </div>
 
@@ -130,7 +130,7 @@ export default function ProfilePage({ data }: { data: TeamMember }) {
               Schedule a consultation with our Healthcare Coordinator to discover how
               BeyondAge can optimise your health.
             </p>
-            <Link href={INVITE} className="cta cta--gold jp-cta__btn">Begin your journey</Link>
+            <Link href={INVITE} className="cta cta--chevron jp-cta__btn">Begin your journey</Link>
           </div>
         </section>
       </main>

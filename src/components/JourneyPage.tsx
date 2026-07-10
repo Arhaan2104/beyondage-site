@@ -33,7 +33,7 @@ export default function JourneyPage({ data }: { data: JourneyData }) {
               <p className="jp-hero__tagline">{data.tagline}</p>
               <p className="jp-hero__lede">{data.lede}</p>
               <div className="jp-hero__actions">
-                <Link href={INVITE} className="cta cta--gold">Begin your journey</Link>
+                <Link href={INVITE} className="cta cta--chevron">Begin your journey</Link>
                 <div className="jp-hero__stat">
                   <strong className="jp-hero__stat-val">{data.stat.value}</strong>
                   <span className="jp-hero__stat-label">{data.stat.label}</span>
@@ -140,7 +140,7 @@ export default function JourneyPage({ data }: { data: JourneyData }) {
               Schedule a consultation with our Healthcare Coordinator to discover how
               BeyondAge can optimise your health.
             </p>
-            <Link href={INVITE} className="cta cta--gold jp-cta__btn">Begin your journey</Link>
+            <Link href={INVITE} className="cta cta--chevron jp-cta__btn">Begin your journey</Link>
           </div>
         </section>
       </main>

@@ -124,7 +124,7 @@ export default function HealthspanDimensions() {
         >
           <div className="hsd-runhead">
             <h2 className="hsd-runhead__title">
-              Healthspan isn&rsquo;t<br />one number.
+              <em>Healthspan</em> isn&rsquo;t<br />one number.
             </h2>
             <p className="hsd-runhead__sub">
               Four dimensions of a life<br />well-lived, measured together.

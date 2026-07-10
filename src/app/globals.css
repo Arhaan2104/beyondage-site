@@ -94,6 +94,20 @@ html.lenis, html.lenis body { height: auto; }
     background: var(--em-deep); color: var(--ivory); border-color: var(--em-deep);
     box-shadow: 0 18px 44px -18px rgba(6, 77, 57, 0.55);
   }
+  /* Signature gold chevron — the brand's primary action, sharing the navbar and
+     homepage hero's arrow shape. Solid at rest for presence and high contrast on
+     the dark grounds where it lives; the single, confident conversion. */
+  .cta--chevron {
+    min-height: 52px; font-weight: 600; letter-spacing: 0.15em;
+    border: 0; border-radius: 0;
+    color: var(--em-black); background: var(--gold);
+    padding: 1rem 2.5rem 1rem 1.95rem;
+    clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 50%, calc(100% - 14px) 100%, 0 100%);
+  }
+  .cta--chevron:hover {
+    color: var(--em-black); background: var(--gold-bright);
+    transform: translateY(-1px); box-shadow: 0 16px 40px -16px rgba(217, 184, 108, 0.55);
+  }
 }
 
 /* =============================================================================
@@ -104,7 +118,11 @@ html.lenis, html.lenis body { height: auto; }
 .nav {
   position: fixed; inset: 0 0 auto 0; z-index: 40; pointer-events: none;
   display: flex; justify-content: center;
-  padding: clamp(1.75rem, 2.1vw, 2.2rem) clamp(1.45rem, 4vw, 2.15rem);
+  /* Top gap = the hero-glass inset + a small breathing constant, so at rest the
+     bar sits a deliberate, even step below the glass's top lip at every width
+     (not flush against it). On scroll the pill overrides this to its own tighter
+     padding-top, so the extra air is only the calm, at-rest state. */
+  padding: calc(clamp(16px, 2vw, 30px) + clamp(0.8rem, 1.2vw, 1rem)) clamp(1.45rem, 4vw, 2.15rem);
   transition: padding 500ms var(--ease-quiet);
   animation: fade-in 900ms var(--ease-quiet) 200ms both;
 }
@@ -117,10 +135,15 @@ html.lenis, html.lenis body { height: auto; }
     border-color 400ms var(--ease-quiet), box-shadow 400ms var(--ease-quiet);
 }
 
+/* At rest the mark is +7% for presence over the open hero; once the bar morphs
+   into the compact floating pill it eases back to its original 34px so it sits
+   in natural proportion with the links and CTA. align-items:center on .nav__bar
+   keeps its vertical midline locked to the CTA through the resize. */
 .nav__logo-img { height: 36.4px; width: auto; display: block;
   /* explicit identity filter so the dark↔ivory swap interpolates, not snaps */
   filter: brightness(1) invert(0);
-  transition: filter 400ms var(--ease-quiet), opacity 400ms var(--ease-quiet); }
+  transition: filter 400ms var(--ease-quiet), opacity 400ms var(--ease-quiet), height 400ms var(--ease-quiet); }
+.nav.is-floating .nav__logo-img { height: 34px; }
 .nav__links { display: flex; gap: clamp(1rem, 2vw, 1.7rem); }
 .nav__item { position: relative; display: flex; align-items: center; }
 /* one shared 400ms curve across every nav element, so the hero↔pill morph
@@ -1388,6 +1411,8 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
   font-size: clamp(1.9rem, 3vw, 2.75rem); line-height: 1.06; letter-spacing: -0.012em;
   text-shadow: 0 2px 34px rgba(0, 0, 0, 0.55);
 }
+/* gold accent — same dark-ground tone as the sibling .dash-title em */
+.hsd-runhead__title em { font-style: normal; font-weight: 700; color: var(--gold); }
 .hsd-runhead__sub {
   margin: 0; max-width: 40ch;
   font-family: var(--ff-text); font-weight: 400;
@@ -1519,9 +1544,12 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
   .hsd-stage::after, .hsd-rail { display: none; }
   /* the running head returns to normal flow as the section's opening header
      above the stacked cards */
+  /* on mobile the header is a plain header above stacked cards (not over the
+     pinned gallery), so it centres to match every other section header */
   .hsd-runhead {
     position: static; max-width: none; gap: 0.5rem;
-    padding: 0.4rem 0.35rem 0.7rem;
+    padding: 0.4rem 0.35rem 0.9rem;
+    text-align: center; justify-items: center;
   }
   .hsd-runhead__title { font-size: clamp(2.05rem, 7.2vw, 2.7rem); }
   .hsd-runhead__sub {
@@ -1559,7 +1587,8 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
   .hsd-stage { position: static; height: auto; overflow: visible; display: grid; gap: 1rem; }
   .hsd-stage::after, .hsd-rail { display: none; }
   .hsd-runhead {
-    position: static; max-width: none; gap: 0.5rem; padding: 0.4rem 0.35rem 0.7rem;
+    position: static; max-width: none; gap: 0.5rem; padding: 0.4rem 0.35rem 0.9rem;
+    text-align: center; justify-items: center;
   }
   .hsd-runhead__title { font-size: clamp(2.05rem, 3vw, 2.7rem); }
   .hsd-panel {
@@ -2126,16 +2155,20 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 /* =============================================================================
    Invitation — the single conversion, a cinematic close (dark)
    ========================================================================== */
-.invitation { position: relative; overflow: hidden; color: var(--ivory); text-align: center; padding-block: clamp(7rem, 14vw, 12rem); }
+.invitation { position: relative; overflow: hidden; color: var(--ivory); text-align: center; padding-block: clamp(4.5rem, 8vw, 7rem); }
 /* concentric emanation — a sparse gold halo radiating from the CTA (larger and
    quieter than Prevention's tight corner radar), over the closing emerald glow */
 .invitation__bg { position: absolute; inset: 0; z-index: 0; background: repeating-radial-gradient(circle at 50% 33%, transparent 0 45px, rgba(201, 170, 110, 0.05) 45px 46px, transparent 46px 47px), radial-gradient(58% 50% at 50% 26%, rgba(22, 132, 97, 0.3), transparent 72%), linear-gradient(180deg, #063a2b 0%, #042319 60%, #021510 100%); }
 .invitation__grain { position: absolute; inset: 0; opacity: 0.09; mix-blend-mode: overlay; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
-.invitation__inner { position: relative; z-index: 1; max-width: 42rem; margin-inline: auto; }
+.invitation__inner { position: relative; z-index: 1; max-width: 48rem; margin-inline: auto; }
 .invitation__eyebrow { color: var(--gold); }
-.invitation__title { font-family: var(--ff-display); font-weight: 600; font-size: clamp(2.2rem, 5vw, 4rem); line-height: 1.09; letter-spacing: -0.008em; color: var(--ivory); margin: 1.4rem 0 2.4rem; text-wrap: balance; }
+.invitation__title { font-family: var(--ff-display); font-weight: 600; font-size: clamp(2.1rem, 4.4vw, 3.4rem); line-height: 1.14; letter-spacing: -0.01em; color: var(--ivory); margin: 1.3rem 0 2.1rem; }
 .invitation__title em { font-style: normal; font-weight: 700; color: var(--gold); }
-.invitation__note { margin-top: 2rem; font-size: 0.85rem; line-height: 1.55; color: color-mix(in oklab, var(--ivory) 56%, transparent); max-width: 38ch; margin-inline: auto; }
+/* two evenly-weighted lines on desktop; wrap naturally on phones */
+.invitation__title-line { display: block; white-space: nowrap; }
+@media (max-width: 560px) { .invitation__title-line { display: inline; white-space: normal; } .invitation__title { text-wrap: balance; } }
+/* CTA uses the shared .cta--chevron (same as the journey/profile pages) */
+.invitation__note { margin-top: 1.9rem; font-size: 0.85rem; line-height: 1.7; color: color-mix(in oklab, var(--ivory) 56%, transparent); max-width: none; margin-inline: auto; }
 
 /* =============================================================================
    Grain on the dark sections (kills banding everywhere)
@@ -2365,13 +2398,13 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 .jp-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1.6rem, 3vw, 2.8rem); margin-top: clamp(2.6rem, 5vw, 4rem); }
 @media (max-width: 900px) { .jp-cols { grid-template-columns: 1fr; gap: 2rem; max-width: 42rem; } }
 .jp-col__k { display: flex; align-items: center; gap: 0.6rem; margin: 0 0 1.1rem; padding-bottom: 0.85rem; border-bottom: 1px solid var(--line);
-  font-family: var(--ff-text); font-size: 0.66rem; letter-spacing: 0.16em; text-transform: uppercase; color: color-mix(in oklab, var(--ink) 60%, transparent); }
+  font-family: var(--ff-text); font-size: 0.76rem; letter-spacing: 0.16em; text-transform: uppercase; color: color-mix(in oklab, var(--ink) 60%, transparent); }
 .jp-col__n { color: var(--em-base); }
-.jp-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.62rem; }
-.jp-list li { position: relative; padding-left: 1.25rem; font-size: 0.9rem; line-height: 1.46; color: color-mix(in oklab, var(--ink) 78%, transparent); }
-.jp-list li::before { content: ""; position: absolute; left: 1px; top: 0.5em; width: 5px; height: 5px; transform: rotate(45deg); background: var(--gold); box-shadow: 0 0 6px rgba(217, 184, 108, 0.4); }
-.jp-col__sub { margin: 1.5rem 0 0.8rem; font-family: var(--ff-text); font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: color-mix(in oklab, var(--ink) 48%, transparent); }
-.jp-list--sub li { font-size: 0.84rem; color: color-mix(in oklab, var(--ink) 62%, transparent); }
+.jp-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.72rem; }
+.jp-list li { position: relative; padding-left: 1.3rem; font-size: 1.04rem; line-height: 1.5; color: color-mix(in oklab, var(--ink) 78%, transparent); }
+.jp-list li::before { content: ""; position: absolute; left: 1px; top: 0.55em; width: 5px; height: 5px; transform: rotate(45deg); background: var(--gold); box-shadow: 0 0 6px rgba(217, 184, 108, 0.4); }
+.jp-col__sub { margin: 1.5rem 0 0.8rem; font-family: var(--ff-text); font-size: 0.69rem; letter-spacing: 0.16em; text-transform: uppercase; color: color-mix(in oklab, var(--ink) 48%, transparent); }
+.jp-list--sub li { font-size: 0.97rem; color: color-mix(in oklab, var(--ink) 62%, transparent); }
 .jp-list--sub li::before { background: color-mix(in oklab, var(--gold) 52%, var(--ink)); box-shadow: none; }
 
 .jp-goal { margin: clamp(2.6rem, 5vw, 4rem) 0 0; padding: clamp(1.8rem, 3.2vw, 2.7rem) clamp(1.9rem, 3.4vw, 3rem); border-left: 2px solid var(--gold); background: rgba(255, 251, 243, 0.5); border-radius: 0 12px 12px 0; }
@@ -2399,7 +2432,9 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 .jp-plate__unit { font-family: var(--ff-text); font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase;
   color: color-mix(in oklab, var(--em-base) 84%, transparent); white-space: nowrap; }
 .jp-plate__scroll { padding: clamp(0.5rem, 1.5vw, 1rem); }
-.jp-plate__svg { display: block; width: 100%; height: auto; }
+/* the diagram sits matted at 85% (−15% scale) with breathing room around it —
+   viewBox-uniform, so nothing inside shifts; just smaller and calmer */
+.jp-plate__svg { display: block; width: 85%; margin-inline: auto; height: auto; }
 /* On phones the wide diagram would shrink its labels to ~4px; keep it at a
    legible scale and let the reader pan it instead. The clipped frame at the
    right edge signals there's more. */
@@ -2492,7 +2527,6 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 @keyframes jd-atp { 0%, 100% { transform: scale(0.7); opacity: 0.5; } 50% { transform: scale(1.35); opacity: 1; } }
 @keyframes jd-sweep-move { from { transform: translateX(0); } to { transform: translateX(584px); } }
 
-@media (max-width: 720px) { .jp-plate__unit { display: none; } }
 @media (prefers-reduced-motion: reduce) {
   .jd-vessel, .jd-ecg, .jd-eeg, .jd-hrv, .jd-step, .jd-curve, .jd-plaque-cap { stroke-dashoffset: 0; transition: none; }
   .jd-blood, .jd-plaque, .jd-mem, .jd-cal, .jd-brk, .jd-note, .jd-rem, .jd-curve-ghost { opacity: 1; transition: none; }
@@ -2561,8 +2595,12 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
   html { scroll-padding-top: 7rem; }
   .section { scroll-margin-top: 7rem; }
 
-  .cfp, .why, .wyg, #journeys.section, .pvc, .how {
-    padding-top: clamp(6.15rem, 21vw, 7rem);
+  /* one even vertical rhythm on phones: every standard section gets the same
+     top AND bottom padding, so inter-section gaps read as intentional rather
+     than scattered. The dark full-bleed gallery (.hsd) and the climax CTA
+     (.invitation) intentionally keep their own distinct spacing. */
+  .cfp, .why, .wyg, #journeys.section, .pvc, .how, .bench {
+    padding-block: clamp(6.15rem, 21vw, 7rem);
   }
   .film, .why-split__media, .hero-media__housing {
     min-width: 0;

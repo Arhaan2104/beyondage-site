@@ -484,7 +484,6 @@ export default function JourneyDiagram({ kind }: { kind: DiagramKind }) {
           <span className="jp-plate__live" aria-hidden="true" />
           {m.bar}
         </span>
-        <span className="jp-plate__unit">{m.unit}</span>
       </figcaption>
       <div className="jp-plate__scroll">
         <svg className="jp-plate__svg" viewBox={`0 0 ${DW} ${DH}`} role="img" aria-label={m.cap}>

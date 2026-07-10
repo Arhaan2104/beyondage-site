@@ -139,14 +139,15 @@ export default function Home() {
           <div className="invitation__inner reveal">
             <p className="eyebrow invitation__eyebrow">By invitation, Gurugram</p>
             <h2 className="invitation__title">
-              Choose who to trust with the <em>next thirty years</em>.
+              <span className="invitation__title-line">Choose who to trust with</span>{" "}
+              <span className="invitation__title-line">the <em>next thirty years</em>.</span>
             </h2>
-            <Link href="/begin-journey" className="cta cta--gold invitation__cta">
+            <Link href="/begin-journey" className="cta cta--chevron">
               Begin your journey
             </Link>
             <p className="invitation__note">
-              Membership is limited and by invitation. A physician-led longevity
-              practice in Gurugram.
+              Membership is limited and by invitation.<br />
+              A physician-led longevity practice in Gurugram.
             </p>
           </div>
         </section>

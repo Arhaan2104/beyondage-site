@@ -6,9 +6,10 @@ import { useEffect, useRef, useState } from "react";
  * The case for prevention — the thesis, stated in numbers.
  *
  * A calm editorial header ("Disease is decided long before it's diagnosed") over
- * three readouts that count up as the section enters view: the top hairline draws
- * left→right, the column dividers ink in, and each figure tallies from zero with
- * an easing curve — a quiet, instrument-like reveal rather than a flourish.
+ * three readouts that count up as the section enters view: the column dividers
+ * ink in, each figure tallies from zero with an easing curve, and a closing
+ * hairline draws left→right beneath the set — a quiet, instrument-like reveal
+ * rather than a flourish.
  *
  * Each stat maps to one of the three programmes (heart, metabolism, sleep), so
  * the numbers set up the journeys that follow.
@@ -79,11 +80,11 @@ export default function CaseForPrevention() {
             <p className="cfp-sub">
               It builds for years, while every report still reads <em>normal</em>.
             </p>
+            <span className="mark-divider mark-divider--warm" aria-hidden="true" />
           </div>
         </div>
 
         <div className={`cfp-stats${inView ? " is-in" : ""}`} ref={ref}>
-          <span className="cfp-stats__rule" aria-hidden="true" />
           {STATS.map((s, i) => (
             <div className="cfp-stat" key={s.cap} style={{ ["--i" as string]: String(i) }}>
               <p className="cfp-stat__num">
@@ -93,6 +94,7 @@ export default function CaseForPrevention() {
               <p className="cfp-stat__cap">{s.cap}</p>
             </div>
           ))}
+          <span className="cfp-stats__rule" aria-hidden="true" />
         </div>
       </div>
     </section>

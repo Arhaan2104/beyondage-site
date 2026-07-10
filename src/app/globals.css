@@ -2064,17 +2064,22 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
   color: color-mix(in oklab, var(--ink) 60%, transparent); max-width: 48ch; margin-inline: auto; }
 .cfp-sub em { font-style: italic; color: color-mix(in oklab, var(--em-base) 84%, transparent); }
 @media (max-width: 940px) { .cfp-sub { white-space: normal; max-width: 40ch; } }
+/* the logomark divider closes the thesis head — same offset as .pvc-head's,
+   the sibling warm-paper section, so the two heads share one rhythm */
+.cfp-lead .mark-divider { margin-top: clamp(1.8rem, 3.5vw, 2.6rem); }
 
-/* readouts — a three-figure ribbon under a drawn hairline, close enough to the
-   centred thesis that the numbers feel like its proof, not a separate section. */
+/* readouts — a three-figure ribbon over a closing hairline, close enough to the
+   centred thesis that the numbers feel like its proof, not a separate section.
+   (The logomark divider opens the set from above; the drawn rule underlines it.) */
 .cfp-stats { position: relative; margin-top: clamp(2.4rem, 4.5vw, 3.8rem);
   display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.cfp-stats__rule { position: absolute; top: 0; left: 0; right: 0; height: 1px;
+.cfp-stats__rule { position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
   background: color-mix(in oklab, var(--ink) 16%, transparent);
   transform: scaleX(0); transform-origin: left center; }
-.cfp-stats.is-in .cfp-stats__rule { transform: scaleX(1); transition: transform 1300ms var(--ease-quiet); }
+/* the 240ms hold lets the first figures land before the set is underlined */
+.cfp-stats.is-in .cfp-stats__rule { transform: scaleX(1); transition: transform 1300ms var(--ease-quiet) 240ms; }
 
-.cfp-stat { padding: clamp(1.35rem, 2.4vw, 2rem) clamp(1.1rem, 2.5vw, 2rem) 0 0; }
+.cfp-stat { padding: 0 clamp(1.1rem, 2.5vw, 2rem) clamp(1.35rem, 2.4vw, 2rem) 0; }
 .cfp-stat + .cfp-stat { padding-left: clamp(1.4rem, 3vw, 2.8rem); border-left: 1px solid transparent; }
 .cfp-stats.is-in .cfp-stat + .cfp-stat { border-left-color: color-mix(in oklab, var(--ink) 13%, transparent);
   transition: border-color 1000ms var(--ease-quiet) 320ms; }
@@ -2101,7 +2106,19 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
     transform 820ms var(--ease-quiet) calc(var(--i) * 150ms + 320ms); }
 
 @media (max-width: 680px) {
-  .cfp-stats { grid-template-columns: 1fr; }
+  .cfp-stats { grid-template-columns: 1fr; margin-top: 0; }
+  /* logo divider sits dead-centre between the subhead and the first figure:
+     equal margin above and below, and the competing spacers below it (the stats'
+     top margin and the first readout's top padding) are zeroed so the two gaps
+     are symmetric by construction, not by luck */
+  /* margins are near-equal, biased 0.375rem so the divider lands optically
+     centred: the figure's cap-height sits ~12px below its line box, so a raw
+     equal split reads low — shave the top, pad the bottom to correct for it */
+  .cfp .mark-divider {
+    margin-top: calc(clamp(2.7rem, 12.5vw, 3.6rem) - 0.1875rem);
+    margin-bottom: calc(clamp(2.7rem, 12.5vw, 3.6rem) + 0.1875rem);
+  }
+  .cfp-stat:first-child { padding-top: 0; }
   /* stacked: each readout sits in equal breathing room so every separator is
      centred between two figures, not hugging the caption above it */
   .cfp-stat { padding: clamp(1.9rem, 6.5vw, 2.55rem) 0; }
@@ -2123,7 +2140,7 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
     transform: scaleX(1);
     transition: transform 1000ms var(--ease-quiet) calc(var(--i) * 140ms + 200ms);
   }
-  /* the group's opening rule adopts the same left-anchored fade for one cohesive set */
+  /* the group's closing rule adopts the same left-anchored fade for one cohesive set */
   .cfp-stats__rule {
     background: linear-gradient(90deg,
       color-mix(in oklab, var(--ink) 26%, transparent) 0%,

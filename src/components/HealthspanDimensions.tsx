@@ -8,7 +8,7 @@ const DIMENSIONS = [
     label: "Physical",
     title: "Body",
     image: "/assets/healthspan-dimensions/physical.jpg",
-    alt: "A runner on a coastal wellness retreat path at sunrise",
+    alt: "A person holding a graceful standing yoga pose, silhouetted against an ocean sunset",
     pills: ["Free from illness", "Peak performance", "Weight optimisation", "Age reversal"],
   },
   {
@@ -16,7 +16,7 @@ const DIMENSIONS = [
     label: "Mental",
     title: "Mind",
     image: "/assets/healthspan-dimensions/mental.jpg",
-    alt: "A calm person reading in a private longevity clinic lounge",
+    alt: "An older man absorbed in a game of chess in a sunlit garden",
     pills: ["Healthy mind", "Sharp memory", "Stress reduction", "Emotional equilibrium"],
   },
   {
@@ -24,7 +24,7 @@ const DIMENSIONS = [
     label: "Social",
     title: "Connection",
     image: "/assets/healthspan-dimensions/social.jpg",
-    alt: "A small group in quiet conversation on a refined wellness terrace",
+    alt: "Three generations of a family sitting close together on a park bench",
     pills: ["Deep connections", "Work-life balance", "Community bonding", "Healthy relationships"],
   },
   {
@@ -32,7 +32,7 @@ const DIMENSIONS = [
     label: "Spiritual",
     title: "Purpose",
     image: "/assets/healthspan-dimensions/spiritual.jpg",
-    alt: "A person walking along an elevated mountain retreat path at dawn",
+    alt: "A hiker and his dog cresting a mountain ridge at sunrise",
     pills: ["Inner strength", "Harmony", "Mental resilience", "Purpose"],
   },
 ];

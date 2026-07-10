@@ -1114,29 +1114,32 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 .founder-card__photo--film.is-playing .founder-card__tag { opacity: 0; }
 .founder-card__tag { transition: opacity 380ms var(--ease-quiet); }
 
-/* Specialist roster — each card links to its live profile.
-   A calm two-up column at every width, held to a centred measure narrower than
-   the founders row so the portraits stay a tasteful size rather than ballooning
-   to half the full width. One even gap governs both axes, so the spacing between
-   cards reads identical left/right and top/bottom — deliberate, premium, uncluttered.
-   Flex (not grid) so the single trailing card centres between its gold calipers
-   instead of left-aligning against a hole. */
+/* Specialist roster — each card links to its live profile */
+/* Flex (not grid) so an incomplete last row centres instead of left-aligning
+   with a hole. Card basis = exactly one track, so full rows stay edge-to-edge.
+   Four-up on desktop, three-up on tablet, two-up on phones. */
 .bench-grid {
-  --bench-gap: clamp(1.4rem, 2.6vw, 2.1rem);
+  --bench-gap: clamp(0.9rem, 1.6vw, 1.5rem);
   display: flex; flex-wrap: wrap; justify-content: center;
-  gap: var(--bench-gap);
-  max-width: 48rem; margin: clamp(1.6rem, 3.4vw, 2.6rem) auto 0;
+  gap: var(--bench-gap); margin-top: clamp(1.4rem, 3vw, 2.2rem);
 }
 .bench-card { margin: 0; display: block; text-decoration: none; color: inherit;
-  flex: 0 0 calc((100% - var(--bench-gap)) / 2); max-width: calc((100% - var(--bench-gap)) / 2); min-width: 0; }
+  flex: 0 0 calc((100% - 3 * var(--bench-gap)) / 4); max-width: calc((100% - 3 * var(--bench-gap)) / 4); min-width: 0; }
+@media (max-width: 980px) {
+  .bench-card { flex-basis: calc((100% - 2 * var(--bench-gap)) / 3); max-width: calc((100% - 2 * var(--bench-gap)) / 3); }
+}
+@media (max-width: 600px) {
+  /* Two portraits per row, held all the way down to the smallest phones. The
+     column gutter stays tight (--bench-gap) while the row gap opens up a little,
+     so each caption has room to settle before the next portrait. */
+  .bench-grid { row-gap: clamp(1.7rem, 6vw, 2.3rem); }
+  .bench-card { flex-basis: calc((100% - 1 * var(--bench-gap)) / 2); max-width: calc((100% - 1 * var(--bench-gap)) / 2); }
+}
 
-/* Caliper rules that flank the centred trailing card (desktop only): a fading
-   gold hairline with a registration diamond at the portraits' optical centre —
-   the site's instrument motif, used as a quiet coda. Capped in width so the
-   bracket hugs the lone coda card instead of sprawling across the two-up gap;
-   justify-content pushes the surplus to the outer edges, keeping the group
-   centred and the calipers a deliberate, tight frame. */
-.bench-rule { flex: 1 1 0; min-width: 0; max-width: 6rem; align-self: stretch; position: relative; pointer-events: none; }
+/* Caliper rules that flank the centred trailing row (4-column view only): a
+   fading gold hairline with a registration diamond at the portraits' optical
+   centre — the site's instrument motif, used as a quiet coda. */
+.bench-rule { flex: 1 1 0; min-width: 0; align-self: stretch; position: relative; pointer-events: none; }
 /* a fine vertical rule framing the portrait height, centred on its optical
    middle (~42%) so it reads as a deliberate bracket, fading out at both ends */
 .bench-rule::before {

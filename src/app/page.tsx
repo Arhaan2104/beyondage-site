@@ -50,10 +50,8 @@ const SPECIALISTS: [string, string, string, string][] = [
   ["nidhi", "Dr Nidhi Arora", "Musculoskeletal Rehabilitation", "dr-nidhi-arora"],
 ];
 
-// Specialist roster is a calm two-up column beneath the featured founders, so
-// the whole bench reads in one paired rhythm. Centre the single trailing card
-// that doesn't fill the last pair (11 specialists → one coda card).
-const BENCH_COLS = 2;
+// Bench grid is 4-up on desktop; centre whatever doesn't fill the last row.
+const BENCH_COLS = 4;
 const ORPHANS = SPECIALISTS.length % BENCH_COLS;
 const SPLIT = SPECIALISTS.length - ORPHANS;
 

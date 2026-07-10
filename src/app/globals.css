@@ -299,8 +299,15 @@ a.nav__menu-row:hover .nav__menu-arrow { opacity: 1; transform: none; }
 }
 .nav--onhero:not(.is-floating) .nav__cta:hover { background: rgba(243, 237, 224, 0.22); color: var(--ivory); }
 .nav--onhero:not(.is-floating) .nav__toggle { color: var(--ivory); }
+/* twin drop-shadows = a shape-keyed dark aura that hugs the letterforms: the
+   original tight shadow for edge contrast, plus a wider/softer second pass for
+   "felt, not seen" presence over busy film. Both are keyed to the mark's own
+   silhouette (no box, no edge, no lens-smudge), and both interpolate down to
+   transparent on the scroll-morph, so the lift fades out with the pill for free. */
 .nav--onhero:not(.is-floating) .nav__logo-img {
-  filter: brightness(0) invert(1) drop-shadow(0 1px 10px rgba(2, 20, 14, 0.5));
+  filter: brightness(0) invert(1)
+    drop-shadow(0 1px 10px rgba(2, 20, 14, 0.5))
+    drop-shadow(0 2px 22px rgba(2, 20, 14, 0.34));
   opacity: 0.94;
 }
 /* hamburger — hidden until the desktop links collapse */
@@ -311,7 +318,9 @@ a.nav__menu-row:hover .nav__menu-arrow { opacity: 1; transform: none; }
   .nav__bar { padding-left: 1.1rem; }
   .nav__toggle {
     display: inline-grid; place-items: center; width: 44px; height: 44px;
-    margin-right: -8px; background: transparent; border: 0; cursor: pointer; color: var(--em-base);
+    /* -4px puts the glyph's optical right inset (~18.5px) level with the
+       logo's left inset (~18.6px) so the bar reads balanced */
+    margin-right: -4px; background: transparent; border: 0; cursor: pointer; color: var(--em-base);
   }
   .nav__toggle-box { position: relative; display: block; width: 26px; height: 11px; }
   .nav__toggle-box span { position: absolute; left: 0; right: 0; height: 1.6px; border-radius: 2px;
@@ -339,12 +348,30 @@ a.nav__menu-row:hover .nav__menu-arrow { opacity: 1; transform: none; }
     linear-gradient(180deg, #063a2b 0%, #042319 62%, #021510 100%);
   transform: translateY(-14px); opacity: 0;
   transition: opacity 460ms var(--ease-quiet), transform 620ms var(--ease-quiet);
+  /* the panel scrolls, but a visible scrollbar cheapens the takeover */
+  scrollbar-width: none;
 }
+.mnav__panel::-webkit-scrollbar { display: none; }
 .mnav.is-open .mnav__panel { transform: none; opacity: 1; }
 
-.mnav__top { display: flex; align-items: center; justify-content: space-between; }
-.mnav__logo { height: 30px; }
-.mnav__close { position: relative; width: 44px; height: 44px; margin-right: -8px;
+/* The top row escapes the panel padding and rebuilds the nav's own inset
+   formulas (.nav padding + .nav__bar mobile padding), so the drawer logo lands
+   exactly over the nav logo and the close X exactly over the hamburger — the
+   open reads as the bar transforming, not a new layer with its own layout.
+   The +13.5px on top re-creates the bar's vertical centreline (44px toggle +
+   2×0.78rem bar padding + 2px border = 71px tall). flex:none is load-bearing:
+   the panel is a flex column whose content overflows, and a shrinkable top row
+   collapses onto its own padding, dragging both logo and close upwards. */
+.mnav__top { display: flex; flex: none; align-items: center; justify-content: space-between;
+  margin: calc(-1 * clamp(1.15rem, 4.5vw, 1.7rem)) calc(-1 * clamp(1.5rem, 6vw, 2.4rem)) 0;
+  padding: calc(clamp(16px, 2vw, 30px) + clamp(0.8rem, 1.2vw, 1rem) + 13.5px)
+    calc(clamp(1.45rem, 4vw, 2.15rem) + 0.78rem + 1px)
+    0
+    calc(clamp(1.45rem, 4vw, 2.15rem) + 1.1rem + 1px); }
+/* .mnav__top prefix outranks the later `.logo { height: 26px }` base rule;
+   36.4px matches the nav's at-rest logo so the two overlay 1:1 on open */
+.mnav__top .mnav__logo { height: 36.4px; }
+.mnav__close { position: relative; width: 44px; height: 44px; margin-right: -4px;
   background: transparent; border: 0; cursor: pointer; color: var(--ivory); }
 .mnav__close span { position: absolute; left: 11px; right: 11px; top: 50%; height: 1.6px; border-radius: 2px;
   background: currentColor; transition: transform 300ms var(--ease-quiet), background-color 300ms; }
@@ -352,26 +379,58 @@ a.nav__menu-row:hover .nav__menu-arrow { opacity: 1; transform: none; }
 .mnav__close span:last-child { transform: rotate(-45deg); }
 .mnav__close:hover span { background: var(--gold); }
 
-.mnav__links { flex: 1; display: flex; flex-direction: column; justify-content: center;
-  gap: clamp(0.2rem, 1.4vw, 0.6rem); padding: clamp(1.5rem, 6vw, 2.4rem) 0; }
-.mnav__link { position: relative; display: flex; align-items: baseline; gap: 0.85rem;
-  text-decoration: none; color: var(--ivory);
-  font-family: var(--ff-display); font-weight: 700; letter-spacing: -0.02em; line-height: 1.12;
-  font-size: clamp(1.95rem, 8.5vw, 2.9rem);
-  padding: clamp(0.5rem, 2vw, 0.75rem) 0; border-bottom: 1px solid rgba(243, 237, 224, 0.1);
+/* flex-start, not center: a centered flex column inside a scrollable panel clips
+   its overflowing top edge and the first links become unreachable. */
+.mnav__links { flex: 1; display: flex; flex-direction: column; justify-content: flex-start;
+  padding: clamp(1.1rem, 4.5vw, 1.9rem) 0 clamp(0.9rem, 3.5vw, 1.5rem); }
+
+.mnav__group { padding: clamp(0.8rem, 3vw, 1.1rem) 0;
+  border-bottom: 1px solid rgba(243, 237, 224, 0.1);
   opacity: 0; transform: translateY(16px);
-  transition: opacity 520ms var(--ease-quiet), transform 560ms var(--ease-quiet), color 260ms var(--ease-quiet);
+  transition: opacity 520ms var(--ease-quiet), transform 560ms var(--ease-quiet);
 }
-.mnav.is-open .mnav__link { opacity: 1; transform: none;
-  transition-delay: calc(140ms + var(--i) * 66ms); }
-.mnav__link:active { color: var(--gold); }
+.mnav.is-open .mnav__group { opacity: 1; transform: none;
+  transition-delay: calc(140ms + var(--i) * 80ms); }
+
+.mnav__head { display: flex; align-items: baseline; gap: 0.85rem;
+  text-decoration: none; color: var(--ivory); -webkit-tap-highlight-color: transparent;
+  font-family: var(--ff-display); font-weight: 700; letter-spacing: -0.02em; line-height: 1.12;
+  font-size: clamp(1.55rem, 6.8vw, 2.1rem);
+  padding: 0.1rem 0 0.35rem; transition: color 260ms var(--ease-quiet);
+}
+.mnav__head:active { color: var(--gold); }
 .mnav__idx { font-family: var(--ff-text); font-size: 0.66rem; font-weight: 500; letter-spacing: 0.16em;
+  font-variant-numeric: tabular-nums;
   color: var(--gold); align-self: flex-start; margin-top: 0.55em; }
 
-.mnav__foot { display: flex; flex-direction: column; align-items: flex-start; gap: 1.1rem;
+.mnav__subs { display: flex; flex-direction: column; padding: 0.15rem 0 0.1rem; }
+.mnav__sub { display: flex; align-items: flex-start; gap: 0.7rem; padding: 0.42rem 0;
+  text-decoration: none; -webkit-tap-highlight-color: transparent; }
+.mnav__sub-dot { flex: none; width: 5px; height: 5px; border-radius: 50%; margin-top: 0.45em;
+  background: color-mix(in oklab, var(--gold) 72%, transparent); }
+.mnav__sub-idx { flex: none; font-family: var(--ff-text); font-size: 0.6rem; font-weight: 500;
+  letter-spacing: 0.14em; font-variant-numeric: tabular-nums;
+  color: var(--gold); margin-top: 0.32em; }
+.mnav__sub-tt { display: flex; flex-direction: column; gap: 0.1rem; min-width: 0; }
+.mnav__sub-title { font-size: 0.95rem; font-weight: 500; line-height: 1.3;
+  color: color-mix(in oklab, var(--ivory) 90%, transparent); transition: color 220ms var(--ease-quiet); }
+.mnav__sub-sub { font-size: 0.72rem; line-height: 1.4;
+  color: color-mix(in oklab, var(--ivory) 52%, transparent); }
+.mnav__sub--static .mnav__sub-title { color: color-mix(in oklab, var(--ivory) 68%, transparent); }
+.mnav__sub:active .mnav__sub-title { color: var(--gold); }
+.mnav__sub-arrow { margin-left: auto; align-self: center; padding-left: 0.6rem;
+  color: color-mix(in oklab, var(--gold) 80%, transparent); font-size: 0.85rem; }
+
+.mnav__sub-foot { display: inline-flex; align-items: center; gap: 0.45rem; align-self: flex-start;
+  margin-top: 0.2rem; padding: 0.55rem 0; text-decoration: none;
+  font-family: var(--ff-text); font-size: 0.78rem; font-weight: 500; letter-spacing: 0.03em;
+  color: var(--gold); -webkit-tap-highlight-color: transparent; }
+.mnav__sub-foot:active { color: var(--ivory); }
+
+.mnav__foot { display: flex; flex: none; flex-direction: column; align-items: flex-start; gap: 1.1rem;
   opacity: 0; transform: translateY(16px);
   transition: opacity 520ms var(--ease-quiet), transform 560ms var(--ease-quiet); }
-.mnav.is-open .mnav__foot { opacity: 1; transform: none; transition-delay: calc(140ms + var(--i) * 66ms); }
+.mnav.is-open .mnav__foot { opacity: 1; transform: none; transition-delay: calc(140ms + var(--i) * 80ms); }
 .mnav__cta { align-self: stretch; text-align: center; }
 .mnav__contact { font-size: 0.8rem; line-height: 1.5; color: color-mix(in oklab, var(--ivory) 56%, transparent); }
 .mnav__contact-sub { display: block; margin-top: 0.2rem; }
@@ -380,8 +439,8 @@ a.nav__menu-row:hover .nav__menu-arrow { opacity: 1; transform: none; }
 
 @media (min-width: 861px) { .mnav { display: none; } }
 @media (prefers-reduced-motion: reduce) {
-  .mnav__panel, .mnav__link, .mnav__foot, .mnav__scrim { transition-duration: 1ms; }
-  .mnav__link, .mnav__foot { transform: none; }
+  .mnav__panel, .mnav__group, .mnav__foot, .mnav__scrim { transition-duration: 1ms; }
+  .mnav__group, .mnav__foot { transform: none; }
 }
 
 /* (The former site-wide emerald bezel — a fixed body::after passe-partout —
@@ -1042,6 +1101,11 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
   .bench-card { flex-basis: calc((100% - 2 * var(--bench-gap)) / 3); max-width: calc((100% - 2 * var(--bench-gap)) / 3); }
 }
 @media (max-width: 600px) {
+  /* Two portraits per row, held all the way down to the smallest phones. The
+     column gutter stays tight (--bench-gap) while the row gap opens up a little,
+     so each caption has room to settle before the next portrait — a calmer,
+     more deliberate vertical rhythm than a single uniform gap. */
+  .bench-grid { row-gap: clamp(1.7rem, 6vw, 2.3rem); }
   .bench-card { flex-basis: calc((100% - 1 * var(--bench-gap)) / 2); max-width: calc((100% - 1 * var(--bench-gap)) / 2); }
 }
 
@@ -1298,6 +1362,48 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
     letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold);
   }
   .how-panel__cta { padding-block: 0.5rem; margin-top: clamp(0.8rem, 2vw, 1.1rem); }
+}
+/* Mobile: each stacked step arrives with a soft focus-pull — the card fades up,
+   its photograph resolves from blur into sharp focus like a diagnostic lens
+   settling, and the copy drifts up a beat behind it. Three coordinated,
+   scroll-linked ranges give the layered, seamless feel — deliberately distinct
+   from the dimensions cards' clip-path opening above. Double-guarded exactly
+   like .reveal, so reduced-motion / unsupported browsers get the finished step. */
+@media (max-width: 860px) and (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .how-panel {
+      animation: how-step-in linear both;
+      animation-timeline: view();
+      animation-range: entry 4% cover 22%;
+      will-change: opacity;
+    }
+    .how-viz__img {
+      animation: how-viz-focus linear both;
+      animation-timeline: view();
+      animation-range: entry 3% cover 44%;
+      will-change: filter, transform;
+    }
+    .how-panel__heading,
+    .how-panel__body,
+    .how-panel__cta {
+      animation: how-copy-settle linear both;
+      animation-timeline: view();
+      animation-range: entry 12% cover 40%;
+      will-change: transform;
+    }
+  }
+}
+@keyframes how-step-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes how-viz-focus {
+  from { filter: saturate(0.82) blur(10px); transform: scale(1.07); }
+  to   { filter: saturate(1) blur(0); transform: none; }
+}
+@keyframes how-copy-settle {
+  from { transform: translateY(16px); }
+  to   { transform: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .how { height: auto; padding-block: clamp(5.5rem, 12vw, 11rem); }
@@ -2408,7 +2514,7 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 
 .jp-hero__viz { margin: 0; }
 .jp-hero__viz .jrny__inst { box-shadow: 0 50px 100px -52px rgba(0, 0, 0, 0.72); }
-.jp-hero__viz-cap { margin: 0.9rem 0 0; text-align: center; font-family: var(--ff-text); font-size: 0.62rem; letter-spacing: 0.06em; color: color-mix(in oklab, var(--ivory) 52%, transparent); }
+.jp-hero__viz-cap { margin: 0.9rem 0 0; text-align: center; font-family: var(--ff-text); font-size: 0.72rem; line-height: 1.5; letter-spacing: 0.05em; color: color-mix(in oklab, var(--ivory) 62%, transparent); }
 
 /* --- Diagnostics & interventions ---
    The .warm class is now the homepage's DARK journeys ground, so the journey
@@ -2460,19 +2566,31 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
   box-shadow: 0 0 7px rgba(217, 184, 108, 0.6); animation: jd-blink 3.2s ease-in-out infinite; }
 .jp-plate__unit { font-family: var(--ff-text); font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase;
   color: color-mix(in oklab, var(--em-base) 84%, transparent); white-space: nowrap; }
-.jp-plate__scroll { padding: clamp(0.5rem, 1.5vw, 1rem); }
+.jp-plate__stage { padding: clamp(0.5rem, 1.5vw, 1rem); }
 /* the diagram sits matted at 85% (−15% scale) with breathing room around it —
    viewBox-uniform, so nothing inside shifts; just smaller and calmer */
 .jp-plate__svg { display: block; width: 85%; margin-inline: auto; height: auto; }
-/* On phones the wide diagram would shrink its labels to ~4px; keep it at a
-   legible scale and let the reader pan it instead. The clipped frame at the
-   right edge signals there's more. */
+/* The portrait composition (see journeyDiagrams.tsx): on phones the wide plate
+   is replaced by the same instrument re-laid for a 340-wide viewBox — nothing
+   shrunk, nothing panned, every label whole. Its type is set a touch larger in
+   viewBox units so it renders at ≈9.5px on a 375px phone. */
+.jp-plate__svg--m { display: none; width: 100%; max-width: 27rem; }
+.jp-plate__svg--m .jd-lab { font-size: 10.5px; }
+.jp-plate__svg--m .jd-ax { font-size: 10px; }
 @media (max-width: 640px) {
-  .jp-plate__scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: thin; }
-  .jp-plate__svg { min-width: 620px; }
+  .jp-plate__svg--d { display: none; }
+  .jp-plate__svg--m { display: block; }
+  .jp-plate__stage { padding: 0.9rem 0.7rem 0.3rem; }
 }
-.jp-plate__cap { margin: 0; padding: 0 clamp(0.9rem, 2vw, 1.35rem) 1rem; font-size: 0.8rem; line-height: 1.5;
-  max-width: 70ch; color: color-mix(in oklab, var(--ink) 58%, transparent); }
+/* the plate legend — a quiet gold key line, then the figure's one sentence of
+   explanatory prose set large enough to read without leaning in */
+.jp-plate__cap { display: flex; flex-direction: column; gap: 0.45rem; margin: 0;
+  padding: 1rem clamp(0.9rem, 2vw, 1.35rem) 1.2rem;
+  border-top: 1px solid rgba(6, 77, 57, 0.09);
+  font-size: 0.95rem; line-height: 1.62; max-width: 66ch;
+  color: color-mix(in oklab, var(--ink) 76%, transparent); }
+.jp-plate__cap-tag { font-family: var(--ff-text); font-size: 0.56rem; letter-spacing: 0.2em;
+  text-transform: uppercase; color: color-mix(in oklab, var(--gold) 64%, var(--ink)); }
 @keyframes jd-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
 /* shared grammar */
@@ -2549,12 +2667,15 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 .jd-sweep line { stroke: color-mix(in oklab, var(--gold) 68%, var(--ink)); stroke-width: 1; stroke-dasharray: 2 3; }
 .jd-sweep-dot { fill: var(--gold-bright); }
 .jd-sweep { animation: jd-sweep-move 8s linear infinite; }
+/* the portrait plate's night is 266 viewBox-units wide, not 584 */
+.jd-sweep--m { animation-name: jd-sweep-move-m; }
 
 @keyframes jd-pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.14); opacity: 0.72; } }
 @keyframes jd-translocate { 0% { transform: translateY(0); opacity: 0.45; } 45%, 55% { transform: translateY(-42px); opacity: 1; } 100% { transform: translateY(0); opacity: 0.45; } }
 @keyframes jd-glow { 0%, 100% { filter: none; } 50% { filter: drop-shadow(0 0 6px rgba(217, 184, 108, 0.55)); } }
 @keyframes jd-atp { 0%, 100% { transform: scale(0.7); opacity: 0.5; } 50% { transform: scale(1.35); opacity: 1; } }
 @keyframes jd-sweep-move { from { transform: translateX(0); } to { transform: translateX(584px); } }
+@keyframes jd-sweep-move-m { from { transform: translateX(0); } to { transform: translateX(266px); } }
 
 @media (prefers-reduced-motion: reduce) {
   .jd-vessel, .jd-ecg, .jd-eeg, .jd-hrv, .jd-step, .jd-curve, .jd-plaque-cap { stroke-dashoffset: 0; transition: none; }
@@ -2831,12 +2952,11 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
   .how-panel__cta { padding-block: 0.7rem; }
 }
 @media (max-width: 360px) {
-  .bench-card {
-    flex-basis: 100%;
-    max-width: 100%;
-  }
+  /* Hold the two-up roster even on the narrowest phones — a single column of
+     large portraits reads as an unintended list; paired portraits keep the
+     grid feeling composed and premium. The default 4/5 crop carries down. */
   .bench-card__photo {
-    aspect-ratio: 4 / 4.6;
+    aspect-ratio: 4 / 5;
   }
   .footer__cols {
     grid-template-columns: 1fr;

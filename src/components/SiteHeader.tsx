@@ -58,16 +58,6 @@ const LINKS: NavLink[] = [
   },
 ];
 
-// Fuller set for the mobile menu — the site's real sections, in page order.
-const MENU: [string, string][] = [
-  ["#what-you-get", "What you get"],
-  ["#healthspan", "Healthspan"],
-  ["#journeys", "Health Journeys"],
-  ["#how", "How it works"],
-  ["#team", "The Bench"],
-  ["#dashboard", "The Product"],
-];
-
 type Lenis = { stop?: () => void; start?: () => void; scrollTo?: (t: Element | number, o?: { offset?: number }) => void };
 const getLenis = () => (window as unknown as { lenis?: Lenis }).lenis;
 const anchorTarget = (el: Element) =>
@@ -241,22 +231,62 @@ export default function SiteHeader() {
             </button>
           </div>
 
+          {/* Mirrors the desktop nav exactly: same LINKS data, so the two can't drift.
+              Each group = the section link, its dropdown items, and the dropdown's
+              foot link. Page items navigate; static items (no href) just inform. */}
           <nav className="mnav__links">
-            {MENU.map(([href, label], i) => (
-              <a
-                key={href + label}
-                href={to(href)}
-                className="mnav__link"
-                style={{ ["--i" as string]: String(i) }}
-                onClick={(e) => go(e, href)}
-              >
-                <span className="mnav__idx" aria-hidden="true">{`0${i + 1}`}</span>
-                {label}
-              </a>
+            {LINKS.map(({ href, label, menu }, i) => (
+              <div className="mnav__group" key={href} style={{ ["--i" as string]: String(i) }}>
+                <a href={to(href)} className="mnav__head" onClick={(e) => go(e, href)}>
+                  <span className="mnav__idx" aria-hidden="true">{`0${i + 1}`}</span>
+                  {label}
+                </a>
+
+                {menu && (
+                  <div className="mnav__subs">
+                    {menu.items.map((it) => {
+                      const inner = (
+                        <>
+                          {it.idx ? (
+                            <span className="mnav__sub-idx" aria-hidden="true">{it.idx}</span>
+                          ) : (
+                            <span className="mnav__sub-dot" aria-hidden="true" />
+                          )}
+                          <span className="mnav__sub-tt">
+                            <span className="mnav__sub-title">{it.title}</span>
+                            <span className="mnav__sub-sub">{it.sub}</span>
+                          </span>
+                          {it.href && <span className="mnav__sub-arrow" aria-hidden="true">&rarr;</span>}
+                        </>
+                      );
+                      return it.href ? (
+                        <Link key={it.title} href={it.href} className="mnav__sub" onClick={() => setOpen(false)}>
+                          {inner}
+                        </Link>
+                      ) : (
+                        <div key={it.title} className="mnav__sub mnav__sub--static">
+                          {inner}
+                        </div>
+                      );
+                    })}
+                    {menu.foot.href.startsWith("#") ? (
+                      <a href={to(menu.foot.href)} className="mnav__sub-foot" onClick={(e) => go(e, menu.foot.href)}>
+                        {menu.foot.label}
+                        <span aria-hidden="true">&rarr;</span>
+                      </a>
+                    ) : (
+                      <Link href={menu.foot.href} className="mnav__sub-foot" onClick={() => setOpen(false)}>
+                        {menu.foot.label}
+                        <span aria-hidden="true">&rarr;</span>
+                      </Link>
+                    )}
+                  </div>
+                )}
+              </div>
             ))}
           </nav>
 
-          <div className="mnav__foot" style={{ ["--i" as string]: String(MENU.length) }}>
+          <div className="mnav__foot" style={{ ["--i" as string]: String(LINKS.length) }}>
             <Link href="/begin-journey" className="cta cta--gold mnav__cta" onClick={() => setOpen(false)}>
               Begin your journey
             </Link>

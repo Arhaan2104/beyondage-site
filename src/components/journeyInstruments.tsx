@@ -63,7 +63,10 @@ const ECG_PATH = (() => {
    read against the normal range. Illustrates blood-sugar / insulin sensitivity,
    both named on beyondage.health; NOT a continuous-glucose monitor. */
 const H0 = 0, H1 = 3.5;
-const Xh = (h: number) => PL + ((h - H0) / (H1 - H0)) * (PR - PL);
+/* The plot keeps a left gutter inside the viewBox so the end-anchored y-tick
+   labels render whole at every size (at PL they clipped off the edge). */
+const M_PL = 34;
+const Xh = (h: number) => M_PL + ((h - H0) / (H1 - H0)) * (PR - M_PL);
 const Yg = (g: number) => PB - ((g - 55) / (165 - 55)) * (PB - PT);
 const gluc = (h: number) => {
   const b = (m: number, s: number, a: number) => a * Math.exp(-((h - m) ** 2) / (2 * s * s));
@@ -85,7 +88,9 @@ const GLU_PEAK: [number, number] = [Xh(GLU_PEAK_H), Yg(gluc(GLU_PEAK_H))];
 /* ---------- Sleep · overnight hypnogram ---------- */
 // stage rows: 0 Awake (top) … 4 N3 / deep (bottom)
 const STAGES = ["Awake", "REM", "N1", "N2", "N3"] as const;
-const Xn = (h: number) => PL + (h / 7) * (PR - PL);
+/* Left gutter wide enough for "Awake" — the stage labels clipped at PL. */
+const S_PL = 44;
+const Xn = (h: number) => S_PL + (h / 7) * (PR - S_PL);
 const Yr = (row: number) => PT + 10 + (row / 4) * (PB - PT - 18);
 // [start, end, stageRow] — a realistic night: quick descent to deep, then
 // cycles of lighter sleep punctuated by lengthening REM toward morning.
@@ -138,12 +143,12 @@ export function MetabolicViz() {
   const xTicks = [0, 1, 2, 3];
   return (
     <>
-      <rect className="j-band" x={PL} y={Yg(140)} width={PR - PL} height={Yg(70) - Yg(140)} />
+      <rect className="j-band" x={M_PL} y={Yg(140)} width={PR - M_PL} height={Yg(70) - Yg(140)} />
       <path className="j-corner" d={CORNERS} />
       {yTicks.map((g) => (
         <g key={g}>
-          <line className={g === 70 || g === 140 ? "j-bandline" : "j-grid"} x1={PL} y1={Yg(g)} x2={PR} y2={Yg(g)} />
-          <text className="j-axis" x={PL - 3} y={Yg(g) + 2.5} textAnchor="end">{g}</text>
+          <line className={g === 70 || g === 140 ? "j-bandline" : "j-grid"} x1={M_PL} y1={Yg(g)} x2={PR} y2={Yg(g)} />
+          <text className="j-axis" x={M_PL - 4} y={Yg(g) + 2.5} textAnchor="end">{g}</text>
         </g>
       ))}
       {xTicks.map((h) => (
@@ -153,7 +158,7 @@ export function MetabolicViz() {
       <path className="j-pulse" d={GLU_PATH} pathLength={1} />
       <circle className="j-marker" cx={GLU_PEAK[0]} cy={GLU_PEAK[1]} r={3} />
       <text className="j-lab" x={GLU_PEAK[0] + 4} y={GLU_PEAK[1] - 4} textAnchor="start">PEAK</text>
-      <text className="j-lab j-lab--em" x={PL + 2} y={Yg(70) + 9}>NORMAL RANGE</text>
+      <text className="j-lab j-lab--em" x={M_PL + 4} y={Yg(70) + 9}>NORMAL RANGE</text>
     </>
   );
 }
@@ -164,8 +169,9 @@ export function SleepViz() {
       <path className="j-corner" d={CORNERS} />
       {STAGES.map((s, r) => (
         <g key={s}>
-          <line className="j-grid" x1={PL} y1={Yr(r)} x2={PR} y2={Yr(r)} />
-          <text className="j-axis" x={PL - 3} y={Yr(r) + 2.5} textAnchor="end">{s}</text>
+          <line className="j-grid" x1={S_PL} y1={Yr(r)} x2={PR} y2={Yr(r)} />
+          {/* the REM row label keys the gold epochs itself — no floating tag */}
+          <text className={`j-axis${s === "REM" ? " j-lab--em" : ""}`} x={S_PL - 5} y={Yr(r) + 2.5} textAnchor="end">{s}</text>
         </g>
       ))}
       {[1, 3, 5].map((h) => (
@@ -176,7 +182,6 @@ export function SleepViz() {
         <path key={i} className="j-rem" d={s.d} />
       ))}
       <path className="j-pulse" d={HYPNO_PATH} pathLength={1} />
-      <text className="j-lab j-lab--em" x={PR - 2} y={Yr(1) - 6} textAnchor="end">REM</text>
     </>
   );
 }

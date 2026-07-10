@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Figtree:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: #06301f; }
+  .og {
+    position: relative; width: 1200px; height: 630px; overflow: hidden;
+    font-family: "Figtree", sans-serif; color: #f3ede0;
+    background:
+      radial-gradient(78% 60% at 50% -12%, rgba(255,255,255,0.20), transparent 60%),
+      linear-gradient(118deg, rgba(255,255,255,0.13), rgba(255,255,255,0.02) 26%, transparent 52%),
+      radial-gradient(125% 135% at 26% 12%, #0b5e45 0%, #064d39 34%, #04321f 72%, #021a12 100%);
+  }
+  /* fine grain */
+  .grain { position: absolute; inset: 0; opacity: 0.05; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+  /* top light lip */
+  .lip { position: absolute; top: 0; left: 0; right: 0; height: 2px; background: rgba(255,255,255,0.20); }
+  /* gold hairline frame */
+  .frame { position: absolute; inset: 34px; border: 1px solid rgba(217,184,108,0.42); border-radius: 18px; }
+  .inner { position: absolute; inset: 34px; padding: 52px 60px; display: flex; flex-direction: column; }
+  .logo { height: 60px; width: auto; filter: brightness(0) invert(1); opacity: 0.97; }
+  .mid { margin-top: auto; }
+  h1 { font-family: "Space Grotesk", sans-serif; font-weight: 600; font-size: 78px;
+    line-height: 1.05; letter-spacing: -0.01em; color: #f3ede0; }
+  h1 em { font-style: normal; font-weight: 700; color: #f1dda6; }
+  .sub { margin-top: 26px; font-family: "Figtree", sans-serif; font-weight: 400;
+    font-size: 25px; line-height: 1.5; color: rgba(243,237,224,0.72); max-width: 30ch; }
+  .foot { display: flex; justify-content: space-between; align-items: center; margin-top: 46px;
+    font-size: 15px; letter-spacing: 0.17em; text-transform: uppercase; font-weight: 500; }
+  .foot .l { color: #d9b86c; }
+  .foot .r { color: rgba(243,237,224,0.45); }
+</style>
+</head>
+<body>
+  <div class="og">
+    <div class="grain"></div>
+    <div class="lip"></div>
+    <div class="frame"></div>
+    <div class="inner">
+      <img class="logo" src="file:///Users/arhaangupta/beyondage-site/public/assets/logo.png" alt="">
+      <div class="mid">
+        <h1>We treat the disease<br>you <em>don&rsquo;t have yet</em>.</h1>
+        <p class="sub">A members-only longevity practice in Gurugram, built by some of India&rsquo;s most respected physicians.</p>
+      </div>
+      <div class="foot">
+        <span class="l">By invitation &middot; Gurugram</span>
+        <span class="r">Longevity Medicine</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

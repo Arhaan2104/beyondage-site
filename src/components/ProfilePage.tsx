@@ -22,6 +22,7 @@ export default function ProfilePage({ data }: { data: TeamMember }) {
         {/* ---- Hero ---- */}
         <section className="jp-hero pp-hero">
           <div className="jp-hero__bg" aria-hidden="true">
+            <div className="pp-hero__grid" />
             <div className="jp-hero__grain" />
           </div>
           <div className="measure jp-hero__inner">

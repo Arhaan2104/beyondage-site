@@ -23,7 +23,7 @@ export default function BeginJourney() {
     <section className="section bj" id="begin">
       <div className="measure bj-inner">
         <div className="bj-head reveal">
-          <p className="eyebrow bj-eyebrow">Begin your journey</p>
+          <p className="eyebrow bj-eyebrow">Book a call</p>
           <h1 className="bj-title">
             The first step is a <em>conversation</em>.
           </h1>

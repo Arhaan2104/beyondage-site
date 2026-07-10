@@ -75,12 +75,12 @@ const ecgDefl = (ph: number) => {
 
 const C_X0 = 48,
   C_X1 = 632,
-  C_CY = 190,
-  C_R0 = 42,
-  C_XC = 366,
+  C_CY = 198,
+  C_R0 = 44,
+  C_XC = 352,
   C_SD = 62,
-  C_WALL = 14;
-const cBump = (x: number) => 48 * Math.exp(-((x - C_XC) ** 2) / (2 * C_SD * C_SD));
+  C_WALL = 13;
+const cBump = (x: number) => 50 * Math.exp(-((x - C_XC) ** 2) / (2 * C_SD * C_SD));
 const cDent = (x: number) => 13 * Math.exp(-((x - C_XC) ** 2) / (2 * (C_SD * 1.15) ** 2));
 const cSup = (x: number) => C_CY - C_R0 + cDent(x);
 const cInf = (x: number) => C_CY + C_R0 - cBump(x);
@@ -104,8 +104,8 @@ const C_LUMEN = (() => {
     " Z"
   );
 })();
-const C_ECGY = 54,
-  C_ECGAMP = 15,
+const C_ECGY = 60,
+  C_ECGAMP = 14,
   C_BEATS = 4;
 const C_ECG = poly(
   sample((x) => {
@@ -113,8 +113,9 @@ const C_ECG = poly(
     return C_ECGY - ecgDefl(ph) * C_ECGAMP;
   }, C_X0, C_X1, 560)
 );
-const C_PLQY = cInf(C_XC) + 16;
-const C_CAL_X = 120; // IMT caliper on a healthy segment
+const C_PLQY = cInf(C_XC) + 15; // plaque body seated in the inferior wall
+const C_CAL_X = 130; // IMT caliper on a healthy segment
+const C_CAP_X = C_XC + 30; // where the fibrous-cap leader meets the luminal surface
 const C_FLOW_DOTS = [
   { d: 2.6, b: "0s", g: false },
   { d: 2.6, b: "0.33s", g: false },
@@ -130,15 +131,15 @@ function CardiacDiagram({ motion }: { motion: boolean }) {
   return (
     <>
       <path className="jd-frame" d={FRAME} />
-      {/* ECG clock strip */}
+      {/* ECG clock strip — its own band, clear of the vessel below */}
+      <text className="jd-lab jd-lab--em" x={C_X0} y={30}>LEAD II</text>
+      <text className="jd-ax" x={C_X1} y={30} textAnchor="end">25 mm/s</text>
       <path className="jd-ecg" d={C_ECG} pathLength={1} />
       {motion && (
         <circle className="jd-ecg-dot" r={2.4}>
           <animateMotion dur="1.9s" repeatCount="indefinite" path={C_ECG} />
         </circle>
       )}
-      <text className="jd-lab jd-lab--em" x={C_X0} y={38}>LEAD II</text>
-      <text className="jd-ax" x={C_X1} y={38} textAnchor="end">25 mm/s</text>
 
       {/* vessel — outer media then intimal lumen walls */}
       <path className="jd-vessel jd-vessel--outer" d={C_SUPOUT} pathLength={1} />
@@ -147,16 +148,16 @@ function CardiacDiagram({ motion }: { motion: boolean }) {
       <path className="jd-vessel" d={C_SUP} pathLength={1} />
       <path className="jd-vessel" d={C_INF} pathLength={1} />
 
-      {/* plaque — lipid core, thin fibrous cap highlight, calcium fleck */}
+      {/* plaque — lipid/necrotic core, thin fibrous cap, spotty microcalcification */}
       <g className="jd-plaque">
-        <ellipse className="jd-plaque-core" cx={C_XC} cy={C_PLQY} rx={46} ry={17} />
-        <ellipse className="jd-plaque-lipid" cx={C_XC + 6} cy={C_PLQY + 1} rx={26} ry={9} />
+        <ellipse className="jd-plaque-core" cx={C_XC} cy={C_PLQY} rx={46} ry={16} />
+        <ellipse className="jd-plaque-lipid" cx={C_XC + 4} cy={C_PLQY + 1} rx={25} ry={9} />
         <path
           className="jd-plaque-cap"
           d={poly(sample(cInf, C_XC - 52, C_XC + 52, 40))}
           pathLength={1}
         />
-        <circle className="jd-calc" cx={C_XC - 20} cy={C_PLQY - 3} r={3} />
+        <circle className="jd-calc" cx={C_XC - 22} cy={C_PLQY - 2} r={2.6} />
       </g>
 
       {/* flow particles through the lumen */}
@@ -170,26 +171,38 @@ function CardiacDiagram({ motion }: { motion: boolean }) {
         </g>
       )}
 
-      {/* IMT caliper on a healthy segment */}
+      {/* IMT caliper on a healthy segment (intima-media thickness) */}
       <g className="jd-cal">
         <line x1={C_CAL_X} y1={cSupOut(C_CAL_X)} x2={C_CAL_X} y2={cSup(C_CAL_X)} />
         <line className="jd-cal-tick" x1={C_CAL_X - 5} y1={cSupOut(C_CAL_X)} x2={C_CAL_X + 5} y2={cSupOut(C_CAL_X)} />
         <line className="jd-cal-tick" x1={C_CAL_X - 5} y1={cSup(C_CAL_X)} x2={C_CAL_X + 5} y2={cSup(C_CAL_X)} />
-        <text className="jd-lab" x={C_CAL_X - 9} y={(cSupOut(C_CAL_X) + cSup(C_CAL_X)) / 2 + 2.5} textAnchor="end">IMT</text>
+        <text className="jd-lab" x={C_CAL_X - 9} y={(cSupOut(C_CAL_X) + cSup(C_CAL_X)) / 2 + 3} textAnchor="end">IMT</text>
       </g>
 
-      {/* stenosis bracket at the narrowing */}
+      {/* residual-lumen caliper at the throat (measures the narrowing) */}
       <g className="jd-brk">
         <line x1={C_XC} y1={cSup(C_XC)} x2={C_XC} y2={cInf(C_XC)} />
         <line className="jd-cal-tick" x1={C_XC - 5} y1={cSup(C_XC)} x2={C_XC + 5} y2={cSup(C_XC)} />
         <line className="jd-cal-tick" x1={C_XC - 5} y1={cInf(C_XC)} x2={C_XC + 5} y2={cInf(C_XC)} />
-        <text className="jd-lab jd-lab--em" x={C_XC} y={cSup(C_XC) - 6} textAnchor="middle">STENOSIS</text>
       </g>
 
-      <text className="jd-lab" x={C_X0 + 6} y={C_CY - 22}>LUMEN</text>
-      <text className="jd-lab" x={C_X1 - 6} y={cSupOut(C_X1) - 6} textAnchor="end">INTIMA·MEDIA</text>
-      <text className="jd-lab jd-lab--em" x={C_XC} y={C_PLQY + 32} textAnchor="middle">VULNERABLE PLAQUE</text>
-      <text className="jd-lab" x={306} y={C_PLQY + 18} textAnchor="end">Ca²⁺</text>
+      {/* leader-lined callouts — each label parked in clear space */}
+      <g className="jd-note">
+        {/* stenosis — named above the throat */}
+        <line className="jd-lead" x1={C_XC} y1={122} x2={C_XC} y2={cSupOut(C_XC) - 2} />
+        <text className="jd-lab jd-lab--em" x={C_XC} y={116} textAnchor="middle">STENOSIS</text>
+        {/* fibrous cap — the thin luminal cap over the lipid core */}
+        <line className="jd-lead" x1={468} y1={181} x2={C_CAP_X} y2={cInf(C_CAP_X) - 2} />
+        <text className="jd-lab" x={472} y={184} textAnchor="start">FIBROUS CAP</text>
+        {/* the plaque body, named below */}
+        <line className="jd-lead" x1={C_XC} y1={C_PLQY + 16} x2={C_XC} y2={258} />
+        <text className="jd-lab jd-lab--em" x={C_XC} y={270} textAnchor="middle">VULNERABLE PLAQUE</text>
+        {/* intima-media layer, right */}
+        <line className="jd-lead" x1={584} y1={126} x2={584} y2={cSupOut(584) - 2} />
+        <text className="jd-lab" x={600} y={120} textAnchor="end">INTIMA·MEDIA</text>
+      </g>
+
+      <text className="jd-lab" x={C_X0 + 8} y={C_CY - 18} textAnchor="start">LUMEN</text>
     </>
   );
 }
@@ -197,22 +210,27 @@ function CardiacDiagram({ motion }: { motion: boolean }) {
 /* =========================================================================
    METABOLIC — glucose uptake across the cell membrane
    ========================================================================= */
-const M_X0 = 44,
-  M_X1 = 424,
-  M_BLOODY = 74,
-  M_HEAD1 = 150,
-  M_HEAD2 = 166,
-  M_CYTO = 176;
+const M_H1 = 150, // outer (plasma-facing) phospholipid head row
+  M_H2 = 166, // inner (cytoplasm-facing) head row
+  M_MID = (M_H1 + M_H2) / 2,
+  M_CYTO_Y = 166;
+const M_REC_X = 104; // insulin receptor
+const M_GLUT = [232, 340]; // two GLUT4 channels
+const M_MITO = { x: 376, y: 236, rx: 26, ry: 14 };
+// bilayer heads, evenly spaced but skipped where the receptor / channels insert
+const M_SKIP = [M_REC_X, ...M_GLUT];
 const M_HEADS = (() => {
   const xs: number[] = [];
-  for (let x = M_X0; x <= M_X1; x += 15.4) xs.push(+x.toFixed(1));
+  for (let x = 24; x <= 448; x += 18) {
+    if (M_SKIP.some((s) => Math.abs(x - s) < 15)) continue;
+    xs.push(+x.toFixed(1));
+  }
   return xs;
 })();
-const M_REC_X = 116;
-const M_GLUT = [242, 338];
-const M_MITO = { x: 350, y: 244, rx: 26, ry: 14 };
-const M_BLOOD_PATH = `M${M_X0} ${M_BLOODY} L${M_X1} ${M_BLOODY}`;
-const uptakePath = (cx: number) => `M${cx - 40} ${M_BLOODY} L${cx} ${M_BLOODY} L${cx} ${M_CYTO + 34}`;
+const M_BLOODY = 104; // glucose streams through plasma at this height
+const M_BLOOD_PATH = `M24 ${M_BLOODY} L448 ${M_BLOODY}`;
+// a glucose hex enters with the stream, then turns down through a channel
+const uptakePath = (cx: number) => `M${cx - 58} ${M_BLOODY} L${cx} ${M_BLOODY} L${cx} 208`;
 // glucose curve panel (post-meal, flattening into range)
 const M_GX = (h: number) => 474 + (h / 3) * 168;
 const M_GY = (g: number) => 250 - ((g - 60) / (190 - 60)) * (250 - 150);
@@ -236,47 +254,48 @@ function MetabolicDiagram({ motion }: { motion: boolean }) {
       <path className="jd-frame" d={FRAME} />
 
       {/* blood plasma (above) + cytoplasm (below) grounds */}
-      <rect className="jd-plasma" x={14} y={30} width={434} height={M_HEAD1 - 30} />
-      <rect className="jd-cyto" x={14} y={M_HEAD2} width={434} height={DH - 14 - M_HEAD2} />
+      <rect className="jd-plasma" x={14} y={30} width={434} height={M_H1 - 30} />
+      <rect className="jd-cyto" x={14} y={M_H2} width={434} height={DH - 14 - M_H2} />
 
       {/* lipid bilayer membrane */}
       <g className="jd-mem">
         {M_HEADS.map((x, i) => (
           <g key={i}>
-            <line className="jd-mem-tail" x1={x} y1={M_HEAD1} x2={x} y2={(M_HEAD1 + M_HEAD2) / 2} />
-            <line className="jd-mem-tail" x1={x} y1={M_HEAD2} x2={x} y2={(M_HEAD1 + M_HEAD2) / 2} />
-            <circle className="jd-mem-head" cx={x} cy={M_HEAD1} r={3.1} />
-            <circle className="jd-mem-head" cx={x} cy={M_HEAD2} r={3.1} />
+            <line className="jd-mem-tail" x1={x} y1={M_H1} x2={x} y2={M_MID} />
+            <line className="jd-mem-tail" x1={x} y1={M_H2} x2={x} y2={M_MID} />
+            <circle className="jd-mem-head" cx={x} cy={M_H1} r={3} />
+            <circle className="jd-mem-head" cx={x} cy={M_H2} r={3} />
           </g>
         ))}
       </g>
+      <text className="jd-lab" x={444} y={143} textAnchor="end">CELL MEMBRANE</text>
 
-      {/* insulin receptor with a docked insulin (binding pulse) */}
+      {/* insulin receptor (transmembrane dimer) with a docked insulin */}
       <g className="jd-receptor">
-        <path d={`M${M_REC_X - 9} ${M_HEAD2 + 4} L${M_REC_X - 5} ${M_HEAD1 - 8} L${M_REC_X - 12} ${M_HEAD1 - 14}`} />
-        <path d={`M${M_REC_X + 9} ${M_HEAD2 + 4} L${M_REC_X + 5} ${M_HEAD1 - 8} L${M_REC_X + 12} ${M_HEAD1 - 14}`} />
-        <circle className="jd-insulin-dock" cx={M_REC_X} cy={M_HEAD1 - 15} r={6} />
+        <path d={`M${M_REC_X - 11} ${M_CYTO_Y + 10} L${M_REC_X - 6} ${M_H1 - 2} L${M_REC_X - 13} ${M_H1 - 14}`} />
+        <path d={`M${M_REC_X + 11} ${M_CYTO_Y + 10} L${M_REC_X + 6} ${M_H1 - 2} L${M_REC_X + 13} ${M_H1 - 14}`} />
+        <circle className="jd-insulin-dock" cx={M_REC_X} cy={M_H1 - 18} r={6} />
       </g>
-      <text className="jd-lab" x={M_REC_X} y={M_HEAD1 - 26} textAnchor="middle">INSULIN</text>
-      <text className="jd-lab" x={M_REC_X + 24} y={M_CYTO + 12} textAnchor="start">RECEPTOR</text>
+      <text className="jd-lab" x={M_REC_X} y={118} textAnchor="middle">INSULIN</text>
+      <text className="jd-lab" x={M_REC_X} y={188} textAnchor="middle">RECEPTOR</text>
 
-      {/* GLUT4 channels + translocating vesicles */}
+      {/* GLUT4 channels + storage vesicles translocating to the membrane */}
       {M_GLUT.map((gx, i) => (
         <g key={i}>
-          <line className="jd-glut" x1={gx - 7} y1={M_HEAD1 - 6} x2={gx - 7} y2={M_HEAD2 + 6} />
-          <line className="jd-glut" x1={gx + 7} y1={M_HEAD1 - 6} x2={gx + 7} y2={M_HEAD2 + 6} />
+          <line className="jd-glut" x1={gx - 8} y1={M_H1 - 5} x2={gx - 8} y2={M_H2 + 5} />
+          <line className="jd-glut" x1={gx + 8} y1={M_H1 - 5} x2={gx + 8} y2={M_H2 + 5} />
           <rect
             className={`jd-vesicle${motion ? " is-live" : ""}`}
-            x={gx - 12}
-            y={M_CYTO + 30}
-            width={24}
-            height={16}
-            rx={8}
+            x={gx - 11}
+            y={200}
+            width={22}
+            height={14}
+            rx={7}
             style={{ animationDelay: `${i * 1.4}s` }}
           />
         </g>
       ))}
-      <text className="jd-lab jd-lab--em" x={M_GLUT[0]} y={M_CYTO + 60} textAnchor="middle">GLUT4</text>
+      <text className="jd-lab jd-lab--em" x={(M_GLUT[0] + M_GLUT[1]) / 2} y={200} textAnchor="middle">GLUT4</text>
 
       {/* mitochondrion — outer membrane + cristae, ATP glow */}
       <g className="jd-mito">
@@ -287,13 +306,13 @@ function MetabolicDiagram({ motion }: { motion: boolean }) {
         />
         <circle className={`jd-atp${motion ? " is-live" : ""}`} cx={M_MITO.x} cy={M_MITO.y} r={3} />
       </g>
-      <text className="jd-lab" x={M_MITO.x} y={M_MITO.y + M_MITO.ry + 12} textAnchor="middle">ATP · ENERGY</text>
+      <text className="jd-lab" x={M_MITO.x} y={M_MITO.y + M_MITO.ry + 14} textAnchor="middle">ATP · ENERGY</text>
 
       {/* glucose in the bloodstream + uptake into the cell */}
-      <text className="jd-lab" x={M_X0 + 2} y={44} textAnchor="start">GLUCOSE</text>
+      <text className="jd-lab" x={24} y={46} textAnchor="start">GLUCOSE</text>
       {motion && (
         <g className="jd-flow">
-          {[0, 0.5, 1.1, 1.7, 2.3].map((b, i) => (
+          {[0, 0.9, 1.8, 2.7].map((b, i) => (
             <path key={`bg${i}`} className="jd-hex" d={hexAt(0, 0, 4)}>
               <animateMotion dur="4.4s" begin={`${b}s`} repeatCount="indefinite" path={M_BLOOD_PATH} />
             </path>
@@ -303,7 +322,7 @@ function MetabolicDiagram({ motion }: { motion: boolean }) {
               <animateMotion dur="3.2s" begin={`${i * 1.6}s`} repeatCount="indefinite" path={uptakePath(gx)} />
             </path>
           ))}
-          {[0.8, 2.0].map((b, i) => (
+          {[0.8, 2.6].map((b, i) => (
             <circle key={`in${i}`} className="jd-insulin" r={3}>
               <animateMotion dur="4.4s" begin={`${b}s`} repeatCount="indefinite" path={M_BLOOD_PATH} />
             </circle>
@@ -319,7 +338,7 @@ function MetabolicDiagram({ motion }: { motion: boolean }) {
       <path className="jd-curve-ghost" d={BEFORE} pathLength={1} />
       <path className="jd-curve" d={AFTER} pathLength={1} />
       <text className="jd-lab" x={474} y={44} textAnchor="start">POST-MEAL GLUCOSE</text>
-      <text className="jd-lab jd-lab--em" x={476} y={M_GY(70) - 5}>TIME IN RANGE</text>
+      <text className="jd-lab jd-lab--em" x={474} y={M_GY(70) + 13} textAnchor="start">TIME IN RANGE</text>
       <text className="jd-ax" x={474} y={262}>0h</text>
       <text className="jd-ax" x={642} y={262} textAnchor="end">3h</text>
     </>
@@ -398,13 +417,15 @@ function SleepDiagram({ motion }: { motion: boolean }) {
       {S_REM.map((d, i) => (
         <path key={i} className="jd-rem" d={d} />
       ))}
-      <text className="jd-lab jd-lab--em" x={S_X1} y={Syr(1) - 6} textAnchor="end">REM</text>
+      {/* legend chip in the clear band above the hypnogram — keys the gold epochs */}
+      <line className="jd-rem" x1={S_X1 - 44} y1={40} x2={S_X1 - 30} y2={40} />
+      <text className="jd-lab jd-lab--em" x={S_X1} y={43} textAnchor="end">REM EPOCHS</text>
 
-      {/* EEG morphology */}
+      {/* EEG morphology — labels sit directly under the stage they annotate */}
       <path className="jd-eeg" d={S_EEG} pathLength={1} />
       <text className="jd-lab" x={S_X0} y={148} textAnchor="start">EEG</text>
-      <text className="jd-lab" x={Sx(1.45)} y={200} textAnchor="middle">δ DELTA</text>
-      <text className="jd-lab" x={Sx(4.65)} y={200} textAnchor="middle">SPINDLE</text>
+      <text className="jd-lab" x={Sx(1.45)} y={202} textAnchor="middle">δ DELTA · N3</text>
+      <text className="jd-lab" x={Sx(4.7)} y={202} textAnchor="middle">SPINDLES · N2</text>
 
       {/* HR / HRV */}
       <path className="jd-hrv" d={S_HR} pathLength={1} />
@@ -436,9 +457,9 @@ const DIAGRAMS: Record<DiagramKind, (p: { motion: boolean }) => React.JSX.Elemen
 };
 const META: Record<DiagramKind, { bar: string; unit: string; cap: string }> = {
   cardiac: {
-    bar: "CORONARY CROSS-SECTION · LONGITUDINAL",
+    bar: "ARTERIAL WALL · LONGITUDINAL",
     unit: "LEAD II · 25 mm/s",
-    cap: "Illustrative — how a cardiovascular work-up reads the vessel: pulsatile flow, wall thickness (IMT) and plaque, years before symptoms.",
+    cap: "Illustrative — how a cardiovascular work-up reads the artery: pulsatile flow, wall thickness (intima-media) and the vulnerable plaque behind a stenosis, years before symptoms.",
   },
   metabolic: {
     bar: "GLUCOSE UPTAKE · INSULIN SIGNALLING",
@@ -447,7 +468,7 @@ const META: Record<DiagramKind, { bar: string; unit: string; cap: string }> = {
   },
   sleep: {
     bar: "SLEEP ARCHITECTURE · OVERNIGHT",
-    unit: "8h · POLYSOMNOGRAPHY",
+    unit: "POLYSOMNOGRAPHY",
     cap: "Illustrative — the night mapped stage by stage: the hypnogram, the EEG signature of each stage, and heart-rate recovery through deep sleep.",
   },
 };

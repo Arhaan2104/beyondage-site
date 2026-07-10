@@ -116,43 +116,169 @@ html.lenis, html.lenis body { height: auto; }
   transition: max-width 500ms var(--ease-quiet), background-color 400ms var(--ease-quiet),
     border-color 400ms var(--ease-quiet), box-shadow 400ms var(--ease-quiet);
 }
-/* crosshair corner markers */
-.nav__mark { position: absolute; width: 9px; height: 9px; opacity: 0.55; }
-.nav__mark::before, .nav__mark::after { content: ""; position: absolute; background: var(--em-base); }
-.nav__mark::before { left: 50%; top: 0; width: 1px; height: 100%; transform: translateX(-50%); }
-.nav__mark::after { top: 50%; left: 0; height: 1px; width: 100%; transform: translateY(-50%); }
-.nav__mark--tl { top: -5px; left: -5px; }
-.nav__mark--tr { top: -5px; right: -5px; }
-.nav__mark--bl { bottom: -5px; left: -5px; }
-.nav__mark--br { bottom: -5px; right: -5px; }
 
-.nav__logo-img { height: 30px; width: auto; display: block; }
+.nav__logo-img { height: 36.4px; width: auto; display: block;
+  /* explicit identity filter so the dark↔ivory swap interpolates, not snaps */
+  filter: brightness(1) invert(0);
+  transition: filter 400ms var(--ease-quiet), opacity 400ms var(--ease-quiet); }
 .nav__links { display: flex; gap: clamp(1rem, 2vw, 1.7rem); }
-.nav__links a {
+.nav__item { position: relative; display: flex; align-items: center; }
+/* one shared 400ms curve across every nav element, so the hero↔pill morph
+   reads as a single motion rather than parts changing at different times */
+.nav__link {
   display: inline-flex; align-items: center; gap: 0.5rem;
   font-family: var(--ff-text); font-size: 0.7rem; letter-spacing: 0.13em; text-transform: uppercase; font-weight: 500;
-  color: color-mix(in oklab, var(--ink) 76%, transparent); transition: color 280ms var(--ease-quiet);
+  color: color-mix(in oklab, var(--ink) 76%, transparent);
+  transition: color 400ms var(--ease-quiet), text-shadow 400ms var(--ease-quiet);
 }
-.nav__links a:hover { color: var(--em-base); }
-.nav__links a:hover .nav__ico { border-color: var(--em-base); background: var(--em-base); }
-.nav__ico { width: 6px; height: 6px; transform: rotate(45deg); border: 1px solid color-mix(in oklab, var(--gold) 60%, var(--ink)); transition: background 280ms var(--ease-quiet), border-color 280ms var(--ease-quiet); }
+.nav__link:hover { color: var(--em-base); }
+/* caret hints at the dropdown; tips down when the menu opens */
+.nav__caret { width: 8px; height: 5px; margin-left: 0.1rem; opacity: 0.6;
+  transition: transform 320ms var(--ease-quiet), opacity 320ms var(--ease-quiet); }
+.nav__item:hover .nav__caret, .nav__item:focus-within .nav__caret { opacity: 1; transform: translateY(1px); }
+
+/* --- the dropdown: one frosted-glass card, consistent across all three items,
+   legible over both the dark hero and the floating ivory pill --------------- */
+.nav__menu {
+  position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+  padding-top: 0.85rem; min-width: 20rem; z-index: 5;
+  opacity: 0; visibility: hidden; pointer-events: none;
+  transition: opacity 240ms var(--ease-quiet), visibility 0s linear 240ms;
+}
+.nav__item:hover > .nav__menu,
+.nav__item:focus-within > .nav__menu {
+  opacity: 1; visibility: visible; pointer-events: auto;
+  transition: opacity 260ms var(--ease-quiet), visibility 0s;
+}
+.nav__menu-card {
+  transform: translateY(-6px);
+  transition: transform 360ms var(--ease-quiet);
+  padding: 0.5rem;
+  border-radius: 15px;
+  background: rgba(247, 242, 232, 0.9);
+  backdrop-filter: blur(22px) saturate(1.3);
+  -webkit-backdrop-filter: blur(22px) saturate(1.3);
+  border: 1px solid rgba(6, 77, 57, 0.18);
+  box-shadow:
+    0 1px 2px rgba(14, 38, 28, 0.12),
+    0 34px 66px -32px rgba(14, 38, 28, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+.nav__item:hover .nav__menu-card,
+.nav__item:focus-within .nav__menu-card { transform: translateY(0); }
+.nav__menu-eyebrow {
+  margin: 0; padding: 0.5rem 0.65rem 0.55rem;
+  font-family: var(--ff-text); font-size: 0.56rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600;
+  color: color-mix(in oklab, var(--em-base) 58%, transparent);
+}
+.nav__menu-list { display: flex; flex-direction: column; }
+.nav__menu-row {
+  display: flex; align-items: flex-start; gap: 0.72rem;
+  padding: 0.6rem 0.65rem; border-radius: 10px;
+  text-transform: none; letter-spacing: normal;
+  transition: background-color 220ms var(--ease-quiet);
+}
+a.nav__menu-row:hover { background: rgba(6, 77, 57, 0.07); }
+.nav__menu-idx {
+  flex: none; margin-top: 0.12rem; min-width: 1.15rem;
+  font-family: var(--ff-text); font-size: 0.62rem; font-weight: 600; letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+  color: color-mix(in oklab, var(--gold) 66%, var(--ink));
+}
+.nav__menu-dot {
+  flex: none; width: 6px; height: 6px; margin-top: 0.42rem; transform: rotate(45deg);
+  background: color-mix(in oklab, var(--gold) 78%, var(--ink));
+}
+.nav__menu-tt { min-width: 0; }
+.nav__menu-title {
+  display: block; font-family: var(--ff-text); font-size: 0.83rem; font-weight: 600;
+  letter-spacing: 0.005em; color: var(--ink); text-transform: none;
+  transition: color 220ms var(--ease-quiet);
+}
+a.nav__menu-row:hover .nav__menu-title { color: var(--em-base); }
+.nav__menu-sub {
+  display: block; margin-top: 0.14rem;
+  font-family: var(--ff-text); font-size: 0.72rem; line-height: 1.4; font-weight: 400;
+  letter-spacing: normal; text-transform: none;
+  color: color-mix(in oklab, var(--ink) 56%, transparent);
+}
+.nav__menu-arrow {
+  margin-left: auto; align-self: center; padding-left: 0.4rem;
+  color: var(--em-base); opacity: 0; transform: translateX(-4px);
+  transition: opacity 220ms var(--ease-quiet), transform 220ms var(--ease-quiet);
+}
+a.nav__menu-row:hover .nav__menu-arrow { opacity: 1; transform: none; }
+.nav__menu-foot {
+  display: flex; align-items: center; justify-content: space-between; gap: 0.6rem;
+  margin: 0.35rem 0.15rem 0.15rem; padding: 0.7rem 0.5rem 0.5rem;
+  border-top: 1px solid rgba(6, 77, 57, 0.14);
+  font-family: var(--ff-text); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 600;
+  color: var(--em-base);
+  transition: color 220ms var(--ease-quiet);
+}
+.nav__menu-foot span { transition: transform 220ms var(--ease-quiet); }
+.nav__menu-foot:hover { color: var(--em-deep); }
+.nav__menu-foot:hover span { transform: translateX(3px); }
+@media (prefers-reduced-motion: reduce) {
+  .nav__menu, .nav__menu-card, .nav__caret, .nav__menu-arrow, .nav__menu-foot span { transition: none; }
+}
 .nav__cta {
   display: inline-flex; align-items: center;
   font-family: var(--ff-text); font-size: 0.7rem; letter-spacing: 0.13em; text-transform: uppercase; font-weight: 600;
   color: var(--ivory); background: var(--em-base);
   padding: 0.72rem 1.7rem 0.72rem 1.15rem;
   clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%);
-  transition: background-color 280ms var(--ease-quiet);
+  backdrop-filter: blur(0px);
+  transition: background-color 400ms var(--ease-quiet), color 400ms var(--ease-quiet),
+    backdrop-filter 400ms var(--ease-quiet);
 }
 .nav__cta:hover { background: var(--em-deep); }
 
-/* floating pill on scroll */
+/* floating pill on scroll — polished glass: deeper frost, a crisp contact
+   shadow under the ambient one, and layered inset light (sharp top line, soft
+   top bloom, faint bottom reflection). All box-shadow/color, so the whole
+   gloss fades in on the same curve as the pill itself. */
 .nav.is-floating { padding-top: 1.2rem; }
 .nav.is-floating .nav__bar {
   max-width: 960px;
-  background: rgba(245, 240, 229, 0.82); backdrop-filter: blur(16px) saturate(1.1);
-  border: 1px solid rgba(6, 77, 57, 0.32);
-  box-shadow: 0 26px 54px -28px rgba(14, 38, 28, 0.36), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  background: rgba(245, 240, 229, 0.78);
+  backdrop-filter: blur(18px) saturate(1.25);
+  -webkit-backdrop-filter: blur(18px) saturate(1.25);
+  border: 1px solid rgba(6, 77, 57, 0.26);
+  box-shadow:
+    0 1px 2px rgba(14, 38, 28, 0.12),
+    0 26px 54px -28px rgba(14, 38, 28, 0.38),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    inset 0 14px 28px -18px rgba(255, 255, 255, 0.55),
+    inset 0 -10px 22px -18px rgba(255, 255, 255, 0.28);
+}
+
+/* dark variant — homepage hero at scrollY 0 only. Sits "normally" within the
+   hero's glass pane: no blueprint box, no crosshairs — just the logo, links
+   and gold chevron on the film. The :not() guard means every override drops
+   the instant the existing scroll logic floats the pill; other routes never
+   get .nav--onhero. */
+.nav--onhero:not(.is-floating) .nav__bar { border-color: transparent; }
+/* soft ambient shadows settle the ivory chrome into the film (the same
+   contrast-floor trick as the hero copy) — they fade out with the morph */
+.nav--onhero:not(.is-floating) .nav__link {
+  color: color-mix(in oklab, var(--ivory) 80%, transparent);
+  text-shadow: 0 1px 14px rgba(2, 20, 14, 0.5);
+}
+.nav--onhero:not(.is-floating) .nav__link:hover { color: var(--ivory); }
+/* frosted-glass ghost chevron over the film — reads via the blurred backdrop,
+   no gold, so the hero's single gold CTA stays the one loud action. Reverts to
+   the solid emerald chevron the instant the pill floats. */
+.nav--onhero:not(.is-floating) .nav__cta {
+  background: rgba(243, 237, 224, 0.12); color: var(--ivory);
+  backdrop-filter: blur(10px) saturate(1.15);
+  -webkit-backdrop-filter: blur(10px) saturate(1.15);
+}
+.nav--onhero:not(.is-floating) .nav__cta:hover { background: rgba(243, 237, 224, 0.22); color: var(--ivory); }
+.nav--onhero:not(.is-floating) .nav__toggle { color: var(--ivory); }
+.nav--onhero:not(.is-floating) .nav__logo-img {
+  filter: brightness(0) invert(1) drop-shadow(0 1px 10px rgba(2, 20, 14, 0.5));
+  opacity: 0.94;
 }
 /* hamburger — hidden until the desktop links collapse */
 .nav__toggle { display: none; pointer-events: auto; }
@@ -235,116 +361,227 @@ html.lenis, html.lenis body { height: auto; }
   .mnav__link, .mnav__foot { transform: none; }
 }
 
-/* =============================================================================
-   Site frame — one continuous deep-emerald bezel around the whole page, on all
-   four edges and running across every section (the hero's recessed-window look,
-   extended site-wide as a fixed passe-partout). Sits above content, ignores
-   pointer events, and carries a fine dark inner lip.
-   ========================================================================== */
-body::after {
-  content: ""; position: fixed; inset: 0; z-index: 45; pointer-events: none;
-  border: clamp(5.88px, 0.686vw, 9.1px) solid #06392a;
-  box-shadow: inset 0 0 0 1px rgba(2, 20, 14, 0.55);
-}
+/* (The former site-wide emerald bezel — a fixed body::after passe-partout —
+   was removed at the user's request: the page now runs edge to edge.) */
 
 /* =============================================================================
-   Hero — editorial left, playable founder film right (Neko-style split).
-   Flush inside the site frame (the frame provides the recessed-window edge).
+   Hero — full-viewport cinematic film. The diagnostic-suite footage runs
+   subtle and emerald-graded across the whole viewport behind the copy: one
+   glossy pane inside the site's fixed bezel. Readability never depends on
+   blend modes (Safari): the video's own filter + the plain-alpha scrim do
+   that work; grade/sheen blends are enhancement only.
    ========================================================================== */
 .hero {
-  position: relative; overflow: hidden; color: var(--ink);
-  display: flex; align-items: center;
+  position: relative; overflow: hidden; color: var(--ivory);
+  display: flex;
   min-height: 100svh;
+  background: var(--em-black); /* paints before the poster/video decode */
 }
-/* the recess: crisp inner edge, a bright top glass lip, and soft edge-darkening
-   that pulls the content back into the frame (the "tunnel") */
+/* the glass lip: bright top highlight + crisp dark inner edge against the
+   bezel + a settle toward the bottom seam */
 .hero::after {
   content: ""; position: absolute; inset: 0; z-index: 3; pointer-events: none;
-  border-radius: inherit;
   box-shadow:
-    inset 0 0 0 1px rgba(14, 38, 28, 0.18),
-    inset 0 1.5px 0 rgba(255, 255, 255, 0.6),
-    inset 0 0 80px rgba(6, 50, 36, 0.2),
-    inset 0 -60px 90px -46px rgba(14, 38, 28, 0.26),
-    inset 0 60px 90px -56px rgba(14, 38, 28, 0.14);
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.22),
+    inset 0 0 0 1px rgba(2, 20, 14, 0.6),
+    inset 0 -70px 110px -60px rgba(2, 20, 14, 0.55);
 }
-.hero-bg { position: absolute; inset: 0; z-index: 0; }
-/* classy warm off-white ground */
-.hero-bg__base {
-  position: absolute; inset: 0;
-  background:
-    /* soft warm spotlight behind the headline — lifts the text off the ground */
-    radial-gradient(44% 54% at 26% 46%, rgba(255, 253, 247, 0.72), transparent 66%),
-    radial-gradient(72% 64% at 16% 20%, rgba(255, 252, 245, 0.9), transparent 62%),
-    radial-gradient(60% 72% at 95% 82%, rgba(221, 213, 197, 0.55), transparent 72%),
-    linear-gradient(150deg, #f5f0e5 0%, #efe8d9 56%, #e8e0cf 100%);
+
+/* --- the scene: full-bleed film + grade/scrim/gloss stack (DOM order = paint
+   order; distinct from the founder film's .hero-media housing) --- */
+.hero-scene { position: absolute; inset: 0; z-index: 0; animation: fade-in 1400ms var(--ease-quiet) both; }
+.hero-scene__video,
+.hero-scene__poster {
+  position: absolute; inset: 0; width: 100%; height: 100%; display: block;
+  object-fit: cover; object-position: center 42%; user-select: none;
+  /* base grade lives on the element itself so legibility survives without blends */
+  filter: saturate(0.85) contrast(1.05) brightness(0.62);
 }
-/* faint technical dotted grid — the "engineered" texture (ties to the navbar).
-   Held a touch longer across the left so it whispers behind the headline. */
-.hero-bg__engrave {
+.hero-scene__poster { display: none; }
+/* a whisper of brand undertone only — kept low so it tints the shadows without
+   painting the neutrals/highlights (a heavier wash reads dirty-green) */
+.hero-scene__grade {
   position: absolute; inset: 0; pointer-events: none;
-  background-image: radial-gradient(rgba(14, 38, 28, 0.1) 1px, transparent 1.6px);
-  background-size: 26px 26px;
-  -webkit-mask-image: linear-gradient(118deg, #000 0%, rgba(0,0,0,0.58) 48%, transparent 78%);
-  mask-image: linear-gradient(118deg, #000 0%, rgba(0,0,0,0.58) 48%, transparent 78%);
+  background: var(--em-deep); mix-blend-mode: color; opacity: 0.09;
 }
-/* soft tonal clouds — layered depth on the paper */
-.hero-bg__glow { position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none; }
-.hero-bg__glow--1 { width: 46vw; height: 46vw; left: -6%; top: -2%; opacity: 0.6; background: radial-gradient(closest-side, rgba(255, 251, 243, 0.85), transparent 70%); }
-.hero-bg__glow--2 { width: 34vw; height: 34vw; right: 4%; bottom: -10%; opacity: 0.5; background: radial-gradient(closest-side, rgba(18, 108, 78, 0.12), transparent 70%); }
-.hero-bg__glow--3 { width: 24vw; height: 24vw; right: 22%; top: 4%; opacity: 0.4; background: radial-gradient(closest-side, rgba(201, 170, 110, 0.14), transparent 70%); }
-/* fine paper grain */
-.hero-bg__grain {
-  position: absolute; inset: 0; opacity: 0.05; mix-blend-mode: multiply; pointer-events: none;
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+/* the readability workhorse — plain alpha, near-neutral blacks (a heavy green
+   cast reads dirty). Centred pool behind the copy; the footage's bright zones
+   (ceiling cove lights, wall display, countertop) stay gently dimmed but
+   visible as the scene's interest. */
+.hero-scene__scrim {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(62% 58% at 50% 48%, rgba(4, 16, 12, 0.56), transparent 74%),
+    linear-gradient(180deg, rgba(4, 16, 12, 0.55), transparent 26%),
+    linear-gradient(0deg, rgba(3, 13, 10, 0.6), transparent 30%),
+    linear-gradient(180deg, rgba(4, 20, 15, 0.2), rgba(4, 16, 12, 0.28));
 }
-.hero-bg__sheen { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(255, 255, 255, 0.4), transparent 12%); }
-.hero-bg__vignette { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(140% 120% at 24% 30%, transparent 52%, rgba(14, 38, 28, 0.07) 100%); }
+.hero-scene__grain {
+  position: absolute; inset: 0; pointer-events: none; opacity: 0.07; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.hero-scene__vignette {
+  position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(125% 105% at 50% 42%, transparent 52%, rgba(2, 20, 14, 0.55) 100%);
+}
 
+/* --- the liquid-glass pane — floats in front of the film, spreading almost
+   to the edges with a breathing gutter of raw footage around it. Carries the
+   gold hairline, the bright top lip, a diagonal specular streak and a soft
+   bottom reflection. The copy (hero-inner) stacks above it, so text stays
+   crisp while the film reads as if behind polished glass. --- */
+.hero-glass {
+  position: absolute; inset: clamp(16px, 2vw, 30px); z-index: 1; pointer-events: none;
+  border-radius: clamp(18px, 2vw, 28px);
+  backdrop-filter: blur(3.5px) saturate(1.12) brightness(1.05);
+  -webkit-backdrop-filter: blur(3.5px) saturate(1.12) brightness(1.05);
+  background:
+    linear-gradient(118deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.015) 32%, transparent 60%),
+    linear-gradient(180deg, rgba(255, 251, 243, 0.05), transparent 24%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    inset 0 0 0 1px rgba(217, 184, 108, 0.22),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.06),
+    0 30px 90px -40px rgba(0, 0, 0, 0.65);
+  animation: fade-in 1400ms var(--ease-quiet) 200ms both;
+}
+/* liquid specular streak */
+.hero-glass::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit;
+  background: linear-gradient(115deg, transparent 18%, rgba(255, 255, 255, 0.10) 30%, rgba(255, 255, 255, 0.02) 40%, transparent 52%);
+  mix-blend-mode: screen;
+}
+/* soft inner reflections — the glass's thickness */
+.hero-glass::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit;
+  box-shadow:
+    inset 0 -34px 60px -40px rgba(255, 251, 243, 0.10),
+    inset 0 24px 60px -50px rgba(255, 255, 255, 0.14);
+}
+
+/* --- content, centred on the glass — a balanced, monumental composition:
+   two locked headline lines, two sentence lines, the gold chevron, the
+   credential. Biased slightly above true centre by asymmetric padding. --- */
 .hero-inner {
-  position: relative; z-index: 1; width: 100%; max-width: 1380px; margin-inline: auto;
-  /* Media slot is empty for now — single column, headline holds the frame. */
-  display: grid; grid-template-columns: 1fr; align-items: start;
-  gap: clamp(2rem, 5vw, 5.5rem);
-  padding: clamp(6rem, 12vh, 8.5rem) clamp(1.5rem, 5vw, 5rem) clamp(3rem, 6vh, 4.5rem);
-}
-@media (max-width: 940px) {
-  .hero-inner { gap: clamp(2.4rem, 7vw, 3.4rem);
-    padding-top: clamp(8.5rem, 17vh, 10.5rem); } /* clear the taller stacked navbar */
+  position: relative; z-index: 2; width: 100%; max-width: 1320px; margin-inline: auto;
+  min-height: 100svh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: clamp(6rem, 12vh, 8rem) clamp(2.2rem, 6vw, 6rem) clamp(4.5rem, 9vh, 6.5rem);
 }
 
-.hero-content { text-align: left; }
-.hero-eyebrow { color: var(--em-base); animation: fade-rise 1000ms var(--ease-quiet) 150ms both; }
+.hero-content { text-align: center; display: grid; justify-items: center; }
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  color: color-mix(in oklab, var(--gold) 78%, var(--ivory));
+  animation: fade-rise 1000ms var(--ease-quiet) 150ms both;
+}
+/* the BeyondAge logomark (same mask technique as .mark-divider's centre node),
+   scaled to the eyebrow's cap-height and toned to its gold — quiet, in context */
+.hero-eyebrow__mark {
+  width: clamp(12px, 1.1vw, 14px); aspect-ratio: 1; flex: none;
+  background: color-mix(in oklab, var(--gold) 78%, var(--ivory));
+  -webkit-mask: url("/assets/logo.png") left center / auto 100% no-repeat;
+  mask: url("/assets/logo.png") left center / auto 100% no-repeat;
+}
 .hero-h1 {
-  font-family: var(--ff-display); font-weight: 600; color: var(--em-base);
-  font-size: clamp(2.78rem, 5.78vw, 4.92rem); line-height: 1.05; letter-spacing: -0.01em;
-  margin: clamp(1.2rem, 2.4vh, 1.7rem) 0 0; max-width: 15ch; text-wrap: balance;
+  font-family: var(--ff-display); font-weight: 600; color: var(--ivory);
+  font-size: clamp(2.85rem, 5.2vw, 4.7rem); line-height: 1.06; letter-spacing: -0.01em;
+  margin: clamp(0.95rem, 1.9vh, 1.35rem) auto 0;
   animation: fade-rise 1000ms var(--ease-quiet) 300ms both;
 }
-.hero-h1 em { font-style: normal; font-weight: 700; color: color-mix(in oklab, var(--gold) 74%, var(--ink)); }
+/* the two headline lines are locked — one thought per line */
+.hero-h1__line { display: block; }
+.hero-h1 em { font-style: normal; font-weight: 700; color: var(--gold-bright); }
 .hero-sub {
-  margin: clamp(1.4rem, 2.8vh, 1.9rem) 0 0; max-width: 40ch;
+  margin: clamp(1.05rem, 2.1vh, 1.45rem) auto 0; max-width: 52ch;
   font-family: var(--ff-text); font-weight: 400;
-  font-size: clamp(1.02rem, 1.2vw, 1.16rem); line-height: 1.55; letter-spacing: -0.004em;
-  color: color-mix(in oklab, var(--ink) 84%, transparent);
-  text-wrap: pretty;
+  font-size: clamp(1.12rem, 1.35vw, 1.3rem); line-height: 1.5; letter-spacing: -0.004em;
+  color: color-mix(in oklab, var(--ivory) 80%, transparent);
+  text-wrap: balance;
   animation: fade-rise 1000ms var(--ease-quiet) 460ms both;
 }
-.hero-actions { margin-top: clamp(1.8rem, 3.4vh, 2.5rem); animation: fade-rise 1000ms var(--ease-quiet) 600ms both; }
-
+/* invisible as a shadow, functions as a local contrast floor over bright
+   footage moments */
+.hero-h1, .hero-sub { text-shadow: 0 1px 30px rgba(2, 20, 14, 0.45); }
+.hero-actions { margin-top: clamp(1.6rem, 3vh, 2.2rem); animation: fade-rise 1000ms var(--ease-quiet) 600ms both; }
+/* the nav CTA's gold chevron, scaled up to invitation size — same colour,
+   same shape, same type family, more presence */
+.hero-cta {
+  display: inline-flex; align-items: center; min-height: 52px;
+  font-family: var(--ff-text); font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 600;
+  color: var(--em-black); background: var(--gold);
+  padding: 1rem 2.5rem 1rem 1.95rem;
+  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 50%, calc(100% - 14px) 100%, 0 100%);
+  transition: background-color 280ms var(--ease-quiet);
+}
+.hero-cta:hover { background: var(--gold-bright); }
+/* the credential — quiet proof beneath the action, behind a centred gold rule */
 .hero-cred {
-  margin-top: clamp(2rem, 4vh, 2.8rem); padding-top: 1.4rem; border-top: 1px solid var(--line);
-  display: flex; align-items: center; gap: 0.75rem; font-size: 0.82rem; line-height: 1.4;
-  color: color-mix(in oklab, var(--ink) 66%, transparent); max-width: 46ch;
+  position: relative; margin: clamp(1.8rem, 3.4vh, 2.5rem) auto 0; padding-top: clamp(1.1rem, 2vh, 1.4rem);
+  max-width: 72ch; /* one quiet line on desktop; wraps naturally on small screens */
+  font-family: var(--ff-text); font-style: italic;
+  font-size: clamp(0.92rem, 1vw, 1rem); line-height: 1.55;
+  color: color-mix(in oklab, var(--ivory) 64%, transparent);
   animation: fade-rise 1000ms var(--ease-quiet) 740ms both;
 }
-.hero-cred__names { display: flex; flex-direction: column; }
-.hero-cred__line { display: block; }
-.hero-cred strong { color: var(--ink); font-weight: 500; }
-.hero-cred__faces { display: inline-flex; flex: none; }
-.hero-cred__faces img { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; object-position: top; border: 1px solid var(--em-base); }
-.hero-cred__faces img:nth-child(2) { margin-left: -11px; }
+.hero-cred::before {
+  content: ""; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: clamp(4rem, 12vw, 6rem); height: 1px;
+  background: linear-gradient(90deg, transparent,
+    color-mix(in oklab, var(--gold) 44%, transparent) 50%, transparent);
+}
+.hero-cred em { font-style: inherit; white-space: nowrap; color: color-mix(in oklab, var(--gold) 82%, var(--ivory)); }
+/* the Padma lotus — an original monoline lotus seal (the award's own motif),
+   masked to gold and set small above the credential as a quiet crest */
+.hero-cred__seal {
+  display: block; width: clamp(15px, 1.5vw, 18px); height: clamp(16px, 1.6vw, 20px);
+  margin: 0 auto clamp(0.55rem, 1.1vh, 0.75rem);
+  background: linear-gradient(180deg,
+    color-mix(in oklab, var(--gold) 88%, var(--ivory)),
+    color-mix(in oklab, var(--gold) 66%, transparent));
+  opacity: 0.82;
+  -webkit-mask: url("/assets/padma-lotus.svg") center / contain no-repeat;
+  mask: url("/assets/padma-lotus.svg") center / contain no-repeat;
+}
+
+@media (max-width: 760px) {
+  .hero-glass { inset: 10px; border-radius: 16px; }
+  .hero-inner {
+    padding-inline: clamp(1.4rem, 6vw, 2rem);
+    padding-bottom: clamp(3.2rem, 10vw, 4.8rem);
+  }
+  /* the locked lines can't fit phone widths — let them flow and balance */
+  .hero-h1 {
+    max-width: 12.2ch;
+    font-size: clamp(2.4rem, 10vw, 3.4rem);
+    text-wrap: balance;
+  }
+  .hero-h1__line { display: inline; }
+  .hero-sub {
+    max-width: 31ch;
+    font-size: clamp(1rem, 4.2vw, 1.08rem);
+  }
+  .hero-cred { font-size: 0.88rem; max-width: 36ch; }
+  /* portrait cover-crop shows a tight slice of the source; text fills more of
+     the frame — deepen the text pool */
+  .hero-scene__scrim {
+    background:
+      radial-gradient(86% 58% at 50% 50%, rgba(4, 16, 12, 0.62), transparent 80%),
+      linear-gradient(180deg, rgba(4, 16, 12, 0.6), transparent 30%),
+      linear-gradient(0deg, rgba(3, 13, 10, 0.62), transparent 34%),
+      linear-gradient(180deg, rgba(4, 20, 15, 0.24), rgba(4, 16, 12, 0.32));
+  }
+}
+
+@media (max-width: 420px) {
+  .hero-sub br { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-scene__video { display: none; }
+  .hero-scene__poster { display: block; }
+  .hero-scene, .hero-glass { animation: none; }
+}
 
 /* Playable founder film.
    The housing + telemetry chrome live under the .hero-media__* namespace (kept
@@ -1127,6 +1364,212 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 .ig-arc { fill: none; stroke-width: 6; stroke-linecap: round; }
 
 /* =============================================================================
+   Healthspan dimensions — photo-led, scroll-reactive pathway
+   ========================================================================== */
+.hsd {
+  position: relative; overflow: clip; background: var(--em-black);
+  border-top: 1px solid color-mix(in oklab, var(--gold) 20%, transparent);
+}
+
+/* the section title + subhead, living inside the pinned stage as a persistent
+   running head — fixed top-left while the four dimensions crossfade beneath, so
+   header and imagery read as one composition. Hangs off the same left line as
+   the dimension copy and the rail. */
+.hsd-runhead {
+  position: absolute; z-index: 6; pointer-events: none;
+  /* drops clear of the floating nav pill with a classy top gap */
+  top: clamp(7rem, 12vh, 9rem);
+  left: clamp(1.5rem, 5vw, 6rem); right: clamp(1.5rem, 5vw, 6rem);
+  display: grid; gap: 0.85rem; max-width: none;
+}
+.hsd-runhead__title {
+  margin: 0; max-width: 24ch;
+  font-family: var(--ff-display); font-weight: 600; color: var(--ivory);
+  font-size: clamp(1.9rem, 3vw, 2.75rem); line-height: 1.06; letter-spacing: -0.012em;
+  text-shadow: 0 2px 34px rgba(0, 0, 0, 0.55);
+}
+.hsd-runhead__sub {
+  margin: 0; max-width: 40ch;
+  font-family: var(--ff-text); font-weight: 400;
+  font-size: clamp(0.92rem, 1vw, 1.04rem); line-height: 1.5; letter-spacing: 0;
+  color: color-mix(in oklab, var(--ivory) 64%, transparent);
+  text-shadow: 0 1px 20px rgba(0, 0, 0, 0.5);
+}
+
+.hsd-pin { position: relative; height: 400svh; background: var(--em-black); }
+.hsd-stage {
+  --active: 0;
+  --progress: 25%;
+  position: sticky; top: 0; height: 100svh; overflow: hidden; isolation: isolate;
+  background: linear-gradient(180deg, #031c14, #010b08);
+}
+.hsd-stage::after {
+  content: ""; position: absolute; inset: 0; z-index: 5; pointer-events: none;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    inset 0 0 0 1px rgba(217, 184, 108, 0.13),
+    inset 0 132px 130px -78px rgba(0, 0, 0, 0.62),
+    inset 0 -110px 130px -70px rgba(0, 0, 0, 0.82);
+}
+.hsd-panel {
+  position: absolute; inset: 0; display: grid; align-items: end;
+  opacity: 0; transform: scale(1.035); pointer-events: none;
+  transition: opacity 760ms var(--ease-quiet), transform 1600ms var(--ease-quiet);
+}
+.hsd-panel.is-active { opacity: 1; transform: scale(1); pointer-events: auto; z-index: 1; }
+.hsd-panel__img {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  object-position: center center; display: block; user-select: none;
+  filter: saturate(0.96) contrast(1.04) brightness(0.9);
+}
+.hsd-panel:nth-child(2) .hsd-panel__img { object-position: center center; }
+.hsd-panel:nth-child(3) .hsd-panel__img { object-position: center center; }
+.hsd-panel:nth-child(4) .hsd-panel__img { object-position: center center; }
+.hsd-panel__scrim {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background:
+    radial-gradient(54% 56% at 14% 72%, rgba(2, 18, 12, 0.88), transparent 72%),
+    linear-gradient(90deg, rgba(2, 18, 12, 0.72) 0%, rgba(2, 18, 12, 0.28) 42%, rgba(2, 18, 12, 0.12) 100%),
+    linear-gradient(180deg, rgba(2, 18, 12, 0.18) 0%, transparent 42%, rgba(1, 8, 6, 0.78) 100%);
+}
+.hsd-panel__grain {
+  position: absolute; inset: 0; z-index: 2; pointer-events: none; opacity: 0.11; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+/* left-aligned to the same inset as the running head and the rail (one shared
+   left line), and lifted off the floor so the word sits in the lower third
+   rather than hugging the bottom edge */
+.hsd-copy {
+  position: relative; z-index: 3; width: 100%; max-width: 60rem; margin: 0;
+  padding: 0 clamp(1.5rem, 5vw, 6rem) clamp(8rem, 18vh, 12rem);
+  color: var(--ivory);
+}
+.hsd-kicker {
+  margin: 0 0 1rem; font-family: var(--ff-text); font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.2em; text-transform: uppercase; color: color-mix(in oklab, var(--gold) 78%, var(--ivory));
+}
+.hsd-copy h3 {
+  margin: 0; font-family: var(--ff-display); font-weight: 600;
+  font-size: 7rem; line-height: 0.94; letter-spacing: 0;
+  text-shadow: 0 24px 70px rgba(0, 0, 0, 0.46);
+}
+.hsd-pills {
+  list-style: none; margin: clamp(1.25rem, 2.2vw, 1.7rem) 0 0; padding: 0;
+  display: flex; align-items: center; flex-wrap: wrap; gap: 0.68rem;
+}
+.hsd-pills li {
+  display: inline-flex; align-items: center; justify-content: center; min-height: 2.65rem;
+  padding: 0.62rem 1.1rem; border-radius: 999px;
+  border: 1px solid color-mix(in oklab, var(--ivory) 36%, transparent);
+  background: color-mix(in oklab, var(--ivory) 10%, transparent);
+  backdrop-filter: blur(12px) saturate(1.06);
+  font-family: var(--ff-text); font-size: 0.88rem; line-height: 1.2;
+  color: color-mix(in oklab, var(--ivory) 86%, transparent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+.hsd-rail {
+  position: absolute; z-index: 6; left: clamp(1.5rem, 5vw, 6rem); right: clamp(1.5rem, 5vw, 6rem);
+  bottom: clamp(1.15rem, 3vh, 1.9rem);
+  display: grid; grid-template-columns: repeat(4, 1fr); align-items: end; gap: 1rem;
+  padding-top: 1.15rem;
+}
+.hsd-rail__track,
+.hsd-rail__fill {
+  position: absolute; left: 0; right: 0; top: 0; height: 1px; border-radius: 2px;
+}
+.hsd-rail__track { background: color-mix(in oklab, var(--ivory) 22%, transparent); }
+.hsd-rail__fill {
+  right: auto; width: var(--progress);
+  background: linear-gradient(90deg, var(--gold-bright), color-mix(in oklab, var(--gold) 70%, var(--em-rich)));
+  box-shadow: 0 0 18px color-mix(in oklab, var(--gold) 28%, transparent);
+  transition: width 680ms var(--ease-quiet);
+}
+.hsd-rail__item {
+  position: relative; display: flex; justify-content: flex-start;
+  min-width: 0; padding: 0; border: 0; background: transparent; cursor: pointer;
+  font-family: var(--ff-text); font-size: 0.66rem; font-weight: 600; letter-spacing: 0.18em;
+  text-transform: uppercase; color: color-mix(in oklab, var(--ivory) 52%, transparent);
+  transition: color 420ms var(--ease-quiet);
+}
+.hsd-rail__item::before {
+  content: ""; position: absolute; left: 0; top: -1.42rem; width: 7px; height: 7px; transform: rotate(45deg);
+  border: 1px solid currentColor; background: rgba(2, 18, 12, 0.72);
+  transition: background-color 420ms var(--ease-quiet), border-color 420ms var(--ease-quiet), box-shadow 420ms var(--ease-quiet);
+}
+.hsd-rail__item.is-active { color: color-mix(in oklab, var(--gold) 82%, var(--ivory)); }
+.hsd-rail__item.is-active::before {
+  background: var(--gold); border-color: var(--gold);
+  box-shadow: 0 0 16px color-mix(in oklab, var(--gold) 58%, transparent);
+}
+
+@media (max-width: 1100px) {
+  .hsd-copy h3 { font-size: 5.7rem; }
+}
+@media (max-width: 920px) {
+  .hsd-pin {
+    height: auto; padding: clamp(1.15rem, 3vw, 1.6rem) clamp(1.1rem, 4vw, 1.6rem) clamp(4.8rem, 11vw, 6.5rem);
+    background:
+      radial-gradient(80% 56% at 78% -6%, rgba(20, 132, 97, 0.2), transparent 68%),
+      linear-gradient(180deg, #04271c 0%, #021712 62%, #02150e 100%);
+  }
+  .hsd-stage {
+    position: static; height: auto; overflow: visible; display: grid; gap: 1rem;
+    background: transparent;
+  }
+  .hsd-stage::after, .hsd-rail { display: none; }
+  /* the running head returns to normal flow as the section's opening header
+     above the stacked cards */
+  .hsd-runhead {
+    position: static; max-width: none; gap: 0.5rem;
+    padding: 0.4rem 0.35rem 0.7rem;
+  }
+  .hsd-runhead__title { font-size: clamp(2.05rem, 7.2vw, 2.7rem); }
+  .hsd-runhead__sub {
+    font-size: clamp(1rem, 3.4vw, 1.12rem);
+    color: color-mix(in oklab, var(--ivory) 70%, transparent);
+  }
+  .hsd-panel {
+    position: relative; min-height: 0; aspect-ratio: 16 / 12;
+    border-radius: 18px; overflow: hidden; opacity: 1; transform: none; pointer-events: auto;
+    border: 1px solid color-mix(in oklab, var(--gold) 24%, transparent);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      0 32px 70px -48px rgba(0, 0, 0, 0.8);
+  }
+  .hsd-panel__img { filter: saturate(0.94) contrast(1.04) brightness(0.86); }
+  .hsd-panel__scrim {
+    background:
+      radial-gradient(86% 60% at 18% 78%, rgba(2, 18, 12, 0.88), transparent 70%),
+      linear-gradient(180deg, transparent 20%, rgba(1, 8, 6, 0.82) 100%);
+  }
+  .hsd-copy { padding: clamp(1rem, 5vw, 1.5rem); align-self: end; }
+  .hsd-kicker { margin-bottom: 0.68rem; font-size: 0.62rem; letter-spacing: 0.16em; }
+  .hsd-copy h3 { font-size: 3.05rem; line-height: 1; }
+  .hsd-pills { gap: 0.45rem; margin-top: 0.95rem; }
+  .hsd-pills li { min-height: 2.28rem; padding: 0.48rem 0.78rem; font-size: 0.76rem; }
+}
+@media (max-width: 520px) {
+  .hsd-panel { aspect-ratio: 4 / 5; border-radius: 14px; }
+  .hsd-copy h3 { font-size: 2.65rem; }
+  .hsd-pills { align-items: flex-start; }
+  .hsd-pills li { max-width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hsd-pin { height: auto; padding: clamp(1.15rem, 3vw, 1.6rem) clamp(1.1rem, 4vw, 1.6rem) clamp(4.8rem, 11vw, 6.5rem); }
+  .hsd-stage { position: static; height: auto; overflow: visible; display: grid; gap: 1rem; }
+  .hsd-stage::after, .hsd-rail { display: none; }
+  .hsd-runhead {
+    position: static; max-width: none; gap: 0.5rem; padding: 0.4rem 0.35rem 0.7rem;
+  }
+  .hsd-runhead__title { font-size: clamp(2.05rem, 3vw, 2.7rem); }
+  .hsd-panel {
+    position: relative; opacity: 1; transform: none; pointer-events: auto;
+    min-height: min(42rem, 76svh); border-radius: 18px; overflow: hidden;
+  }
+  .hsd-panel, .hsd-rail__fill, .hsd-rail__item, .hsd-rail__item::before { transition: none; }
+}
+
+/* =============================================================================
    Healthspan dashboard — the product, native + crisp on a dark instrument field
    ========================================================================== */
 .dash { position: relative; overflow: hidden; color: var(--ivory);
@@ -1386,7 +1829,11 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
    Editorial header, then three readouts that tally up on scroll.
    ========================================================================== */
 .cfp { position: relative; overflow: hidden; color: var(--ink);
-  background: linear-gradient(180deg, #f6f0e4 0%, #f1e8d9 100%); }
+  /* a faint shadow cast by the dark hero above melts the seam — read as depth
+     (the hero pane sitting just over the paper), never as a colour blend */
+  background:
+    linear-gradient(180deg, rgba(14, 38, 28, 0.13), rgba(14, 38, 28, 0.05) 70px, transparent 150px),
+    linear-gradient(180deg, #f6f0e4 0%, #f1e8d9 100%); }
 
 /* felt technical texture — an instrument grid cohesive with the hero's engraved
    dots but its own motif: a fine X marks every cell, a dot every vertex. Held
@@ -1414,10 +1861,10 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 .cfp-top { max-width: 58rem; margin-inline: auto; text-align: center; }
 .cfp-lead { min-width: 0; }
 .cfp-title { font-family: var(--ff-display); font-weight: 600; color: var(--em-base);
-  font-size: clamp(2.45rem, 4.65vw, 3.85rem); line-height: 1.02; letter-spacing: -0.024em;
-  margin: 0 auto; max-width: 12.5ch; }
-/* each thesis clause holds its own line; on the wide layout they never break
-   mid-phrase. Below 940px the section stacks and the clauses may wrap. */
+  font-size: clamp(2.45rem, 4.65vw, 3.85rem); line-height: 1.06; letter-spacing: -0.024em;
+  margin: 0 auto; max-width: none; }
+/* two locked clauses — the parallel verbs (decided / diagnosed) land at the
+   line ends. Below 940px the section stacks and the clauses may wrap. */
 .cfp-title__line { display: block; white-space: nowrap; }
 @media (max-width: 940px) { .cfp-title__line { white-space: normal; } }
 .cfp-title em { font-style: normal; font-weight: 700;
@@ -1524,7 +1971,7 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 /* Section 2 splits editorial: the words flush-left, the founder's film right,
    both top-aligned so the quote and video pane open on the same visual line. */
 .why-split { display: grid; grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
-  gap: clamp(2.8rem, 5.8vw, 5.4rem); align-items: start; margin-top: clamp(2.8rem, 5.6vw, 4.5rem); }
+  gap: clamp(2.8rem, 5.8vw, 5.4rem); align-items: stretch; margin-top: clamp(2.8rem, 5.6vw, 4.5rem); }
 @media (max-width: 880px) {
   .why-split { grid-template-columns: 1fr; gap: clamp(2.2rem, 6vw, 3.2rem); }
 }
@@ -1534,6 +1981,13 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 .why-split__text .why-lede { margin-inline: 0; }
 .why-split__media { min-width: 0; align-self: start; }
 .why-split__media .film { max-width: none; width: 100%; }
+/* Center the testimonial against the film so the quote and its credit stay a
+   single, tightly-bound unit — vertically balanced with the video pane rather
+   than stretched to bracket its top and bottom edges.
+   Desktop only; the mobile stack keeps its natural spacing. */
+@media (min-width: 881px) {
+  .why-split__text { display: flex; flex-direction: column; justify-content: center; }
+}
 
 /* --- the instrument — a classy cream "device screen" floating on the field --- */
 .why-inst { position: relative; margin: clamp(2.6rem, 5vw, 4rem) auto 0; max-width: 61rem;
@@ -1642,12 +2096,12 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 .why-founder__eyebrow { display: block; margin-bottom: clamp(1.1rem, 2.2vw, 1.5rem); color: color-mix(in oklab, var(--gold) 72%, var(--ivory)); }
 /* this statement is the section title — sits at near chapter-title scale */
 .why-founder__quote { margin: 0; font-family: var(--ff-display); font-weight: 600; color: var(--ivory);
-  font-size: clamp(1.82rem, 3.12vw, 2.72rem); line-height: 1.12; letter-spacing: -0.014em; text-wrap: balance; }
+  font-size: clamp(2rem, 3.42vw, 3rem); line-height: 1.12; letter-spacing: -0.014em; text-wrap: balance; }
 .why-founder__quote em { font-style: normal; font-weight: 700; color: var(--gold); }
 .why-founder__bio { margin: clamp(1.3rem, 2.4vw, 1.7rem) 0 0;
   font-size: clamp(1rem, 1.15vw, 1.08rem); line-height: 1.62; color: color-mix(in oklab, var(--ivory) 70%, transparent); }
-.why-founder__name { position: relative; margin-top: clamp(1.3rem, 2.1vw, 1.6rem); padding-top: clamp(1.3rem, 2.1vw, 1.6rem);
-  font-size: clamp(0.72rem, 0.8vw, 0.84rem); line-height: 1.55; letter-spacing: 0.11em;
+.why-founder__name { position: relative; margin-top: clamp(1.05rem, 1.7vw, 1.35rem); padding-top: clamp(1.05rem, 1.7vw, 1.35rem);
+  font-size: clamp(0.8rem, 0.9vw, 0.94rem); line-height: 1.55; letter-spacing: 0.1em;
   text-transform: uppercase; color: color-mix(in oklab, var(--ivory) 82%, transparent); }
 /* thin, subtle gold separator: starts at the text's left edge, fades to the right */
 .why-founder__name::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px;
@@ -1762,7 +2216,7 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-eyebrow, .hero-h1, .hero-sub, .hero-actions, .hero-cred, .hero-media, .site-header { animation: none; }
+  .hero-eyebrow, .hero-h1, .hero-sub, .hero-actions, .hero-scene, .hero-media, .site-header { animation: none; }
   .hero-media__play::before { animation: none; opacity: 0; }
   .hero-media__eq.is-on i { animation: none; }
 }
@@ -1863,6 +2317,19 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 .jp-hero__bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
 .jp-hero__grain { position: absolute; inset: 0; opacity: 0.05; mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+/* Profile hero only — a fine architectural grid, felt more than seen. Anchored
+   to the hero's light source (top-right, where the emerald glow sits) and
+   dissolved into the dark toward the lower-left, so it never reads as a flat
+   cage. A whisper of the diagnostic-instrument / blueprint language. */
+.pp-hero__grid {
+  position: absolute; inset: -1px; pointer-events: none;
+  background-image:
+    linear-gradient(to right, rgba(203, 229, 217, 0.062) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(203, 229, 217, 0.062) 1px, transparent 1px);
+  background-size: 54px 54px;
+  -webkit-mask-image: radial-gradient(150% 128% at 64% -12%, #000 20%, transparent 90%);
+  mask-image: radial-gradient(150% 128% at 64% -12%, #000 20%, transparent 90%);
+}
 .jp-hero__inner { position: relative; z-index: 1; display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(2.5rem, 5vw, 5rem); align-items: center; }
 @media (max-width: 900px) { .jp-hero__inner { grid-template-columns: 1fr; gap: clamp(2.4rem, 6vw, 3rem); } }
 
@@ -1976,6 +2443,10 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 .jd-brk line:first-child { stroke: color-mix(in oklab, var(--gold) 58%, var(--ink)); stroke-dasharray: 2 2; }
 .jd-cal, .jd-brk { opacity: 0; transition: opacity 700ms var(--ease-quiet) 1200ms; }
 .is-drawn .jd-cal, .is-drawn .jd-brk { opacity: 1; }
+/* leader-lined callouts — fade in last, after the structure has drawn */
+.jd-lead { stroke: color-mix(in oklab, var(--gold) 46%, var(--ink)); stroke-width: 1; stroke-dasharray: 2 2; }
+.jd-note { opacity: 0; transition: opacity 700ms var(--ease-quiet) 1350ms; }
+.is-drawn .jd-note { opacity: 1; }
 
 /* metabolic */
 .jd-plasma { fill: rgba(20, 132, 97, 0.04); }
@@ -2024,7 +2495,7 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 @media (max-width: 720px) { .jp-plate__unit { display: none; } }
 @media (prefers-reduced-motion: reduce) {
   .jd-vessel, .jd-ecg, .jd-eeg, .jd-hrv, .jd-step, .jd-curve, .jd-plaque-cap { stroke-dashoffset: 0; transition: none; }
-  .jd-blood, .jd-plaque, .jd-mem, .jd-cal, .jd-brk, .jd-rem, .jd-curve-ghost { opacity: 1; transition: none; }
+  .jd-blood, .jd-plaque, .jd-mem, .jd-cal, .jd-brk, .jd-note, .jd-rem, .jd-curve-ghost { opacity: 1; transition: none; }
   .jd-vesicle.is-live, .jd-mito-body.is-live, .jd-atp.is-live, .is-drawn .jd-receptor, .jd-sweep, .jp-plate__live { animation: none; }
 }
 

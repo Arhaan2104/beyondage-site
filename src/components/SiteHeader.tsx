@@ -4,18 +4,67 @@ import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
-const LINKS: [string, string][] = [
-  ["#journeys", "Health Journeys"],
-  ["#team", "The Bench"],
-  ["#how", "How it works"],
+type SubItem = { title: string; sub: string; href?: string; idx?: string };
+type NavLink = {
+  href: string;
+  label: string;
+  menu?: { eyebrow: string; items: SubItem[]; foot: { label: string; href: string } };
+};
+
+// The three primary nav destinations, each with a considered dropdown:
+// Health Journeys links straight to the three real program pages; The Bench and
+// How it works preview their contents and hand off to the full section/page.
+const LINKS: NavLink[] = [
+  {
+    href: "#journeys",
+    label: "Health Journeys",
+    menu: {
+      eyebrow: "Programs",
+      items: [
+        { title: "Heart Health", sub: "Read the signal early, act before it arrives.", href: "/health-journeys/heart-health" },
+        { title: "Metabolic Health", sub: "Caught early, dysfunction can be reversed.", href: "/health-journeys/metabolic-health" },
+        { title: "Sleep Health", sub: "Deepen the quality of your recovery.", href: "/health-journeys/sleep-health" },
+      ],
+      foot: { label: "All health journeys", href: "#journeys" },
+    },
+  },
+  {
+    href: "#team",
+    label: "The Bench",
+    menu: {
+      eyebrow: "The physicians",
+      items: [
+        { title: "Dr Arvinder Soin", sub: "Founder & Chairman", href: "/our-team/dr-arvind-soin" },
+        { title: "Dr Vritti Lamba", sub: "Longevity Physician", href: "/our-team/dr-vritti-lamba" },
+        { title: "Dr Vinayak Agrawal", sub: "Medical Director, Preventive Cardiology", href: "/our-team/dr-vinayak-agarwal" },
+      ],
+      foot: { label: "Meet the full bench", href: "/our-team" },
+    },
+  },
+  {
+    href: "#how",
+    label: "How it works",
+    menu: {
+      eyebrow: "The process",
+      items: [
+        { title: "Discovery call", sub: "Map your goals with our team.", idx: "01" },
+        { title: "Consultation", sub: "Meet your longevity physician.", idx: "02" },
+        { title: "Diagnostics", sub: "Labs, imaging, biomarkers, genomics.", idx: "03" },
+        { title: "Your plan", sub: "A precision optimisation plan.", idx: "04" },
+        { title: "Monitoring", sub: "Ongoing follow-up and adjustment.", idx: "05" },
+      ],
+      foot: { label: "See the full process", href: "#how" },
+    },
+  },
 ];
 
 // Fuller set for the mobile menu — the site's real sections, in page order.
 const MENU: [string, string][] = [
   ["#what-you-get", "What you get"],
-  ["#team", "The Bench"],
+  ["#healthspan", "Healthspan"],
   ["#journeys", "Health Journeys"],
   ["#how", "How it works"],
+  ["#team", "The Bench"],
   ["#dashboard", "The Product"],
 ];
 
@@ -30,8 +79,9 @@ export default function SiteHeader() {
   // On the homepage keep bare "#section" so SmoothScroll's Lenis handler catches
   // it; on any other route make it root-absolute so the browser navigates home.
   const to = (hash: string) => (home ? hash : `/${hash}`);
-  // The homepage hero is light paper (nav floats only on scroll); every other
-  // route has a dark hero, so the nav floats immediately for legibility.
+  // On the homepage the nav starts as the dark-blueprint variant over the
+  // cinematic hero (see .nav--onhero) and floats on scroll; every other route
+  // has a dark hero with no variant, so the nav floats immediately.
   const [floating, setFloating] = useState(!home);
   const [open, setOpen] = useState(false);
   const toggleRef = useRef<HTMLButtonElement>(null);
@@ -83,24 +133,74 @@ export default function SiteHeader() {
 
   return (
     <>
-      <header className={`nav${floating ? " is-floating" : ""}`}>
+      <header className={`nav${floating ? " is-floating" : ""}${home ? " nav--onhero" : ""}`}>
         <div className="nav__bar">
-          <span className="nav__mark nav__mark--tl" aria-hidden="true" />
-          <span className="nav__mark nav__mark--tr" aria-hidden="true" />
-          <span className="nav__mark nav__mark--bl" aria-hidden="true" />
-          <span className="nav__mark nav__mark--br" aria-hidden="true" />
-
           <Link href="/" className="nav__logo" aria-label="BeyondAge home">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/assets/logo.png" alt="BeyondAge" className="nav__logo-img" />
           </Link>
 
           <nav className="nav__links">
-            {LINKS.map(([href, label]) => (
-              <a key={href} href={to(href)}>
-                <span className="nav__ico" aria-hidden="true" />
-                {label}
-              </a>
+            {LINKS.map(({ href, label, menu }) => (
+              <div className="nav__item" key={href}>
+                <a
+                  href={to(href)}
+                  className="nav__link"
+                  aria-haspopup={menu ? "menu" : undefined}
+                >
+                  {label}
+                  {menu && (
+                    <svg className="nav__caret" viewBox="0 0 10 6" aria-hidden="true">
+                      <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  )}
+                </a>
+
+                {menu && (
+                  <div className="nav__menu" role="menu" aria-label={label}>
+                    <div className="nav__menu-card">
+                      <p className="nav__menu-eyebrow">{menu.eyebrow}</p>
+                      <div className="nav__menu-list">
+                        {menu.items.map((it) => {
+                          const inner = (
+                            <>
+                              {it.idx ? (
+                                <span className="nav__menu-idx" aria-hidden="true">{it.idx}</span>
+                              ) : (
+                                <span className="nav__menu-dot" aria-hidden="true" />
+                              )}
+                              <span className="nav__menu-tt">
+                                <span className="nav__menu-title">{it.title}</span>
+                                <span className="nav__menu-sub">{it.sub}</span>
+                              </span>
+                              {it.href && (
+                                <span className="nav__menu-arrow" aria-hidden="true">&rarr;</span>
+                              )}
+                            </>
+                          );
+                          return it.href ? (
+                            <a key={it.title} href={it.href} className="nav__menu-row" role="menuitem">
+                              {inner}
+                            </a>
+                          ) : (
+                            <div key={it.title} className="nav__menu-row nav__menu-row--static">
+                              {inner}
+                            </div>
+                          );
+                        })}
+                      </div>
+                      <a
+                        href={menu.foot.href.startsWith("#") ? to(menu.foot.href) : menu.foot.href}
+                        className="nav__menu-foot"
+                        role="menuitem"
+                      >
+                        {menu.foot.label}
+                        <span aria-hidden="true">&rarr;</span>
+                      </a>
+                    </div>
+                  </div>
+                )}
+              </div>
             ))}
           </nav>
 

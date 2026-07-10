@@ -74,8 +74,7 @@ export default function CaseForPrevention() {
           <div className="reveal cfp-lead">
             <h2 className="cfp-title">
               <span className="cfp-title__line">Disease is <em>decided</em></span>
-              <span className="cfp-title__line">long before it&rsquo;s</span>
-              <span className="cfp-title__line"><em>diagnosed</em>.</span>
+              <span className="cfp-title__line">long before it&rsquo;s <em>diagnosed</em>.</span>
             </h2>
             <p className="cfp-sub">
               It builds for years, while every report still reads <em>normal</em>.

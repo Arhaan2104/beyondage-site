@@ -40,3 +40,11 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .gstack/
+
+# local scratch / QA artifacts
+/tmp/
+/output/
+/.playwright-mcp/
+/prototype-*.png
+/runway-guest.png
+/public/font-preview.html

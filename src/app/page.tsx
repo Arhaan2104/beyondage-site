@@ -5,6 +5,7 @@ import HowItWorks from "@/components/HowItWorks";
 import WhatYouGet from "@/components/WhatYouGet";
 import PreventionVsCure from "@/components/PreventionVsCure";
 import WhyBeyondAge from "@/components/WhyBeyondAge";
+import HealthspanDimensions from "@/components/HealthspanDimensions";
 import HealthJourneys from "@/components/HealthJourneys";
 import SiteFooter from "@/components/SiteFooter";
 import FounderCard, { type Founder } from "@/components/FounderCard";
@@ -87,6 +88,9 @@ export default function Home() {
 
         {/* What you get — concrete deliverables (real site content) */}
         <WhatYouGet />
+
+        {/* Healthspan dimensions — the four domains of a life well-lived */}
+        <HealthspanDimensions />
 
         {/* Health Journeys — bespoke medical instruments per programme */}
         <HealthJourneys />

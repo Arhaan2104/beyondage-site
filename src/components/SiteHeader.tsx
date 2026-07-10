@@ -35,7 +35,7 @@ const LINKS: NavLink[] = [
       eyebrow: "The physicians",
       items: [
         { title: "Dr Arvinder Soin", sub: "Founder & Chairman", href: "/our-team/dr-arvind-soin" },
-        { title: "Dr Vritti Lamba", sub: "Longevity Physician", href: "/our-team/dr-vritti-lamba" },
+        { title: "Dr Vritti Loomba", sub: "Founder & CEO" },
         { title: "Dr Vinayak Agrawal", sub: "Medical Director, Preventive Cardiology", href: "/our-team/dr-vinayak-agarwal" },
       ],
       foot: { label: "Meet the full bench", href: "/our-team" },

@@ -42,7 +42,7 @@ export default function FounderCard({ name, role, honor, cred, href, video, post
           src={video}
           poster={poster}
           playsInline
-          preload="metadata"
+          preload="none"
           onClick={toggle}
           onPlay={() => setPlaying(true)}
           onPause={() => setPlaying(false)}

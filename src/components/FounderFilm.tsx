@@ -30,6 +30,10 @@ export default function FounderFilm() {
   const [elapsed, setElapsed] = useState(0);
   const [duration, setDuration] = useState(RUNTIME);
   const [progress, setProgress] = useState(0);
+  // The film is 12 MB; don't fetch it on page load. The poster (identical to the
+  // first frame) shows immediately, and the src is attached only once the frame
+  // nears the viewport — same autoplay-on-view experience, no eager download.
+  const [inView, setInView] = useState(false);
 
   const toggleSound = () => {
     const v = videoRef.current;
@@ -112,6 +116,24 @@ export default function FounderFilm() {
     return () => document.removeEventListener("fullscreenchange", onFsChange);
   }, []);
 
+  // Attach the film source only when the frame nears the viewport (or right
+  // away if IntersectionObserver is unavailable), so it never competes with
+  // the initial page load on slow connections.
+  useEffect(() => {
+    const el = frameRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") { setInView(true); return; }
+    const io = new IntersectionObserver((entries) => {
+      if (entries.some((e) => e.isIntersecting)) { setInView(true); io.disconnect(); }
+    }, { rootMargin: "400px 0px" });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  // Once the source is attached, kick off the muted ambient loop.
+  useEffect(() => {
+    if (inView) videoRef.current?.play().catch(() => {});
+  }, [inView]);
+
   const pct = `${(progress * 100).toFixed(2)}%`;
 
   return (
@@ -133,13 +155,13 @@ export default function FounderFilm() {
           <video
             ref={videoRef}
             className="hero-media__video"
-            src="/assets/soin-interview.mp4"
+            src={inView ? "/assets/soin-interview.mp4" : undefined}
             poster="/assets/soin-poster.jpg"
             autoPlay
             muted
             loop
             playsInline
-            preload="metadata"
+            preload="none"
             onLoadedMetadata={onMeta}
             onTimeUpdate={onTime}
           />

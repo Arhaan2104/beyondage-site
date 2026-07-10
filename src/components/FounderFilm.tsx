@@ -149,9 +149,34 @@ export default function FounderFilm() {
               {fmt(elapsed)} <span>/ {fmt(duration)}</span>
             </span>
           </span>
+
+          <button
+            type="button"
+            className="hero-media__expand"
+            onClick={enterFullscreen}
+            aria-label="Expand to full screen"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M9 3H3v6M21 9V3h-6M15 21h6v-6M3 15v6h6" />
+            </svg>
+          </button>
         </div>
 
         <div className="hero-media__screen">
+          {/* Real poster layer behind the video. The `poster` attribute alone
+              isn't enough on mobile: iOS dismisses it the moment play() is
+              requested and paints transparent until the first frame decodes,
+              leaving a blank pane on slow connections. The video paints over
+              this img as soon as it has frames. Same URL as the poster attr,
+              so it costs no extra bytes. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/assets/soin-poster.jpg"
+            alt=""
+            aria-hidden="true"
+            decoding="async"
+            className="hero-media__poster"
+          />
           <video
             ref={videoRef}
             className="hero-media__video"
@@ -170,17 +195,6 @@ export default function FounderFilm() {
           <span className="hero-media__ticks" aria-hidden="true">
             <i /><i /><i /><i />
           </span>
-
-          <button
-            type="button"
-            className="hero-media__expand"
-            onClick={enterFullscreen}
-            aria-label="Expand to full screen"
-          >
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M9 3H3v6M21 9V3h-6M15 21h6v-6M3 15v6h6" />
-            </svg>
-          </button>
 
           <button
             type="button"

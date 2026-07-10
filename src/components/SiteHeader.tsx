@@ -47,11 +47,11 @@ const LINKS: NavLink[] = [
     menu: {
       eyebrow: "The process",
       items: [
-        { title: "Discovery call", sub: "Map your goals with our team.", idx: "01" },
-        { title: "Consultation", sub: "Meet your longevity physician.", idx: "02" },
-        { title: "Diagnostics", sub: "Labs, imaging, biomarkers, genomics.", idx: "03" },
-        { title: "Your plan", sub: "A precision optimisation plan.", idx: "04" },
-        { title: "Monitoring", sub: "Ongoing follow-up and adjustment.", idx: "05" },
+        { title: "Discovery call", sub: "Map your goals with our team.", idx: "1" },
+        { title: "Consultation", sub: "Meet your longevity physician.", idx: "2" },
+        { title: "Diagnostics", sub: "Labs, imaging, biomarkers, genomics.", idx: "3" },
+        { title: "Your plan", sub: "A precision optimisation plan.", idx: "4" },
+        { title: "Monitoring", sub: "Ongoing follow-up and adjustment.", idx: "5" },
       ],
       foot: { label: "See the full process", href: "#how" },
     },
@@ -74,6 +74,9 @@ export default function SiteHeader() {
   // has a dark hero with no variant, so the nav floats immediately.
   const [floating, setFloating] = useState(!home);
   const [open, setOpen] = useState(false);
+  // Progressive disclosure in the mobile drawer: which group is expanded.
+  // One at a time (accordion) keeps the panel calm and inside the viewport.
+  const [openGroup, setOpenGroup] = useState<number | null>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const wasOpen = useRef(false);
@@ -100,6 +103,7 @@ export default function SiteHeader() {
     lenis?.start?.();
     document.documentElement.style.overflow = "";
     if (wasOpen.current) { toggleRef.current?.focus(); wasOpen.current = false; }
+    setOpenGroup(null); // next open starts with every chapter closed
   }, [open]);
 
   // Close, then smooth-scroll to the section (Lenis if present, native otherwise).
@@ -221,7 +225,9 @@ export default function SiteHeader() {
         aria-hidden={!open}
       >
         <div className="mnav__scrim" onClick={() => setOpen(false)} />
-        <div className="mnav__panel" role="dialog" aria-modal="true" aria-label="Menu">
+        {/* data-lenis-prevent: Lenis must not intercept touch inside the drawer,
+            or the panel can't scroll when an expanded group runs past the fold */}
+        <div className="mnav__panel" role="dialog" aria-modal="true" aria-label="Menu" data-lenis-prevent>
           <div className="mnav__top">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/assets/logo.png" alt="BeyondAge" className="logo logo--ivory mnav__logo" />
@@ -232,54 +238,80 @@ export default function SiteHeader() {
           </div>
 
           {/* Mirrors the desktop nav exactly: same LINKS data, so the two can't drift.
-              Each group = the section link, its dropdown items, and the dropdown's
-              foot link. Page items navigate; static items (no href) just inform. */}
+              Progressive disclosure: each group head is a large tap target that
+              expands its chapter (one open at a time); navigation lives on the
+              sub-items and the chapter's foot link. Collapsed, the whole menu
+              fits one screen. Static items (no href) just inform. */}
           <nav className="mnav__links">
             {LINKS.map(({ href, label, menu }, i) => (
-              <div className="mnav__group" key={href} style={{ ["--i" as string]: String(i) }}>
-                <a href={to(href)} className="mnav__head" onClick={(e) => go(e, href)}>
-                  <span className="mnav__idx" aria-hidden="true">{`0${i + 1}`}</span>
-                  {label}
-                </a>
+              <div
+                className={`mnav__group${openGroup === i ? " is-exp" : ""}`}
+                key={href}
+                style={{ ["--i" as string]: String(i) }}
+              >
+                {menu ? (
+                  <button
+                    type="button"
+                    className="mnav__head"
+                    aria-expanded={openGroup === i}
+                    aria-controls={`mnav-sec-${i}`}
+                    onClick={() => setOpenGroup(openGroup === i ? null : i)}
+                  >
+                    <span className="mnav__idx" aria-hidden="true">{`0${i + 1}`}</span>
+                    {label}
+                    <svg className="mnav__caret" viewBox="0 0 12 7" aria-hidden="true">
+                      <path d="M1 1l5 5 5-5" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </button>
+                ) : (
+                  <a href={to(href)} className="mnav__head" onClick={(e) => go(e, href)}>
+                    <span className="mnav__idx" aria-hidden="true">{`0${i + 1}`}</span>
+                    {label}
+                  </a>
+                )}
 
                 {menu && (
-                  <div className="mnav__subs">
-                    {menu.items.map((it) => {
-                      const inner = (
-                        <>
-                          {it.idx ? (
-                            <span className="mnav__sub-idx" aria-hidden="true">{it.idx}</span>
+                  <div id={`mnav-sec-${i}`} className="mnav__disclose" inert={openGroup !== i}>
+                    <div className="mnav__disclose-in">
+                      <div className="mnav__subs">
+                        {menu.items.map((it) => {
+                          const inner = (
+                            <>
+                              {it.idx ? (
+                                <span className="mnav__sub-idx" aria-hidden="true">{it.idx}</span>
+                              ) : (
+                                <span className="mnav__sub-dot" aria-hidden="true" />
+                              )}
+                              <span className="mnav__sub-tt">
+                                <span className="mnav__sub-title">{it.title}</span>
+                                <span className="mnav__sub-sub">{it.sub}</span>
+                              </span>
+                              {it.href && <span className="mnav__sub-arrow" aria-hidden="true">&rarr;</span>}
+                            </>
+                          );
+                          return it.href ? (
+                            <Link key={it.title} href={it.href} className="mnav__sub" onClick={() => setOpen(false)}>
+                              {inner}
+                            </Link>
                           ) : (
-                            <span className="mnav__sub-dot" aria-hidden="true" />
-                          )}
-                          <span className="mnav__sub-tt">
-                            <span className="mnav__sub-title">{it.title}</span>
-                            <span className="mnav__sub-sub">{it.sub}</span>
-                          </span>
-                          {it.href && <span className="mnav__sub-arrow" aria-hidden="true">&rarr;</span>}
-                        </>
-                      );
-                      return it.href ? (
-                        <Link key={it.title} href={it.href} className="mnav__sub" onClick={() => setOpen(false)}>
-                          {inner}
-                        </Link>
-                      ) : (
-                        <div key={it.title} className="mnav__sub mnav__sub--static">
-                          {inner}
-                        </div>
-                      );
-                    })}
-                    {menu.foot.href.startsWith("#") ? (
-                      <a href={to(menu.foot.href)} className="mnav__sub-foot" onClick={(e) => go(e, menu.foot.href)}>
-                        {menu.foot.label}
-                        <span aria-hidden="true">&rarr;</span>
-                      </a>
-                    ) : (
-                      <Link href={menu.foot.href} className="mnav__sub-foot" onClick={() => setOpen(false)}>
-                        {menu.foot.label}
-                        <span aria-hidden="true">&rarr;</span>
-                      </Link>
-                    )}
+                            <div key={it.title} className="mnav__sub mnav__sub--static">
+                              {inner}
+                            </div>
+                          );
+                        })}
+                        {menu.foot.href.startsWith("#") ? (
+                          <a href={to(menu.foot.href)} className="mnav__sub-foot" onClick={(e) => go(e, menu.foot.href)}>
+                            {menu.foot.label}
+                            <span aria-hidden="true">&rarr;</span>
+                          </a>
+                        ) : (
+                          <Link href={menu.foot.href} className="mnav__sub-foot" onClick={() => setOpen(false)}>
+                            {menu.foot.label}
+                            <span aria-hidden="true">&rarr;</span>
+                          </Link>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 )}
               </div>

@@ -1708,7 +1708,9 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 }
 @media (max-width: 920px) {
   .hsd-pin {
-    height: auto; padding: clamp(1.15rem, 3vw, 1.6rem) clamp(1.1rem, 4vw, 1.6rem) clamp(4.8rem, 11vw, 6.5rem);
+    /* a fuller top gap so the header doesn't crowd the section seam — still
+       tighter than the 6rem+ editorial sections (this is the gallery's chrome) */
+    height: auto; padding: clamp(2.9rem, 9vw, 4rem) clamp(1.1rem, 4vw, 1.6rem) clamp(4.8rem, 11vw, 6.5rem);
     background:
       radial-gradient(80% 56% at 78% -6%, rgba(20, 132, 97, 0.2), transparent 68%),
       linear-gradient(180deg, #04271c 0%, #021712 62%, #02150e 100%);
@@ -1791,7 +1793,7 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
   to   { transform: scale(1); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .hsd-pin { height: auto; padding: clamp(1.15rem, 3vw, 1.6rem) clamp(1.1rem, 4vw, 1.6rem) clamp(4.8rem, 11vw, 6.5rem); }
+  .hsd-pin { height: auto; padding: clamp(2.9rem, 9vw, 4rem) clamp(1.1rem, 4vw, 1.6rem) clamp(4.8rem, 11vw, 6.5rem); }
   .hsd-stage { position: static; height: auto; overflow: visible; display: grid; gap: 1rem; }
   .hsd-stage::after, .hsd-rail { display: none; }
   .hsd-runhead {

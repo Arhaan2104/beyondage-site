@@ -1658,15 +1658,26 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
   text-transform: uppercase; color: color-mix(in oklab, var(--ivory) 52%, transparent);
   transition: color 420ms var(--ease-quiet);
 }
+/* rail stops — the BeyondAge logomark (the .mark-divider masked-chip technique,
+   scaled to the rail). ::before is a ground-coloured halo so the hairline reads
+   as passing behind the mark, exactly like the divider's centre gap; ::after is
+   the mark itself, inked by currentColor so it dims and gilds with its label.
+   Both centre on the old diamond node's point (3.5px in, on the track). */
 .hsd-rail__item::before {
-  content: ""; position: absolute; left: 0; top: -1.42rem; width: 7px; height: 7px; transform: rotate(45deg);
-  border: 1px solid currentColor; background: rgba(2, 18, 12, 0.72);
-  transition: background-color 420ms var(--ease-quiet), border-color 420ms var(--ease-quiet), box-shadow 420ms var(--ease-quiet);
+  content: ""; position: absolute; left: -6.5px; top: calc(-1.42rem - 6.5px); width: 20px; height: 20px;
+  background: radial-gradient(circle, rgba(2, 18, 12, 0.9) 36%, transparent 68%);
+}
+.hsd-rail__item::after {
+  content: ""; position: absolute; left: -3px; top: calc(-1.42rem - 3px); width: 13px; aspect-ratio: 1;
+  background: currentColor;
+  -webkit-mask: url("/assets/logo.png") left center / auto 100% no-repeat;
+  mask: url("/assets/logo.png") left center / auto 100% no-repeat;
+  transition: background-color 420ms var(--ease-quiet), filter 420ms var(--ease-quiet);
 }
 .hsd-rail__item.is-active { color: color-mix(in oklab, var(--gold) 82%, var(--ivory)); }
-.hsd-rail__item.is-active::before {
-  background: var(--gold); border-color: var(--gold);
-  box-shadow: 0 0 16px color-mix(in oklab, var(--gold) 58%, transparent);
+.hsd-rail__item.is-active::after {
+  background: var(--gold);
+  filter: drop-shadow(0 0 6px color-mix(in oklab, var(--gold) 55%, transparent));
 }
 
 @media (max-width: 1100px) {
@@ -1766,7 +1777,7 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
     position: relative; opacity: 1; transform: none; pointer-events: auto;
     min-height: min(42rem, 76svh); border-radius: 18px; overflow: hidden;
   }
-  .hsd-panel, .hsd-rail__fill, .hsd-rail__item, .hsd-rail__item::before { transition: none; }
+  .hsd-panel, .hsd-rail__fill, .hsd-rail__item, .hsd-rail__item::after { transition: none; }
 }
 
 /* =============================================================================

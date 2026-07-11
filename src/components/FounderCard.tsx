@@ -6,7 +6,7 @@ import { useRef, useState } from "react";
  * Founder feature card — the enlarged frame plays the founder's film (mirrors
  * the live site's "Founders Vision"). Static poster + a frosted play disc; a
  * click plays the film with sound inline, a click on the film pauses it. The
- * "Founder" tag and disc fade away while it plays, so the film reads clean.
+ * play disc fades away while it plays, so the film reads clean.
  */
 export type Founder = {
   name: string;
@@ -48,7 +48,6 @@ export default function FounderCard({ name, role, honor, cred, href, video, post
           onPause={() => setPlaying(false)}
           onEnded={() => setPlaying(false)}
         />
-        <span className="founder-card__tag">Founder</span>
         <button
           type="button"
           className="founder-card__play"

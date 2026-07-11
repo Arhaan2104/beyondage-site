@@ -1066,9 +1066,6 @@ a.nav__menu-row:hover .nav__menu-arrow { opacity: 1; transform: none; }
 .founder-card__photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 28%; display: block;
   filter: saturate(0.98) contrast(1.02); transition: transform 900ms var(--ease-quiet); }
 .founder-card.is-link:hover .founder-card__photo img { transform: scale(1.04); }
-.founder-card__tag { position: absolute; left: 14px; top: 14px; font-family: var(--ff-text);
-  font-size: 0.58rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-bright);
-  background: rgba(2, 22, 15, 0.46); backdrop-filter: blur(6px); padding: 4px 10px; border-radius: 999px; border: 1px solid rgba(217, 184, 108, 0.32); }
 .founder-card__meta { padding: clamp(1.2rem, 2vw, 1.7rem); }
 /* name + national-honour badge on one baseline; wraps under on narrow cards */
 .founder-card__name-row { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
@@ -1111,8 +1108,6 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 .founder-card__play:hover { background: rgba(217, 184, 108, 0.22); border-color: rgba(241, 221, 166, 0.72);
   color: var(--gold-bright); transform: translate(-50%, -50%) scale(1.06); }
 .founder-card__photo--film.is-playing .founder-card__play { opacity: 0; pointer-events: none; }
-.founder-card__photo--film.is-playing .founder-card__tag { opacity: 0; }
-.founder-card__tag { transition: opacity 380ms var(--ease-quiet); }
 
 /* Specialist roster — each card links to its live profile */
 /* Flex (not grid) so an incomplete last row centres instead of left-aligning
@@ -3037,7 +3032,6 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
   .jrny__chan,
   .jrny__unit,
   .wyg-viz__label,
-  .founder-card__tag,
   .founder-card__honor,
   .bench-card__more,
   .pvc-vs__tag,

@@ -118,6 +118,13 @@ export default function HowItWorks() {
     else window.scrollTo({ top: y, behavior: "smooth" });
   };
 
+  // Mobile only: the tabs are hidden and each step becomes an accordion row.
+  // Tapping a header opens that step (and collapses the rest); tapping the open
+  // one closes it. Reuses `active` as the open index — on desktop the scroll
+  // engine owns `active` and this handler's button is display:none, so it never
+  // fires there.
+  const toggleStep = (i: number) => setActive((a) => (a === i ? -1 : i));
+
   return (
     <section ref={secRef} className="section how" id="how">
       <div className="how-viewport">
@@ -155,24 +162,40 @@ export default function HowItWorks() {
                 <article
                   key={s.n}
                   className={`how-panel${i === active ? " is-active" : ""}`}
-                  aria-hidden={i !== active}
                 >
-                  <div className="how-viz">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      className="how-viz__img"
-                      src={s.img}
-                      alt={s.heading}
-                      loading="lazy"
-                      draggable={false}
-                    />
-                    <span className="how-viz__grain" aria-hidden="true" />
+                  {/* mobile-only accordion header (hidden on desktop, where the
+                      numbered tab-list on the left drives the pinned gallery) */}
+                  <button
+                    type="button"
+                    className="how-panel__toggle"
+                    aria-expanded={i === active}
+                    onClick={() => toggleStep(i)}
+                  >
+                    <span className="how-panel__idx">{s.n}</span>
+                    <span className="how-panel__toggle-label">{s.tab}</span>
+                    <span className="how-panel__chev" aria-hidden="true" />
+                  </button>
+
+                  <div className="how-panel__reveal" aria-hidden={i !== active}>
+                    <div className="how-panel__reveal-inner">
+                      <div className="how-viz">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          className="how-viz__img"
+                          src={s.img}
+                          alt={s.heading}
+                          loading="lazy"
+                          draggable={false}
+                        />
+                        <span className="how-viz__grain" aria-hidden="true" />
+                      </div>
+                      <h3 className="how-panel__heading">{s.heading}</h3>
+                      <p className="how-panel__body">{s.body}</p>
+                      <Link href="/begin-journey" className="how-panel__cta">
+                        <span aria-hidden="true">↳</span> Begin your journey
+                      </Link>
+                    </div>
                   </div>
-                  <h3 className="how-panel__heading">{s.heading}</h3>
-                  <p className="how-panel__body">{s.body}</p>
-                  <Link href="/begin-journey" className="how-panel__cta">
-                    <span aria-hidden="true">↳</span> Begin your journey
-                  </Link>
                 </article>
               ))}
             </div>

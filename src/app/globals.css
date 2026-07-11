@@ -1316,6 +1316,9 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
   transition: opacity 560ms var(--ease-quiet), transform 560ms var(--ease-quiet);
 }
 .how-panel.is-active { opacity: 1; transform: none; pointer-events: auto; }
+/* the accordion header + collapse wrapper are mobile-only; on desktop the
+   numbered tab-list drives the pinned gallery and the content flows normally */
+.how-panel__toggle { display: none; }
 
 .how-viz {
   position: relative; aspect-ratio: 1.4 / 1; border-radius: 22px; overflow: hidden;
@@ -1365,72 +1368,78 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 
 @keyframes how-breathe { 0%, 100% { filter: saturate(1) brightness(1); } 50% { filter: saturate(1.06) brightness(1.05); } }
 
-/* Small screens — unpin fully, hide the tab-nav, reveal every step in full and
-   stacked. No scroll-hijack, no crossfade: all five steps visible and numbered. */
+/* Small screens — unpin the gallery and collapse the five steps into a quiet
+   accordion so the section reads in one screen instead of five stacked cards.
+   Each step is a tappable header (number + title + a +/− that morphs to −);
+   opening one reveals its photograph, detail and CTA and closes the rest. */
 @media (max-width: 860px) {
   .how { height: auto; padding-block: clamp(4.5rem, 12vw, 9rem); }
   .how-viewport { position: static; height: auto; display: block; overflow: visible; }
-  .how-grid { grid-template-columns: 1fr; gap: 0; margin-top: clamp(2rem, 7vw, 3rem); }
+  .how-grid { grid-template-columns: 1fr; gap: 0; margin-top: clamp(1.6rem, 6vw, 2.4rem); }
   .how-tabs { display: none; }
-  .how-stage {
-    display: flex; flex-direction: column; gap: clamp(2.8rem, 9vw, 4rem);
-    counter-reset: how-step;
-  }
+  .how-stage { display: flex; flex-direction: column; gap: 0; }
+
   .how-panel {
     grid-column: auto; grid-row: auto;
     opacity: 1; transform: none; pointer-events: auto;
+    border-top: 1px solid color-mix(in oklab, var(--gold) 15%, transparent);
   }
-  .how-viz { animation: none; }
-  .how-panel__heading { counter-increment: how-step; }
-  .how-panel__heading::before {
-    content: "Step 0" counter(how-step);
-    display: block; margin-bottom: 0.55rem;
-    font-family: var(--ff-text); font-size: 0.68rem; font-weight: 600;
-    letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold);
+  .how-panel:last-child { border-bottom: 1px solid color-mix(in oklab, var(--gold) 15%, transparent); }
+
+  /* header row */
+  .how-panel__toggle {
+    display: flex; align-items: center; gap: 0.95rem; width: 100%;
+    padding: clamp(1.05rem, 4.4vw, 1.5rem) 0.15rem;
+    background: none; border: 0; cursor: pointer; text-align: left;
+    -webkit-tap-highlight-color: transparent;
   }
-  .how-panel__cta { padding-block: 0.5rem; margin-top: clamp(0.8rem, 2vw, 1.1rem); }
-}
-/* Mobile: each stacked step arrives with a soft focus-pull — the card fades up,
-   its photograph resolves from blur into sharp focus like a diagnostic lens
-   settling, and the copy drifts up a beat behind it. Three coordinated,
-   scroll-linked ranges give the layered, seamless feel — deliberately distinct
-   from the dimensions cards' clip-path opening above. Double-guarded exactly
-   like .reveal, so reduced-motion / unsupported browsers get the finished step. */
-@media (max-width: 860px) and (prefers-reduced-motion: no-preference) {
-  @supports (animation-timeline: view()) {
-    .how-panel {
-      animation: how-step-in linear both;
-      animation-timeline: view();
-      animation-range: entry 4% cover 22%;
-      will-change: opacity;
-    }
-    .how-viz__img {
-      animation: how-viz-focus linear both;
-      animation-timeline: view();
-      animation-range: entry 3% cover 44%;
-      will-change: filter, transform;
-    }
-    .how-panel__heading,
-    .how-panel__body,
-    .how-panel__cta {
-      animation: how-copy-settle linear both;
-      animation-timeline: view();
-      animation-range: entry 12% cover 40%;
-      will-change: transform;
-    }
+  .how-panel__idx {
+    flex: none; min-width: 2.1ch;
+    font-family: var(--ff-text); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em;
+    font-variant-numeric: tabular-nums; color: var(--gold);
   }
+  .how-panel__toggle-label {
+    flex: 1 1 auto;
+    font-family: var(--ff-display); font-weight: 600; letter-spacing: -0.01em;
+    font-size: clamp(1.08rem, 4.6vw, 1.3rem); line-height: 1.2;
+    color: color-mix(in oklab, var(--ivory) 78%, transparent);
+    transition: color 320ms var(--ease-quiet);
+  }
+  .how-panel.is-active .how-panel__toggle-label { color: var(--ivory); }
+
+  /* +/− glyph — the vertical bar fades out when open, leaving a minus */
+  .how-panel__chev { position: relative; flex: none; width: 14px; height: 14px; }
+  .how-panel__chev::before, .how-panel__chev::after {
+    content: ""; position: absolute; top: 50%; left: 50%; border-radius: 2px;
+    background: color-mix(in oklab, var(--gold) 72%, var(--ivory));
+  }
+  .how-panel__chev::before { width: 14px; height: 1.5px; transform: translate(-50%, -50%); }
+  .how-panel__chev::after {
+    width: 1.5px; height: 14px; transform: translate(-50%, -50%);
+    transition: opacity 360ms var(--ease-quiet), transform 360ms var(--ease-quiet);
+  }
+  .how-panel.is-active .how-panel__chev::after { opacity: 0; transform: translate(-50%, -50%) rotate(90deg); }
+
+  /* collapsible region — grid-rows 0fr→1fr animates height without measuring */
+  .how-panel__reveal {
+    display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows 460ms var(--ease-quiet);
+  }
+  .how-panel.is-active .how-panel__reveal { grid-template-rows: 1fr; }
+  .how-panel__reveal-inner { overflow: hidden; min-height: 0; }
+
+  .how-viz { animation: none; margin-top: 0.15rem; }
+  .how-panel__heading { margin: clamp(1rem, 3.4vw, 1.35rem) 0 0.55rem; font-size: clamp(1.12rem, 4.4vw, 1.4rem); }
+  .how-panel__body { font-size: 0.98rem; }
+  .how-panel__cta { padding-block: 0.6rem; margin-top: clamp(1rem, 3vw, 1.35rem); margin-bottom: clamp(1.3rem, 4.5vw, 1.7rem); }
+
+  /* copy fades in a beat after the row opens */
+  .how-panel__reveal-inner > * { opacity: 0; transition: opacity 300ms var(--ease-quiet); }
+  .how-panel.is-active .how-panel__reveal-inner > * { opacity: 1; transition-delay: 140ms; }
 }
-@keyframes how-step-in {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-@keyframes how-viz-focus {
-  from { filter: saturate(0.82) blur(10px); transform: scale(1.07); }
-  to   { filter: saturate(1) blur(0); transform: none; }
-}
-@keyframes how-copy-settle {
-  from { transform: translateY(16px); }
-  to   { transform: none; }
+@media (max-width: 860px) and (prefers-reduced-motion: reduce) {
+  .how-panel__reveal, .how-panel__chev::after,
+  .how-panel__reveal-inner > * { transition: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .how { height: auto; padding-block: clamp(5.5rem, 12vw, 11rem); }

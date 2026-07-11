@@ -1117,23 +1117,28 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
 /* Specialist roster — each card links to its live profile */
 /* Flex (not grid) so an incomplete last row centres instead of left-aligning
    with a hole. Card basis = exactly one track, so full rows stay edge-to-edge.
-   Four-up on desktop, three-up on tablet, two-up on phones. */
+   Four-up on desktop, three-up on tablet, two-up on phones.
+   The -0.5px in every basis is load-bearing: track + gap sums to exactly 100%,
+   and WebKit rounds the calc up by a hair, so on real iPhones each row
+   overflowed by a sub-pixel and every card wrapped to its own line (Chromium
+   rounds down, which hid the bug in desktop devtools). The slack absorbs the
+   rounding; justify-content:center swallows the leftover quarter-pixel. */
 .bench-grid {
   --bench-gap: clamp(0.9rem, 1.6vw, 1.5rem);
   display: flex; flex-wrap: wrap; justify-content: center;
   gap: var(--bench-gap); margin-top: clamp(1.4rem, 3vw, 2.2rem);
 }
 .bench-card { margin: 0; display: block; text-decoration: none; color: inherit;
-  flex: 0 0 calc((100% - 3 * var(--bench-gap)) / 4); max-width: calc((100% - 3 * var(--bench-gap)) / 4); min-width: 0; }
+  flex: 0 0 calc((100% - 3 * var(--bench-gap)) / 4 - 0.5px); max-width: calc((100% - 3 * var(--bench-gap)) / 4 - 0.5px); min-width: 0; }
 @media (max-width: 980px) {
-  .bench-card { flex-basis: calc((100% - 2 * var(--bench-gap)) / 3); max-width: calc((100% - 2 * var(--bench-gap)) / 3); }
+  .bench-card { flex-basis: calc((100% - 2 * var(--bench-gap)) / 3 - 0.5px); max-width: calc((100% - 2 * var(--bench-gap)) / 3 - 0.5px); }
 }
 @media (max-width: 600px) {
   /* Two portraits per row, held all the way down to the smallest phones. The
      column gutter stays tight (--bench-gap) while the row gap opens up a little,
      so each caption has room to settle before the next portrait. */
   .bench-grid { row-gap: clamp(1.7rem, 6vw, 2.3rem); }
-  .bench-card { flex-basis: calc((100% - 1 * var(--bench-gap)) / 2); max-width: calc((100% - 1 * var(--bench-gap)) / 2); }
+  .bench-card { flex-basis: calc((100% - 1 * var(--bench-gap)) / 2 - 0.5px); max-width: calc((100% - 1 * var(--bench-gap)) / 2 - 0.5px); }
 }
 
 /* Caliper rules that flank the centred trailing row (4-column view only): a
@@ -1562,6 +1567,10 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
   color: color-mix(in oklab, var(--ivory) 64%, transparent);
   text-shadow: 0 1px 20px rgba(0, 0, 0, 0.5);
 }
+/* the divider belongs to the stacked layouts (mobile / reduced-motion), where
+   the header is a centred block above the cards; on the pinned gallery the
+   runhead overlays photography and the rail already carries the logomark */
+.hsd-runhead__mark { display: none; }
 
 .hsd-pin { position: relative; height: 400svh; background: var(--em-black); }
 .hsd-stage {
@@ -1701,9 +1710,12 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
      pinned gallery), so it centres to match every other section header */
   .hsd-runhead {
     position: static; max-width: none; gap: 0.5rem;
-    padding: 0.4rem 0.35rem 0.9rem;
+    padding: 0.4rem 0.35rem 0.35rem;
     text-align: center; justify-items: center;
   }
+  /* dead-centre in the subhead→card gap: 0.5rem gap + 0.85rem above the line
+     = 1.35rem; 0.35rem pad + 1rem stage gap below = 1.35rem */
+  .hsd-runhead__mark { display: block; margin-top: 0.85rem; }
   .hsd-runhead__title { font-size: clamp(2.05rem, 7.2vw, 2.7rem); }
   .hsd-runhead__sub {
     font-size: clamp(1rem, 3.4vw, 1.12rem);
@@ -1769,9 +1781,10 @@ a.founder-card__more:hover { color: color-mix(in oklab, var(--gold) 80%, var(--i
   .hsd-stage { position: static; height: auto; overflow: visible; display: grid; gap: 1rem; }
   .hsd-stage::after, .hsd-rail { display: none; }
   .hsd-runhead {
-    position: static; max-width: none; gap: 0.5rem; padding: 0.4rem 0.35rem 0.9rem;
+    position: static; max-width: none; gap: 0.5rem; padding: 0.4rem 0.35rem 0.35rem;
     text-align: center; justify-items: center;
   }
+  .hsd-runhead__mark { display: block; margin-top: 0.85rem; }
   .hsd-runhead__title { font-size: clamp(2.05rem, 3vw, 2.7rem); }
   .hsd-panel {
     position: relative; opacity: 1; transform: none; pointer-events: auto;

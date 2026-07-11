@@ -129,6 +129,8 @@ export default function HealthspanDimensions() {
             <p className="hsd-runhead__sub">
               Four dimensions of a life<br />well-lived, measured together.
             </p>
+            {/* stacked layouts only — sits dead-centre between subhead and first card */}
+            <span className="mark-divider hsd-runhead__mark" aria-hidden="true" />
           </div>
 
           {DIMENSIONS.map((dimension, index) => {
